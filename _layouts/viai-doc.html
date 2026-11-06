@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{{ page.helpname }} - ViAI日本語ドキュメント</title>
+<meta name="Generator" content="Vim/7.4">
+<meta name="plugin-version" content="vim7.4_v1">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_pre,use_css,expand_tabs">
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+<script src="vimdoc-ja.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<header>
+
+<div>
+  <a href="https://github.com/viai-editor">viai-editor</a>
+  / <a href="https://viai-editor.github.io/viai-doc-ja/">viai-doc-ja</a>
+  / {{ page.helpname }}<br />
+  <a name="top"></a><h1>{{ page.helpname }} - ViAI日本語ドキュメント</h1>
+  <a href="index.html">メインヘルプファイルに戻る</a>
+
+  {% if page.helpname != 'tags' %}
+  <span class="EnglishJapaneseLink">
+    <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+  </span>
+  {% endif %}
+</div>
+</header>
+
+<nav>
+<dl>
+
+<dt>基本</dt>
+<dd><ul>
+<li><a href="quickref.html#quickref">quickref</a></li>
+<li><a href="usr_01.html#tutor">tutor</a></li>
+<li><a href="uganda.html#copying">copying</a></li>
+<li><a href="uganda.html#iccf">iccf</a></li>
+<li><a href="sponsor.html#sponsor">sponsor</a></li>
+<li><a href="intro.html#www">www</a></li>
+<li><a href="intro.html#bugs">bugs</a></li>
+</ul></dd>
+
+<dt>ユーザーマニュアル目次</dt>
+<dd><ul>
+<li><a href="usr_toc.html">usr_toc</a></li>
+</ul></dd>
+
+<dt>初級編</dt>
+<dd><ul>
+<li><a href="usr_01.html">usr_01</a></li>
+<li><a href="usr_02.html">usr_02</a></li>
+<li><a href="usr_03.html">usr_03</a></li>
+<li><a href="usr_04.html">usr_04</a></li>
+<li><a href="usr_05.html">usr_05</a></li>
+<li><a href="usr_06.html">usr_06</a></li>
+<li><a href="usr_07.html">usr_07</a></li>
+<li><a href="usr_08.html">usr_08</a></li>
+<li><a href="usr_09.html">usr_09</a></li>
+<li><a href="usr_10.html">usr_10</a></li>
+<li><a href="usr_11.html">usr_11</a></li>
+<li><a href="usr_12.html">usr_12</a></li>
+</ul></dd>
+
+<dt>上級編</dt>
+<dd><ul>
+<li><a href="usr_20.html">usr_20</a></li>
+<li><a href="usr_21.html">usr_21</a></li>
+<li><a href="usr_22.html">usr_22</a></li>
+<li><a href="usr_23.html">usr_23</a></li>
+<li><a href="usr_24.html">usr_24</a></li>
+<li><a href="usr_25.html">usr_25</a></li>
+<li><a href="usr_26.html">usr_26</a></li>
+<li><a href="usr_27.html">usr_27</a></li>
+<li><a href="usr_28.html">usr_28</a></li>
+<li><a href="usr_29.html">usr_29</a></li>
+<li><a href="usr_30.html">usr_30</a></li>
+<li><a href="usr_31.html">usr_31</a></li>
+<li><a href="usr_32.html">usr_32</a></li>
+</ul></dd>
+
+<dt>カスタマイズ</dt>
+<dd><ul>
+<li><a href="usr_40.html">usr_40</a></li>
+<li><a href="usr_41.html">usr_41</a></li>
+<li><a href="usr_42.html">usr_42</a></li>
+<li><a href="usr_43.html">usr_43</a></li>
+<li><a href="usr_44.html">usr_44</a></li>
+<li><a href="usr_45.html">usr_45</a></li>
+</ul></dd>
+
+<dt>Vim script を書く</dt>
+<dd><ul>
+<li><a href="usr_50.html">usr_50</a></li>
+<li><a href="usr_51.html">usr_51</a></li>
+<li><a href="usr_52.html">usr_52</a></li>
+</ul></dd>
+
+<dt>インストール</dt>
+<dd><ul>
+<li><a href="usr_90.html">usr_90</a></li>
+</ul></dd>
+
+<dt>一般事項</dt>
+<dd><ul>
+<li><a href="intro.html">intro</a></li>
+<li><a href="index.html">help</a></li>
+<li><a href="helphelp.html">helphelp</a></li>
+<li><a href="vimindex.html">index</a></li>
+<li><a href="tags.html">tags</a></li>
+<li><a href="howto.html">howto</a></li>
+<li><a href="tips.html">tips</a></li>
+<li><a href="message.html">message</a></li>
+<li><a href="quotes.html">quotes</a></li>
+<li><a href="todo.html" class="EnglishPage">todo</a></li>
+<li><a href="develop.html">develop</a></li>
+<li><a href="debug.html">debug</a></li>
+<li><a href="uganda.html">uganda</a></li>
+</ul></dd>
+
+<dt>基本的な編集</dt>
+<dd><ul>
+<li><a href="starting.html">starting</a></li>
+<li><a href="editing.html">editing</a></li>
+<li><a href="motion.html">motion</a></li>
+<li><a href="scroll.html">scroll</a></li>
+<li><a href="insert.html">insert</a></li>
+<li><a href="change.html">change</a></li>
+<li><a href="undo.html">undo</a></li>
+<li><a href="repeat.html">repeat</a></li>
+<li><a href="visual.html">visual</a></li>
+<li><a href="various.html">various</a></li>
+<li><a href="recover.html">recover</a></li>
+</ul></dd>
+
+<dt>高度な編集</dt>
+<dd><ul>
+<li><a href="cmdline.html">cmdline</a></li>
+<li><a href="options.html">options</a></li>
+<li><a href="pattern.html">pattern</a></li>
+<li><a href="map.html">map</a></li>
+<li><a href="tagsrch.html">tagsrch</a></li>
+<li><a href="windows.html">windows</a></li>
+<li><a href="tabpage.html">tabpage</a></li>
+<li><a href="spell.html">spell</a></li>
+<li><a href="diff.html">diff</a></li>
+<li><a href="autocmd.html">autocmd</a></li>
+<li><a href="eval.html">eval</a></li>
+<li><a href="builtin.html">builtin</a></li>
+<li><a href="userfunc.html">userfunc</a></li>
+<li><a href="channel.html">channel</a></li>
+<li><a href="fold.html">fold</a></li>
+</ul></dd>
+
+<dt>特定機能</dt>
+<dd><ul>
+<li><a href="testing.html">testing</a></li>
+<li><a href="print.html">print</a></li>
+<li><a href="remote.html">remote</a></li>
+<li><a href="term.html">term</a></li>
+<li><a href="terminal.html">terminal</a></li>
+<li><a href="popup.html">popup</a></li>
+<li><a href="vim9.html">vim9</a></li>
+<li><a href="vim9class.html">vim9class</a></li>
+</ul></dd>
+
+<dt>プログラミング言語サポート</dt>
+<dd><ul>
+<li><a href="indent.html">indent</a></li>
+<li><a href="syntax.html">syntax</a></li>
+<li><a href="textprop.html">textprop</a></li>
+<li><a href="filetype.html">filetype</a></li>
+<li><a href="quickfix.html">quickfix</a></li>
+<li><a href="ft_ada.html">ft_ada</a></li>
+<li><a href="ft_context.html">ft_context</a></li>
+<li><a href="ft_hare.html">ft_hare</a></li>
+<li><a href="ft_mp.html">ft_mp</a></li>
+<li><a href="ft_ps1.html">ft_ps1</a></li>
+<li><a href="ft_raku.html">ft_raku</a></li>
+<li><a href="ft_rust.html">ft_rust</a></li>
+<li><a href="ft_sql.html">ft_sql</a></li>
+</ul></dd>
+
+<dt>言語サポート</dt>
+<dd><ul>
+<li><a href="digraph.html">digraph</a></li>
+<li><a href="mbyte.html">mbyte</a></li>
+<li><a href="mlang.html">mlang</a></li>
+<li><a href="rileft.html">rileft</a></li>
+<li><a href="arabic.html">arabic</a></li>
+<li><a href="farsi.html">farsi</a></li>
+<li><a href="hebrew.html" class="EnglishPage">hebrew</a></li>
+<li><a href="russian.html">russian</a></li>
+<li><a href="hangulin.html">hangulin</a></li>
+<li><a href="vietnamese.html">vietnamese</a></li>
+</ul></dd>
+
+<dt>GUI</dt>
+<dd><ul>
+<li><a href="gui.html">gui</a></li>
+<li><a href="gui_w32.html">gui_w32</a></li>
+<li><a href="gui_x11.html">gui_x11</a></li>
+</ul></dd>
+
+<dt>システム統合</dt>
+<dd><ul>
+<li><a href="wayland.html">wayland</a></li>
+</ul></dd>
+
+<dt>拡張インターフェース</dt>
+<dd><ul>
+<li><a href="if_cscop.html">if_cscop</a></li>
+<li><a href="if_lua.html">if_lua</a></li>
+<li><a href="if_mzsch.html">if_mzsch</a></li>
+<li><a href="if_perl.html">if_perl</a></li>
+<li><a href="if_pyth.html">if_pyth</a></li>
+<li><a href="if_tcl.html">if_tcl</a></li>
+<li><a href="if_ole.html">if_ole</a></li>
+<li><a href="if_ruby.html">if_ruby</a></li>
+<li><a href="debugger.html">debugger</a></li>
+<li><a href="netbeans.html">netbeans</a></li>
+<li><a href="sign.html">sign</a></li>
+</ul></dd>
+
+<dt>バージョン情報</dt>
+<dd><ul>
+<li><a href="vi_diff.html">vi_diff</a></li>
+<li><a href="version4.html">version4</a></li>
+<li><a href="version5.html" class="EnglishPage">version5</a></li>
+<li><a href="version6.html" class="EnglishPage">version6</a></li>
+<li><a href="version7.html" class="EnglishPage">version7</a></li>
+<li><a href="version8.html">version8</a></li>
+<li><a href="version9.html">version9</a></li>
+</ul></dd>
+
+<dt>システムに関する説明</dt>
+<dd><ul>
+<li><a href="os_390.html">os_390</a></li>
+<li><a href="os_amiga.html">os_amiga</a></li>
+<li><a href="os_beos.html">os_beos</a></li>
+<li><a href="os_dos.html">os_dos</a></li>
+<li><a href="os_haiku.html">os_haiku</a></li>
+<li><a href="os_mac.html">os_mac</a></li>
+<li><a href="os_mint.html">os_mint</a></li>
+<li><a href="os_msdos.html">os_msdos</a></li>
+<li><a href="os_os2.html">os_os2</a></li>
+<li><a href="os_qnx.html">os_qnx</a></li>
+<li><a href="os_risc.html">os_risc</a></li>
+<li><a href="os_unix.html">os_unix</a></li>
+<li><a href="os_vms.html">os_vms</a></li>
+<li><a href="os_win32.html">os_win32</a></li>
+</ul></dd>
+
+<dt>標準プラグイン</dt>
+<dd><ul>
+<li><a href="pi_getscript.html">pi_getscript</a></li>
+<li><a href="pi_gzip.html">pi_gzip</a></li>
+<li><a href="pi_logipat.html">pi_logipat</a></li>
+<li><a href="pi_netrw.html">pi_netrw</a></li>
+<li><a href="pi_paren.html">pi_paren</a></li>
+<li><a href="pi_spec.html">pi_spec</a></li>
+<li><a href="pi_tar.html">pi_tar</a></li>
+<li><a href="pi_tutor.html">pi_tutor</a></li>
+<li><a href="pi_vimball.html">pi_vimball</a></li>
+<li><a href="pi_zip.html">pi_zip</a></li>
+</ul></dd>
+
+<dt>その他</dt>
+<dd><ul>
+<li><a href="vim_faq.html">vim_faq</a></li>
+</ul></dd>
+
+</dl>
+</nav>
+
+<article class="Vimdoc VimdocJa">
+{{ content }}
+</article>
+
+<footer>
+<a href="#top">トップに戻る</a> - <a href="index.html">メインヘルプファイルに戻る</a>
+{% if page.helpname != 'tags' %}
+<span class="EnglishJapaneseLink">
+  <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+</span>
+{% endif %}
+<br />
+<div style="text-align:right;">
+Translated by <a href="https://github.com/viai-editor/viai-doc-ja">viai-doc-ja プロジェクト</a> (<a href="https://github.com/vim-jp/vimdoc-ja">vimdoc-ja</a> の翻訳を元にしています)<br />
+ヘルプ一式ダウンロード: <a href="https://github.com/viai-editor/viai-doc-ja/archive/master.tar.gz">tar.gz</a> | <a href="https://github.com/viai-editor/viai-doc-ja/archive/master.zip">zip</a><br />
+間違いを見つけたら<a href="https://github.com/viai-editor/viai-doc-ja-working/issues">issueトラッカー</a>でお知らせください。<br />
+<a href="https://raw.githubusercontent.com/primer/octicons/master/LICENSE">Powered by octicons</a><br /
+</div>
+</footer>
+
+</body>
+</html>
+<!-- vim:set ts=8 sts=2 sw=2 tw=0 et: -->
