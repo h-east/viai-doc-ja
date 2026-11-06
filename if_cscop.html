@@ -1,0 +1,478 @@
+---
+layout: viai-doc
+helpname: 'if_cscop'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="if_cscop.html" name="if_cscop.txt">if_cscop.txt</a>&nbsp;&nbsp;For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Feb 14<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIAI リファレンスマニュアル<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope" name="cscope">cscope</a>&nbsp;<a class="Constant" href="if_cscop.html#Cscope" name="Cscope">Cscope</a><br>
+この文章はVimにおけるcscopeインターフェイスの使い方について述べている。<br>
+<br>
+cscopeはctagsのようなツールであるが、ctagsよりも多くの機能が提供されるので<br>
+ctagsの代わりとみなせる。Vimではタグにジャンプするように、cscopeクエリの結果へ<br>
+ジャンプすることができる; ジャンプの履歴はタグスタックに保存されいつものキー<br>
+マッピングにより、普段<a class="Identifier" href="tagsrch.html#tags">tags</a>でやるように関数の間を行ったり来たりできる。<br>
+<br>
+1. Cscopeの紹介&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-intro">cscope-intro</a><br>
+2. Cscopeに関係するコマンド&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-commands">cscope-commands</a><br>
+3. Cscopeオプション&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-options">cscope-options</a><br>
+4. Vimでのcscopeの使い方&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-howtouse">cscope-howtouse</a><br>
+5. 制限事項&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-limitations">cscope-limitations</a><br>
+6. 使い方の提案&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-suggestions">cscope-suggestions</a><br>
+7. 入手法と情報&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="if_cscop.html#cscope-info">cscope-info</a><br>
+<br>
+現在のところUNIXとWin32で使える。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+1. Cscopeの紹介&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-intro" name="cscope-intro">cscope-intro</a><br>
+<br>
+以下の文章はあるバージョンのcscopeのマニュアルから引用した:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-----<br>
+<br>
+&nbsp;&nbsp;cscopeは貴方を助けるインタラクティブなスクリーン指向のツールです:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; いつ終わるかわからない厚いソースリストのページをめくることなく、Cプログ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ラムがどのように働くかを知る。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; プログラム全体を知らなくても、バグを修正するために変更すべきコードの位<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 置を見つける。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 列挙変数(enum)に値を追加するといった提案された変更の影響を検証する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 既存の関数に引数を追加したというような全部のソースファイルに施された変<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 更を検証する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 全部のソースファイルのグローバル変数の名前を変える。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ファイルの指定された行にある定数をプリプロセッサーのシンボルに変更する。<br>
+<br>
+&nbsp;&nbsp;これは次のような質問に答えるように意図されている:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; どこでこのシンボルが使われたのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; それがどこで定義されたのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; この変数がどこでその値を得たのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; このグローバルシンボルの定義は何か?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; この関数はどのソースファイルのどこにあるのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; どの関数がこの関数を呼んでいるのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; どの関数がこの関数から呼ばれているか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;メモリが足りない&quot; というメッセージはどこから来たのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; このソースファイルはディレクトリのどこにあるのか?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; どんなファイルがこのヘッダーファイルをインクルードしているのか?<br>
+<br>
+&nbsp;&nbsp;cscopeは起動すると最初に1度だけソースファイルからシンボルデータベースを作成<br>
+&nbsp;&nbsp;し、このデータベースを用いてこれらの質問に答える。2度目以降の起動では、ソー<br>
+&nbsp;&nbsp;スファイルが変更されたかソースファイルのリストが異なる時にだけデータベースが<br>
+&nbsp;&nbsp;再構築される。データベースが再構築される時でも変更されていないファイルについ<br>
+&nbsp;&nbsp;ては過去のデータベースよりコピーされるので、初めから構築し直すよりも高速に<br>
+&nbsp;&nbsp;構築できる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-----<br>
+<br>
+通常cscopeを起動すると、上のような問い合わせ(クエリ)を入力できるフルスクリーン<br>
+の選択画面が表示される。しかしながら、一度クエリが見つかりマッチを含むソース<br>
+ファイルを編集するためのエディタを指定してあると、普段viでCtrl-]や:tagコマンド<br>
+でやっているようなタグからタグへの単純なジャンプはできなくなる。<br>
+<br>
+Vimのcscopeインターフェイスはcscopeの行指向インターフェイスを利用することでこ<br>
+れを行い、実クエリに対する出力を解釈する。cscopeのクエリの結果は最終的に通常の<br>
+tagsのようになるので、普通のタグのようなジャンプ操作 (Ctrl-]や:tag) を行うこと<br>
+ができ、タグスタックをCtrl-Tで逆に辿ることも可能になる。(しかしキーマップの再<br>
+定義やコマンドやオプションの設定をしないで、まったく単純にCtrl-]や:tagと同じよ<br>
+うにジャンプできるわけではないことに注意して欲しい。cscopeインターフェイスがど<br>
+のように働くのか、どういう使い方が提案されているのかは残りのセクションを参<br>
+照。)<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+2. Cscopeに関係するコマンド&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-commands" name="cscope-commands">cscope-commands</a><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#:cscope" name=":cscope">:cscope</a>&nbsp;<a class="Constant" href="if_cscop.html#:cs" name=":cs">:cs</a>&nbsp;<a class="Constant" href="if_cscop.html#:scs" name=":scs">:scs</a>&nbsp;<a class="Constant" href="if_cscop.html#:scscope" name=":scscope">:scscope</a>&nbsp;<a class="Constant" href="if_cscop.html#E259" name="E259">E259</a>&nbsp;<a class="Constant" href="if_cscop.html#E262" name="E262">E262</a>&nbsp;<a class="Constant" href="if_cscop.html#E560" name="E560">E560</a>&nbsp;<a class="Constant" href="if_cscop.html#E561" name="E561">E561</a><br>
+全ての cscope のコマンドは cscope コマンドのサブコマンドとしてアクセスすること<br>
+ができる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Comment" href="if_cscop.html#:cscope">:cscope</a>&nbsp;または&nbsp;<a class="Comment" href="if_cscop.html#:cs">:cs</a>&nbsp;がメインコマンドである。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Comment" href="if_cscop.html#:scscope">:scscope</a>&nbsp;または&nbsp;<a class="Comment" href="if_cscop.html#:scs">:scs</a>&nbsp;はウィンドウ分割を伴って同じことを行う。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Comment" href="if_cscop.html#:lcscope">:lcscope</a>&nbsp;または&nbsp;<a class="Comment" href="if_cscop.html#:lcs">:lcs</a>&nbsp;はlocationリストを使用する。<a class="Identifier" href="if_cscop.html#:lcscope">:lcscope</a>&nbsp;を参照<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;のこと。<br>
+<br>
+利用可能なサブコマンドは:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#E563" name="E563">E563</a>&nbsp;<a class="Constant" href="if_cscop.html#E564" name="E564">E564</a>&nbsp;<a class="Constant" href="if_cscop.html#E566" name="E566">E566</a>&nbsp;<a class="Constant" href="if_cscop.html#E568" name="E568">E568</a>&nbsp;<a class="Constant" href="if_cscop.html#E622" name="E622">E622</a>&nbsp;<a class="Constant" href="if_cscop.html#E623" name="E623">E623</a>&nbsp;<a class="Constant" href="if_cscop.html#E625" name="E625">E625</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#E626" name="E626">E626</a>&nbsp;<a class="Constant" href="if_cscop.html#E609" name="E609">E609</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;&nbsp; : 新しいcscopeデータベース/接続を追加する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs add {file|dir}&nbsp;<span class="Special">[pre-path]</span>&nbsp;<span class="Special">[flags]</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">[pre-path]</span>&nbsp;cscopeに-Pコマンドで渡されるパス名<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">[flags]</span>&nbsp;cscopeに引き渡す追加フラグ<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope add /usr/local/cdb/cscope.out<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope add /projects/vim/cscope.out /usr/local/vim<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope add cscope.out /usr/local/vim -C</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-find" name="cscope-find">cscope-find</a>&nbsp;<a class="Constant" href="if_cscop.html#cs-find" name="cs-find">cs-find</a>&nbsp;<a class="Constant" href="if_cscop.html#E567" name="E567">E567</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;&nbsp;: cscopeに問い合わせる。#5オプション(grepパターンを変更する)以外の全<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cscopeクエリオプションが使用可能。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs find&nbsp;<span class="Special">{querytype}</span>&nbsp;<span class="Special">{name}</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{querytype}</span>は実際のcscopeのラインインターフェイス<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;の番号(デフォルトのnviコマンド)に対応する:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 or s: Cのシンボルを検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 or g: 定義を検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 or d: この関数から呼ばれる関数を検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 or c: この関数を呼んでいる関数を検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 or t: 文字列を検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 or e: egrepパターンを検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 or f: このファイルを検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 or i: このファイルを参照(#include)しているファイルを検索<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 or a: このシンボルが変数に割り当てられた場所を検索<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 と 6 以外のタイプでは、<span class="Special">{name}</span>&nbsp;における先頭のスペースは取り除かれる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 と 6 では&nbsp;<span class="Special">{querytype}</span>&nbsp;と&nbsp;<span class="Special">{name}</span>&nbsp;の間にちょうど 1 個のスペースが挿入<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;される。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope find c vim_free<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope find 3&nbsp;&nbsp;vim_free</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;この2つの例は、同じクエリ(&quot;vim_free&quot; を呼び出している関数を検索)を<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;実行する。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope find t initOnce<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope find t&nbsp;&nbsp;initOnce</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;この例の上の方は、&quot;initOnce&quot; というテキストを検索し、下の方は<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;initOnce&quot; を検索する。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cscope find 0 DEFAULT_TERM</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;この例を Vim 5.1 のソースコードに対して行うと、以下の出力を生成す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cscope tag: DEFAULT_TERM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #&nbsp;&nbsp; line&nbsp;&nbsp;filename / context / line<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 1009&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;amiga&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; 1013&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;win32&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; 1017&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;pcterm&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp; 1021&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;ansi&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp; 1025&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;vt52&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp; 1029&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;os2ansi&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp; 1033&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;ansi&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp; 1037&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # undef DEFAULT_TERM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp; 1038&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;beos-ansi&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp; 1042&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;GLOBAL&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define DEFAULT_TERM (char_u *)&quot;mac-ansi&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;&nbsp; 1335&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;set_termname&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; term = DEFAULT_TERM;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12&nbsp;&nbsp; 1459&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;set_termname&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (STRCMP(term, DEFAULT_TERM))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp; 1826&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;termcapinit&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; term = DEFAULT_TERM;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14&nbsp;&nbsp; 1833&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;termcapinit&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; term = DEFAULT_TERM;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15&nbsp;&nbsp; 3635&nbsp;&nbsp;vim-5.1-gtk/src/term.c &lt;<span class="Special">&lt;update_tcap&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p = find_builtin_term(DEFAULT_TERM);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enter nr of choice (<span class="Special">&lt;CR&gt;</span>&nbsp;to abort):<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出力には幾つかの情報を示している:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. タグの数(例には15個ある)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. タグが在る行番号<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. タグの在るファイル名<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. タグのコンテキスト(例えばグローバルか関数名か)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. ファイルの該当行そのもの<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;help&nbsp;&nbsp;: 短い解説を表示する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs help<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#E261" name="E261">E261</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;kill&nbsp;&nbsp;: cscopeとの接続を切断する(もしくは全ての接続を切断する)。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs kill {num|partial_name}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cscopeとの接続を切断するには、接続番号か部分的な名前を指定しなけれ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ばならない。「部分的名前」とは単純にcscopeデータベースのパス名の一<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部である。部分的名前を使用してcscope接続を切断する時には注意するこ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;と!<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接続番号-1を指定すると、全てのcscope接続が切断される。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;reset : 全てのcscope接続を再初期化する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs reset<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;show&nbsp;&nbsp;: cscope接続を表示する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用法&nbsp;&nbsp;:cs show<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#:lcscope" name=":lcscope">:lcscope</a>&nbsp;<a class="Constant" href="if_cscop.html#:lcs" name=":lcs">:lcs</a><br>
+このコマンドは &quot;:cscope&quot; とほぼ同じだが、オプション&nbsp;<a class="Type" href="options.html#'cscopequickfix'">'cscopequickfix'</a>&nbsp;がオンに<br>
+なっている場合、quickfix リストでなくカレントウィンドウのlocationリストで<br>
+cscope の結果を表示する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#:cstag" name=":cstag">:cstag</a>&nbsp;<a class="Constant" href="if_cscop.html#E257" name="E257">E257</a>&nbsp;<a class="Constant" href="if_cscop.html#E562" name="E562">E562</a><br>
+ctagsとcscopeを同じように使うのならば、両方を順に検索してジャンプを行うのに<br>
+<a class="Identifier" href="if_cscop.html#:cstag">:cstag</a>が利用できる。例えば、最初にcscopeデータベースを検索し、見つからなかっ<br>
+た時には、tagsファイルを検索することができる。どちらを先に検索するかは<a class="Identifier" href="if_cscop.html#csto">csto</a>の<br>
+値で決まる。詳細は<a class="Identifier" href="if_cscop.html#cscope-options">cscope-options</a>を参照。<br>
+<br>
+<a class="Identifier" href="if_cscop.html#:cstag">:cstag</a>がcscopeデータベースを検索する時には、識別子に対して &quot;:cs find g&quot; と同<br>
+じように働く。<br>
+<br>
+<a class="Identifier" href="if_cscop.html#:cstag">:cstag</a>がtagsファイルを検索する時には、識別子に対して<a class="Identifier" href="tagsrch.html#:tjump">:tjump</a>と同じように働<br>
+く。<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+3. Cscopeオプション&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-options" name="cscope-options">cscope-options</a><br>
+<br>
+全てのcscopeのオプションは<a class="Identifier" href="options.html#:set">:set</a>コマンドによって設定できる。理想的には起動ファ<br>
+イルのどれか1つ (例: .vimrc) で行うであろう。cscopeに関係する幾つかの変数は<br>
+<a class="Identifier" href="starting.html#.vimrc">.vimrc</a>の中だけで有効である。Vimが起動した後にそれらの変数を変更しても効果が<br>
+無い!<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopeprg" name="cscopeprg">cscopeprg</a>&nbsp;<a class="Constant" href="if_cscop.html#csprg" name="csprg">csprg</a><br>
+<a class="Type" href="options.html#'cscopeprg'">'cscopeprg'</a>&nbsp;にはcscopeを実行するコマンドを指定する。省略値は &quot;cscope&quot;。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set csprg=/usr/local/bin/cscope</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopequickfix" name="cscopequickfix">cscopequickfix</a>&nbsp;<a class="Constant" href="if_cscop.html#csqf" name="csqf">csqf</a>&nbsp;<a class="Constant" href="if_cscop.html#E469" name="E469">E469</a><br>
+<span class="Special">{</span><a class="Identifier" href="various.html#+quickfix">+quickfix</a><span class="Special">付きでコンパイルしないと利用できない}</span><br>
+<a class="Type" href="options.html#'cscopequickfix'">'cscopequickfix'</a>&nbsp;はcscopeの結果を表示するためにquickfixウィンドウを使うかどう<br>
+かを決める。これはコンマ区切りのリストである。要素は&nbsp;<a class="Identifier" href="if_cscop.html#cscope-find">cscope-find</a>コマンド (s<br>
+または g, d, c, t, e, f, i, a) とフラグ (+ または -, 0) から成っている。<br>
+'+' は結果がquickfixウィンドウに追加されることを示す。<br>
+'-' はそれ以前の結果を消すことを意味する。'0' や何も指定していないコマンドは<br>
+quickfixウィンドウを使わない。探索は始まりから最初のコマンドを見つけるまで実行<br>
+される。<br>
+デフォルトの値は &quot;&quot; (quickfixを使わない)。次の値が便利だろう:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set cscopequickfix=s-,c-,d-,i-,t-,e-,a-</div>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopetag" name="cscopetag">cscopetag</a>&nbsp;<a class="Constant" href="if_cscop.html#cst" name="cst">cst</a><br>
+<a class="Type" href="options.html#'cscopetag'">'cscopetag'</a>&nbsp;が設定されていると、コマンド &quot;:tags&quot;、<span class="Special">CTRL-]</span>、そして &quot;vim -t&quot; はデ<br>
+フォルトの:tagの代わりに、常に &quot;:cstag&quot; を使うようになる。事実上、tagファイル<br>
+と同じようにcscopeデータベースを検索することができるようになるだろう。省略した<br>
+場合はオフ。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set cst<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set nocst</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscoperelative" name="cscoperelative">cscoperelative</a>&nbsp;<a class="Constant" href="if_cscop.html#csre" name="csre">csre</a><br>
+<a class="Type" href="options.html#'cscoperelative'">'cscoperelative'</a>&nbsp;が設定されていて、cscope にプリフィックスが与えられていない場<br>
+合 (プリフィックスは cscope の -P オプションの引数である)、絶対パスを得るため<br>
+に、cscope.out が保存されているディレクトリ (通常はプロジェクトのルート) が使<br>
+われる。初期設定はオフである。<span class="Todo">Note</span>: このオプションは cscope (cscopeprg) がプリ<br>
+フィックスパス (-P) なしで初期化されている場合のみ効果がある。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set csre<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set nocsre</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopetagorder" name="cscopetagorder">cscopetagorder</a>&nbsp;<a class="Constant" href="if_cscop.html#csto" name="csto">csto</a><br>
+<a class="Type" href="options.html#'csto'">'csto'</a>&nbsp;の値は<a class="Identifier" href="if_cscop.html#:cstag">:cstag</a>が検索を実行する順序を決定する。<a class="Type" href="options.html#'csto'">'csto'</a>&nbsp;が0に設定されてい<br>
+るならば、先にcscopeデータベースが検索され、cscopeでは見つからなかった時にだけ<br>
+tagファイルが検索される。<a class="Type" href="options.html#'csto'">'csto'</a>&nbsp;が1ならば、cscopeデータベースの前にtagsファイ<br>
+ルが検索される。省略値は0。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set csto=0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set csto=1</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopeverbose" name="cscopeverbose">cscopeverbose</a>&nbsp;<a class="Constant" href="if_cscop.html#csverb" name="csverb">csverb</a><br>
+<a class="Type" href="options.html#'cscopeverbose'">'cscopeverbose'</a>&nbsp;が設定されていないと(デフォルト)、cscopeデータベースを追加した<br>
+際の成否結果のメッセージが表示されない。理想的には、<a class="Identifier" href="starting.html#.vimrc">.vimrc</a>の中でcscopeデータ<br>
+ベースを追加する前にリセットし、追加し終わった後で設定すべきである。設定してお<br>
+けば、Vim使用中にデータベースの追加に失敗した時、(望むらくは原因を特定するの<br>
+に)役立つメッセージが表示されるだろう。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set csverb<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set nocsverb</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscopepathcomp" name="cscopepathcomp">cscopepathcomp</a>&nbsp;<a class="Constant" href="if_cscop.html#cspc" name="cspc">cspc</a><br>
+<a class="Type" href="options.html#'cspc'">'cspc'</a>&nbsp;の値はファイルパスのうち幾つの構成要素を表示するか決定する。省略値であ<br>
+る0を設定した時には完全なパスが表示される。値として1を設定すればファイル名だけ<br>
+が表示される。その他の値であれば、その数だけ構成要素を表示する。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set cspc=3</div>
+ファイルパスのうち最後の3つ(ファイル名と2段上までのディレクトリ名)を表示する。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+4. Vimでのcscopeの使い方&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-howtouse" name="cscope-howtouse">cscope-howtouse</a><br>
+<br>
+最初にやらなければならないことは、ソースコードに対してcscopeデータベースを構築<br>
+することである。最も基本的なケースでは、単純に &quot;cscope -b&quot; とする。詳細につい<br>
+てはcscopeのマニュアル(manページ)を参照して欲しい。<br>
+<br>
+cscopeデータベースがあるならば、次にそのデータベースをVimへ &quot;add&quot; しなければな<br>
+らない。これはcscopeとの &quot;接続&quot; を確立し、それをVimが使えるような状態にする。<br>
+これは.vimrcや、vim起動後に手動で行うことができる。例えば、cscopeデータベース<br>
+&quot;cscope.out&quot; を追加するには、次のようにする:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cs add cscope.out</div>
+<br>
+この結果は &quot;:cs show&quot; を実行することでもう一度チェックすることができる。これは<br>
+次のような出力を生成する:<br>
+<br>
+<div class="helpExample">&nbsp;# pid&nbsp;&nbsp;&nbsp;&nbsp;database name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prepend path<br>
+&nbsp;0 28806&nbsp;&nbsp;cscope.out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;none&gt;</div>
+<br>
+<span class="Todo">Note</span>:<br>
+Microsoftのランタイムライブラリの制限により、Win32バージョンでは本当のプロセス<br>
+IDではなく0が表示される。<br>
+<br>
+一旦cscope接続が確立されれば、cscopeへクエリを送信でき、その結果を表示すること<br>
+ができる。クエリは &quot;:cs find&quot; コマンドにより生成される。例:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cs find g ALIGN_SIZE</div>
+<br>
+これは最終的に結構な量のタイプを必要とするのでやっかいである。しかしながら、<br>
+ショートカットキーをマッピングしてこれを避ける方法がある。その方法については<br>
+<a class="Identifier" href="if_cscop.html#cscope-suggestions">cscope-suggestions</a>を参照のこと。<br>
+<br>
+一致する項目が1つしかなければ、自動的にその場所へ移動する。複数の結果が得られ<br>
+た場合には、行きたい項目を選択できる画面が表示される。新しい場所へ移動した後<br>
+は、単に<span class="Special">CTRL-T</span>をタイプすることで以前の位置へ戻ることができる。<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+5. 制限事項&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-limitations" name="cscope-limitations">cscope-limitations</a><br>
+<br>
+Vimのcscope機能は4つのシステムコール:fork(), pipe(), execl(), waitpid() をサ<br>
+ポートしているシステムでのみ利用可能である。これはほとんどUNIXシステムだけに限<br>
+られることを意味している。<br>
+<br>
+加えて、CscopeはWin32でも動く。Win32で動くcscopeについて詳しくは次のサイトを見<br>
+ること (リンク切れのようだ):<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iamphet.nm.ru/cscope/index.html<br>
+<br>
+<span class="Constant"><a href="http://cscope.sourceforge.net">http://cscope.sourceforge.net</a></span>&nbsp;でダウンロードできる、DJGPP でビルドしたバージョ<br>
+ンは、Vim では動かないことがわかっている。<br>
+<br>
+ハードコードされた限界:<br>
+<a class="Identifier" href="if_cscop.html#:cstag">:cstag</a>&nbsp;がタグファイルを検索するときの&nbsp;<a class="Identifier" href="tagsrch.html#:tjump">:tjump</a>&nbsp;の動作はカスタマイズできない<br>
+(例: tjump でなく tselect を使うことができない)。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+6. 使い方の提案&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-suggestions" name="cscope-suggestions">cscope-suggestions</a><br>
+<br>
+次のエントリを.vimrcに記述する(パス名は環境にあわせて然るべく変更すること):<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if has(&quot;cscope&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set csprg=/usr/local/bin/cscope<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set csto=0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set cst<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set nocsverb<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot; add any database in current directory<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if filereadable(&quot;cscope.out&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cs add cscope.out<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot; else add database pointed to by environment<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elseif $CSCOPE_DB != &quot;&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cs add $CSCOPE_DB<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endif<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set csverb<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endif</div>
+<br>
+<a class="Type" href="options.html#'cscopetag'">'cscopetag'</a>&nbsp;を設定することで、:tag コマンドの実体を :cstag で効率的に置き換え<br>
+ている。これには :tags,&nbsp;<span class="Special">CTRL-]</span>, そして &quot;vim -t&quot; も含まれる。こうすることで、通<br>
+常のtagコマンドはctagsが生成したtagファイルだけでなく、cscopeデータベースも検<br>
+索するようになる。<br>
+<br>
+あるユーザーは通常のtagの振る舞いはそのままに、:cstagへアクセスする異なった<br>
+ショートカットを望むかもしれない。例えば次のコマンドで<span class="Special">CTRL-_</span>(アンダースコア)<br>
+に:cstagをマップできる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map &lt;C-_&gt; :cstag &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;</div>
+<br>
+良く使われる2つのcscopeのクエリ(&quot;:cs find&quot; を使う)は、ある関数を読んでいる全て<br>
+の関数を探すのと、あるCのシンボルを使用している箇所全てを探すものである。これ<br>
+を行うには、例としてこのようなマップを使うことができる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map g&lt;C-]&gt; :cs find 3 &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map g&lt;C-\&gt; :cs find 0 &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;</div>
+<br>
+このマッピングにより<span class="Special">CTRL-]</span>&nbsp;(右角カッコ)と<span class="Special">CTRL-\</span>&nbsp;(バックスラッシュ)を、カーソル<br>
+の下にある関数名やCシンボルを素早くcscopeに問い合わせ結果を得るのに利用できる<br>
+ようになる。<br>
+<br>
+もしくは次の仕組みを使うこともできる。これは Vim/Cscope のチュートリアルに影響<br>
+を受けた(<span class="Constant"><a href="http://cscope.sourceforge.net/">http://cscope.sourceforge.net/</a></span>)。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;s :cs find s &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;g :cs find g &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;c :cs find c &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;t :cs find t &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;e :cs find e &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;f :cs find f &lt;C-R&gt;=expand(&quot;&lt;cfile&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;i :cs find i ^&lt;C-R&gt;=expand(&quot;&lt;cfile&gt;&quot;)&lt;CR&gt;$&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;d :cs find d &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-_&gt;a :cs find a &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;</div>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot; 'CTRL-spacebar' を使うと結果を新しいウィンドウで表示する。</div>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;s :scs find s &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;g :scs find g &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;c :scs find c &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;t :scs find t &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;e :scs find e &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;f :scs find f &lt;C-R&gt;=expand(&quot;&lt;cfile&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;i :scs find i ^&lt;C-R&gt;=expand(&quot;&lt;cfile&gt;&quot;)&lt;CR&gt;$&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;d :scs find d &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;a :scs find a &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;</div>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot; CTRL-space を２回連続して押すとウィンドウを縦に開く</div>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find s &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;g<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find g &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;c<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find c &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;t<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find t &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;e<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find e &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;i<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find i ^&lt;C-R&gt;=expand(&quot;&lt;cfile&gt;&quot;)&lt;CR&gt;$&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;d<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find d &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nmap &lt;C-Space&gt;&lt;C-Space&gt;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\:vert scs find a &lt;C-R&gt;=expand(&quot;&lt;cword&gt;&quot;)&lt;CR&gt;&lt;CR&gt;</div>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+7. 入手法と情報&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-info" name="cscope-info">cscope-info</a><br>
+<br>
+まだcscopeを持っていない(あなたのコンパイラのライセンスやOSのディストリビュー<br>
+ションに含まれてない)のならば、次の場所から無料で入手できる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Constant"><a href="http://cscope.sourceforge.net/">http://cscope.sourceforge.net/</a></span><br>
+cscopeはSCOによりBSDライセンスに基づいて配布されている。<br>
+<br>
+Solaris 2.xでは、Cコンパイラのライセンスを入手していれば、cscopeも入手している<br>
+だろう。どちらも通常は/opt/SUNWspro/binに格納される。<br>
+<br>
+古いcscopeのクローン(&quot;cs&quot; という名)のソースコードがネットで入手可能である。た<br>
+だし様々な理由で、これはVimではサポートされない。<br>
+<br>
+オリジナルのcscopeインターフェイス/サポートはAndy Kahn &lt;ackahn@netapp.com&gt;に<br>
+よって書かれた。元となった構造(かなり小さいコードだった)はnviのcscopeインター<br>
+フェイスから改作された。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="if_cscop.html#cscope-win32" name="cscope-win32">cscope-win32</a><br>
+Win32バージョンのcscopeについてはこのサイトを参照すること (放置されているよう<br>
+に見える)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Constant"><a href="https://code.google.com/archive/p/cscope-win32/">https://code.google.com/archive/p/cscope-win32/</a></span><br>
+<br>
+Win32への対応は Sergey Khorev &lt;khorev@softlab.ru&gt; がしてくれた。Win32に固有の<br>
+問題については彼に問い合わせていただきたい。<br>
+<br>
+&nbsp;vim:tw=78:ts=8:noet:ft=help:norl:<br>
+</div>

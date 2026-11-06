@@ -1,0 +1,696 @@
+---
+layout: viai-doc
+helpname: 'usr_02'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="usr_02.html" name="usr_02.txt">usr_02.txt</a>&nbsp;&nbsp;&nbsp;&nbsp;For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Aug 25<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VIAI ユーザーマニュアル<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 初めての Vim<br>
+<br>
+<br>
+この章では、Vim を使ってファイルを編集するための最低限のことを説明します。操作<br>
+が下手でも遅くても、とにかく編集できるようになりましょう。この章に出てくるコマ<br>
+ンドはこれからの基礎になるものなので、少し時間をとって練習してください。<br>
+<br>
+<a class="Identifier" href="usr_02.html#02.1">02.1</a>&nbsp;&nbsp;Vim の起動方法<br>
+<a class="Identifier" href="usr_02.html#02.2">02.2</a>&nbsp;&nbsp;文字の挿入<br>
+<a class="Identifier" href="usr_02.html#02.3">02.3</a>&nbsp;&nbsp;カーソル移動<br>
+<a class="Identifier" href="usr_02.html#02.4">02.4</a>&nbsp;&nbsp;文字の削除<br>
+<a class="Identifier" href="usr_02.html#02.5">02.5</a>&nbsp;&nbsp;undo (取り消し) と redo (やり直し)<br>
+<a class="Identifier" href="usr_02.html#02.6">02.6</a>&nbsp;&nbsp;他の編集コマンド<br>
+<a class="Identifier" href="usr_02.html#02.7">02.7</a>&nbsp;&nbsp;Vim の終了<br>
+<a class="Identifier" href="usr_02.html#02.8">02.8</a>&nbsp;&nbsp;ヘルプの引き方<br>
+<br>
+次章:&nbsp;<a class="Identifier" href="usr_03.html">usr_03.txt</a>&nbsp;&nbsp;カーソルの移動<br>
+前章:&nbsp;<a class="Identifier" href="usr_01.html">usr_01.txt</a>&nbsp;&nbsp;マニュアルについて<br>
+目次:&nbsp;<a class="Identifier" href="usr_toc.html">usr_toc.txt</a><br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.1" name="02.1">02.1</a>&nbsp;&nbsp;Vim の起動方法<br>
+<br>
+Vim を起動するには次のコマンドを入力します。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gvim file.txt</div>
+<br>
+UNIXならコマンドプロンプトから実行できます。Microsoft Windows環境では、コマン<br>
+ドプロンプトを開いて、入力してください。<br>
+Vim が起動して file.txt という名前のファイルの編集が開始されます。これは新しい<br>
+ファイルなので、ウィンドウは空になっています。次のような画面が表示されます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&quot;file.txt&quot; [New file]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ('#' はカーソルの位置です)<br>
+<br>
+チルダ (~) の行は、ファイルにその行がないことを示しています。ファイルの末尾よ<br>
+り後ろを表示する場合にチルダが表示されます。画面の下の方に、編集中のファイル名<br>
+は &quot;file.txt&quot; で、それが新しいファイルであることが表示されています。このメッ<br>
+セージの表示は一時的なもので、他のメッセージが表示されると消えてしまいます。<br>
+<br>
+<br>
+<span class="Statement">Vim コマンド</span><br>
+<br>
+gvim は編集用のウィンドウを新しく作ります。次のコマンドを使った場合は:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim file.txt</div>
+<br>
+コマンドウィンドウの中で編集できます。つまり、xterm の中で実行すれば、Vim は<br>
+xterm ウィンドウを使います。MS-Windows のコマンドプロンプトを使っている場合も、<br>
+そのウィンドウの中で編集できます。gvim でも vim でもテキストは同じように表示<br>
+されますが、gvim にはメニューバーなどの追加機能があります。詳しくは後で述べま<br>
+す。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.2" name="02.2">02.2</a>&nbsp;&nbsp;文字の挿入<br>
+<br>
+Vim はモード型エディタです。モードによって挙動が変わります。一番よく使うモード<br>
+は「ノーマルモード」と「挿入モード」です。ノーマルモードでは、入力した文字は<br>
+コマンドとして扱われます。挿入モードでは、入力した文字はそのまま挿入されます。<br>
+Vim を起動した直後はノーマルモードになっています。挿入モードに入るには、&quot;i&quot; コ<br>
+マンドを入力します (i は Insert の意)。これで、文章を入力できるようになります。<br>
+入力した文章はファイルに挿入されます。入力を間違えても心配する必要はありませ<br>
+ん。後から修正できます。プログラマのリメリック(詩の一種)を入力して見ましょう。<br>
+次のように入力します:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iA very intelligent turtle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Found programming UNIX a hurdle</div>
+<br>
+&quot;turtle&quot; を入力した後で&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;キーを押して改行します。最後に&nbsp;<span class="Special">&lt;Esc&gt;</span>&nbsp;キーを押<br>
+して挿入モードを終了し、ノーマルモードに戻ります。このとき、Vim ウィンドウには<br>
+次のような二行が表示されています。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|A very intelligent turtle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Found programming UNIX a hurdle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+<br>
+<br>
+<span class="Statement">今は何モード?</span><br>
+<br>
+現在のモードを確認できるようにするには、次のコマンドを入力してください。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set showmode</div>
+<br>
+&quot;:&quot; (コロン記号) を入力すると、カーソルがウィンドウの最下段に移動します。ここ<br>
+はコロンコマンド (&quot;:&quot; で始まるコマンド) を入力する場所です。<span class="Special">&lt;Enter&gt;</span>&nbsp;キーを押す<br>
+とコマンドが実行されます (コロンで始まるコマンドは全てこの方法を使います)。<br>
+さて、&quot;i&quot; コマンドを入力すると、ウィンドウの最下段に &quot;-- 挿入 --&quot; という表示が<br>
+現れます。これは、あなたが挿入モードにいることを示しています。<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|A very intelligent turtle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Found programming UNIX a hurdle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- 挿入 --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+<br>
+<span class="Special">&lt;Esc&gt;</span>&nbsp;を押すとノーマルモードに戻り、最下段は空白になります。<br>
+<br>
+<br>
+<span class="Statement">トラブルを避ける</span><br>
+<br>
+Vim を使い始めたときはモードを混同しがちです。現在のモードを忘れてしまったり、<br>
+知らないうちに間違ってモードを変更してしまったりすることがあります。どのモード<br>
+にいる場合でも&nbsp;<span class="Special">&lt;Esc&gt;</span>&nbsp;を押せばノーマルモードに戻れます。<span class="Special">&lt;Esc&gt;</span>&nbsp;を二回押さなけれ<br>
+ばならないときもあります。ノーマルモードで&nbsp;<span class="Special">&lt;Esc&gt;</span>&nbsp;を押すとビープ音が鳴るので、<br>
+その場合は既にノーマルモードにいるということです。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.3" name="02.3">02.3</a>&nbsp;&nbsp;カーソル移動<br>
+<br>
+ノーマルモードでは、次のキーを使って移動できます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h&nbsp;&nbsp; 左&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="usr_02.html#hjkl" name="hjkl">hjkl</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;&nbsp; 下<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k&nbsp;&nbsp; 上<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;&nbsp; 右<br>
+<br>
+最初はでたらめなコマンドに思えるかもしれません。&quot;l&quot; キーで 右 (right) に移動す<br>
+るなんておかしいですね。しかしこれには合理的な理由があります。エディタで最もよ<br>
+く使うのはカーソル移動であり、これらのキーは右手のホームポジションにあるので<br>
+す。つまり、(特に 10 本の指を使ってタイプする人が) 最も速く打てる場所にコマン<br>
+ドが配置されています。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルは矢印キーでも移動できます。しかし、ホームポジションから手を離<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;さなければならないので、編集速度は落ちてしまいます。一時間に数百回も移<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;動することを考えると、結構な時間が消費されることになります。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;また、矢印キーが無いキーボードや、矢印キーの配置場所がおかしいキーボー<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ドもあります。hjkl の使い方を知っていれば、そのような場合でも安心です。<br>
+<br>
+コマンドを覚えるには、&quot;h&quot; は左にあって、&quot;l&quot; は右にあって、&quot;j&quot; は下を指してい<br>
+る、とでも覚えてください。図で示します:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h&nbsp;&nbsp;&nbsp;&nbsp; l<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; j</div>
+<br>
+移動コマンドを覚える一番の方法は使ってみることです。&quot;i&quot; コマンドを使って適当な<br>
+テキストを入力し、hjkl キーを使って動き回り、いろんな場所に文字を挿入してみて<br>
+ください。<span class="Special">&lt;Esc&gt;</span>&nbsp;キーを押してノーマルモードに戻るのを忘れずに。<a class="Identifier" href="usr_01.html#vimtutor">vimtutor</a>&nbsp;を使っ<br>
+て練習してみるのもいいでしょう。<br>
+<br>
+日本のユーザーへ、Hiroshi Iwataniさんは次のような提案をしています。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Komsomolsk<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Huan Ho&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--- ---&gt;&nbsp;&nbsp;Los Angeles<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yellow river)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java (ジャワ島。プログラミング言語のあれではない)<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.4" name="02.4">02.4</a>&nbsp;&nbsp;文字の削除<br>
+<br>
+文字を削除したい場合は、文字の上にカーソルを移動して &quot;x&quot; を押します。(これはタ<br>
+イプライタを使っていた古い時代に、消したい文字の上に &quot;xxxxxx&quot; と印字していたの<br>
+と同じ感覚です)。例えば、例文の一行目にカーソルを移動して、xxxxxxx (xを7つ) 打<br>
+ち、&quot;A very &quot; を消してみましょう。その結果は次のようになります:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|intelligent turtle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Found programming UNIX a hurdle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+<br>
+さて、新しいテキストを挿入してみましょう。例えば次のように入力します:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iA young &lt;Esc&gt;</div>
+<br>
+&quot;i&quot; で挿入を開始し、&quot;A young &quot; を入力しています。最後に&nbsp;<span class="Special">&lt;Esc&gt;</span>&nbsp;キーを押して挿入<br>
+モードを抜けます。結果は次のようになります。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|A young intelligent turtle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Found programming UNIX a hurdle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+<br>
+<br>
+<span class="Statement">行削除</span><br>
+<br>
+行全体を消すには &quot;dd&quot; コマンドを使います。行が消された場所は、それ以降の行を上<br>
+げることで詰められます。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Found programming UNIX a hurdle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------+<br>
+<br>
+<br>
+<span class="Statement">改行を取る</span><br>
+<br>
+Vim では複数の行を一行にまとめることができます。これは行と行の間にある改行文字<br>
+を削除するのと同じです。それには &quot;J&quot; コマンドを使います。<br>
+例えば、次の二行があるとします:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A young intelligent</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">turtle</span><br>
+<br>
+最初の行にカーソルを動かし &quot;J&quot; を押すと次のようになります:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A young intelligent turtle</span><br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.5" name="02.5">02.5</a>&nbsp;&nbsp;undo (取り消し) と redo (やり直し)<br>
+<br>
+間違ってテキストを削除してしまった場合、同じ内容を入力し直すこともできますが、<br>
+もっと簡単な方法があります。&quot;u&quot; コマンドで直前の編集結果を undo (取り消し)<br>
+できます。例えば、&quot;dd&quot; コマンドで削除した行を、&quot;u&quot; コマンドで元に戻せます。<br>
+もう一つ例を示します。カーソルを一行目の A に移動して:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A young intelligent turtle</span><br>
+<br>
+xxxxxxx とタイプし、&quot;A young&quot; を削除します。結果は次のようになります:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">intelligent turtle</span><br>
+<br>
+&quot;u&quot; で直前の削除が取り消されます。最後に削除されたのは g なので、その文字が復<br>
+活します。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">g intelligent turtle</span><br>
+<br>
+もう一度 &quot;u&quot; を実行すると、さらに一つ前に削除された文字が復活します:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">ng intelligent turtle</span><br>
+<br>
+次の &quot;u&quot; コマンドでは u が復活し、次々と元に戻すことができます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">ung intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">oung intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">young intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">young intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A young intelligent turtle</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;u&quot; を二回押したときに、最初の状態に戻ってしまった場合は、Vi 互換モー<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ドが設定されています。<a class="Identifier" href="usr_01.html#not-compatible">not-compatible</a>&nbsp;を参照して正しく設定してくださ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;い。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このマニュアルでは「Vim方式」の使い方を前提にしています。古き良き時代<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;の Vi 方式を使いたい場合は、細かい部分でマニュアルの説明と違うことがあ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;るので注意してください。<br>
+<br>
+<br>
+<span class="Statement">やり直し (redo)</span><br>
+<br>
+undo し過ぎてしまった場合は、<span class="Special">CTRL-R</span>&nbsp;(redo) を押すことで、直前のコマンドを<br>
+取り消せます。つまり、undo を undo します。実際に二回&nbsp;<span class="Special">CTRL-R</span>&nbsp;を押してみましょ<br>
+う。&quot;A &quot;の二文字が消えます。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">young intelligent turtle</span><br>
+<br>
+undo コマンドには特別なバージョン、&quot;U&quot; (行 undo) コマンドがあります。行 undo<br>
+コマンドは直前に編集した行のすべての変更を取り消します。このコマンドは、二回実<br>
+行すると、直前の &quot;U&quot; が取り消されます。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A very intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;very&quot; を削除<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxxxxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;turtle&quot; を削除<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A intelligent</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;U&quot; で行全体を元に戻す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A very intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;u&quot; で &quot;U&quot; を undo<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A intelligent</span><br>
+<br>
+&quot;u&quot; が undo で、<span class="Special">CTRL-R</span>&nbsp;が redo であるのに対し、&quot;U&quot; コマンドはそれ自身が変更コ<br>
+マンドです。ちょっとわかりにくいかも知れませんが心配はいりません。&quot;u&quot; と<br>
+<span class="Special">CTRL-R</span>&nbsp;があればどんな場合でも大丈夫だ、ってことです。詳細は&nbsp;<a class="Identifier" href="usr_32.html#32.2">32.2</a>&nbsp;にあります。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.6" name="02.6">02.6</a>&nbsp;&nbsp;他の編集コマンド<br>
+<br>
+Vim には文章を編集するための数多くのコマンドがあります。下記、または<a class="Identifier" href="quickref.html#Q_in">Q_in</a>を参<br>
+照してください。ここでは頻繁に使うものだけを述べます。<br>
+<br>
+<br>
+<span class="Statement">追記</span><br>
+<br>
+&quot;i&quot; コマンドはカーソルの前に文字列を挿入しますが、行末に文字を追加したいときは<br>
+どうすればいいでしょうか? それにはカーソルの後ろに文を挿入できないといけませ<br>
+ん。&quot;a&quot; (append) コマンドで追記できます。<br>
+例えば、次の行を<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">and that's not saying much for the turtle.</span><br>
+このように変更したいとします<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">and that's not saying much for the turtle!!!</span><br>
+<br>
+まずカーソルを行末のピリオドの上に動かし、&quot;x&quot; でピリオドを消します。この時カー<br>
+ソルは行末の turtle の &quot;e&quot; の上にあります。ここで、次のコマンドを入力します。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a!!!&lt;Esc&gt;</div>
+<br>
+これで turtle の後ろに三つの &quot;!&quot; 記号が追加されます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">and that's not saying much for the turtle!!!</span><br>
+<br>
+<br>
+<span class="Statement">新しい行を始める</span><br>
+<br>
+&quot;o&quot; コマンドを使うと、カーソルの下に新しい空の行が作成され、挿入モードに入りま<br>
+す。そのため、そのまま新しい行の文章を入力できます。<br>
+以下のような二行があり、カーソルが一行目のどこかにあるとします:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A very intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">Found programming UNIX a hurdle</span><br>
+<br>
+&quot;o&quot; コマンドを実行し、テキストを入力すると:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oThat liked using Vim&lt;Esc&gt;</div>
+<br>
+次のような結果になります:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">A very intelligent turtle</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">That liked using Vim</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">Found programming UNIX a hurdle</span><br>
+<br>
+&quot;O&quot; コマンド (大文字) を使うと、カーソルの上に空行を作成できます。<br>
+<br>
+<br>
+<span class="Statement">カウンタを使う</span><br>
+<br>
+例えば、9 行上に移動したい場合、&quot;kkkkkkkkk&quot; とタイプすることもできますが、&quot;9k&quot;<br>
+コマンドでも同様に移動できます。実はほとんどのコマンドには回数を指定できます。<br>
+例えば上記の例では、&quot;a!!!<span class="Special">&lt;Esc&gt;</span>&quot; で三つの &quot;!&quot; 記号を追加しましたが、これは<br>
+&quot;3a!<span class="Special">&lt;Esc&gt;</span>&quot; と入力することもできます。最初の 3 はコマンドを三回実行することを指<br>
+定しています。同様に、三文字削除したい場合は &quot;3x&quot; を使います。カウントは必ず対<br>
+象となるコマンドの前に指定してください。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.7" name="02.7">02.7</a>&nbsp;&nbsp;Vim の終了<br>
+<br>
+Vim を終了するには &quot;ZZ&quot; コマンドを使います。ファイルが保存され、Vim が終了しま<br>
+す。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;他の多くのエディタと違い、Vim は自動的にバックアップを作成しません。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ZZ&quot; と打つとファイルが上書きされるため、元に戻す方法はありません。バッ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;クアップファイルを作成するように設定することもできます。<a class="Identifier" href="usr_07.html#07.4">07.4</a>を参照し<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;てください。<br>
+<br>
+<br>
+<span class="Statement">変更を破棄する</span><br>
+<br>
+ファイルを編集した後で、元の方が良かったと気づくことがあると思います。心配はい<br>
+りません。「全部投げ捨てて終了する」コマンドがあります。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:q!</div>
+<br>
+コマンドを確定するには&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;キーが必要ですよ。お忘れなく。<br>
+<br>
+詳細を説明すると、このコマンドは三つの部分から成っています。&quot;:&quot; はコマンドライ<br>
+ンモードの開始、&quot;q&quot; コマンドはエディタを終了するコマンド、&quot;!&quot; はオーバーライド<br>
+修飾詞です。<br>
+変更を破棄するにはオーバーライド修飾詞が必要です。単に &quot;:q&quot; を実行した場合、エ<br>
+ラーメッセージが表示され、コマンドは実行されません:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">E37: 最後の変更が保存されていません (! で変更を破棄)</span><br>
+<br>
+オーバーライドを指定することで、「バカげたことをしてるように見えるのはわかって<br>
+る。でも本当にそうしたいんだ」と Vim に告げているわけです。<br>
+<br>
+Vim を終了したくない場合は、&quot;:e!&quot; コマンドでオリジナルのファイルを再読み込みで<br>
+きます。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_02.html#02.8" name="02.8">02.8</a>&nbsp;&nbsp;ヘルプの引き方<br>
+<br>
+知りたいことは何でも Vim のヘルプで調べることができます。どんどん調べてくださ<br>
+い!<br>
+<br>
+何かを知りたいときには、たいていはグーグルを使うよりもヘルプを使って探すほうが<br>
+簡単です。なぜならヘルプの題目は一定のスタイルガイドに沿っているからです。<br>
+<br>
+さらに、ヘルプはあなたが使っているVimの特定のバージョンに即しているという利点<br>
+があります。後で追加されたコマンドのヘルプは表示されません。それらはあなたの環<br>
+境では動かないでしょう。<br>
+<br>
+次のコマンドでヘルプの総合案内が表示されます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help</div>
+<br>
+ヘルプは&nbsp;<span class="Special">&lt;F1&gt;</span>&nbsp;ファンクションキーでも表示できます。キーボードに&nbsp;<span class="Special">&lt;Help&gt;</span>&nbsp;キーがあ<br>
+る場合はそれも使えます。<br>
+&quot;:help&quot; に引数を指定しなかった場合は総合案内が表示されます。Vim の作者はとても<br>
+賢い (いや、すごい怠け者かも) ので、ヘルプウィンドウには普通の編集ウィンドウが<br>
+使われています。ヘルプウィンドウの中ではすべてのノーマルモードコマンドが使えま<br>
+す。したがって、h, j, k, l で 上下左右に移動できます。<br>
+ヘルプウィンドウは、エディタを終了するのと同じコマンド (&quot;ZZ&quot;) で閉じることがで<br>
+きます。この場合は、ヘルプウィンドウが閉じるだけで、Vim は終了しません。<br>
+<br>
+ヘルプを読むと、縦棒 &quot;|&quot; で囲まれた文字に気づくと思います (例:&nbsp;<a class="Identifier" href="helphelp.html#help">help</a>)。それは<br>
+ハイパーリンクです。その場所にカーソルを置いて、<span class="Special">CTRL-]</span>&nbsp;(タグジャンプ) を押す<br>
+と、そのヘルプにジャンプできます。(理由は省きますが、Vim ではハイパーリンクの<br>
+ことをタグと呼びます。<span class="Special">CTRL-]</span>&nbsp;はカーソル下の単語をタグとみなして、その場所にジャ<br>
+ンプします。)<br>
+ジャンプした後は&nbsp;<span class="Special">CTRL-T</span>&nbsp;(タグをポップする) で元の場所に戻れます。<span class="Special">CTRL-O</span>&nbsp;(古い<br>
+場所へのジャンプ) でも元に場所に戻れます。<br>
+<br>
+ヘルプ画面の最上部に &quot;*help.txt*&quot; という表記があります。&quot;*&quot; で囲まれた名前はヘ<br>
+ルプシステムのタグ (ハイパーリンクの飛び先) を定義するために使われています。<br>
+タグの使い方の詳細は&nbsp;<a class="Identifier" href="usr_29.html#29.1">29.1</a>&nbsp;を参照してください。<br>
+<br>
+特定のヘルプ項目を見るには次のコマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help {subject}</div>
+<br>
+例えば &quot;x&quot; コマンドのヘルプを見るには次のようにします:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help x</div>
+<br>
+文字の削除方法を調べるには次のようにします:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help deleting</div>
+<br>
+Vim のコマンド一覧を見たい場合は次のようにします:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help index</div>
+<br>
+コントロール文字コマンド (例えば&nbsp;<span class="Special">CTRL-A</span>) のヘルプを見るには、&quot;<span class="Special">CTRL-&quot;</span>&nbsp;に続けて<br>
+その文字を指定します:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help CTRL-A</div>
+<br>
+Vim にはいろんなモードがあります。特に指定がなければノーマルモードコマンドのヘ<br>
+ルプが表示されます。例えば、次のコマンドでノーマルモードの&nbsp;<span class="Special">CTRL-H</span>&nbsp;コマンドのヘ<br>
+ルプが表示されます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help CTRL-H</div>
+<br>
+他のモードを指定するにはプリフィックスを付けてください。例えば、挿入モードのヘ<br>
+ルプを見たいときには、&quot;i_&quot; を付けます。<span class="Special">CTRL-H</span>&nbsp;の場合なら次のようになります:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help i_CTRL-H</div>
+<br>
+Vim を起動するときにはコマンドライン引数を指定できます。引数は先頭が &quot;-&quot; で始<br>
+まります。例えば、&quot;-t&quot; 引数の意味を調べるには次のコマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help -t</div>
+<br>
+Vim にはオプションがたくさんあり、それを設定することでカスタマイズができます。<br>
+オプションのヘルプを見るには、アポストロフィでそれを囲ってください。例えば、<br>
+<a class="Type" href="options.html#'number'">'number'</a>&nbsp;オプションの意味を調べるには次のコマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help 'number'</div>
+<br>
+モードのプリフィックス一覧は&nbsp;<a class="Identifier" href="usr_02.html#help-summary">help-summary</a>&nbsp;を参照してください。<br>
+<br>
+特殊キーは不等号で囲んで表記します。例えば、挿入モードの上矢印キーのヘルプを見<br>
+るには次のコマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help i_&lt;Up&gt;</div>
+<br>
+例えば次のようなエラーメッセージが表示された場合:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">E37: 最後の変更が保存されていません (! で変更を破棄)</span><br>
+<br>
+行頭のエラーIDを使えばヘルプを検索できます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help E37</div>
+<br>
+<br>
+概要:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="usr_02.html#help-summary" name="help-summary">help-summary</a>&nbsp;<br>
+<br>
+1) トピックをタイプした後、あり得るトピック全てを表示させるには Ctrl-D を使い<br>
+&nbsp;&nbsp; ます。もしくはタブで補完します:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help some&lt;Tab&gt;</div>
+&nbsp;&nbsp;&nbsp; help の使い方に関するより詳しい情報については:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help helphelp</div>
+<br>
+2) バーで囲まれた関連ヘルプへのリンクを辿ってみて下さい。ヘルプの詳細からユー<br>
+&nbsp;&nbsp; ザー視点のコマンド説明で、あまり詳しすぎないユーザードキュメントへ移動でき<br>
+&nbsp;&nbsp; ます。例えば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help pattern.txt</div>
+&nbsp;&nbsp;&nbsp; を見るとイントロダクション部分にユーザーガイドのトピック&nbsp;<a class="Identifier" href="usr_03.html#03.9">03.9</a>&nbsp;や<br>
+&nbsp;&nbsp;&nbsp;<a class="Identifier" href="usr_27.html">usr_27.txt</a>&nbsp;があるのが分かります。<br>
+<br>
+3) オプションは単一のアポストロフィで囲まれます。list オプションに関するヘルプ<br>
+&nbsp;&nbsp; へ行くには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help 'list'</div>
+&nbsp;&nbsp;&nbsp; もし特定のオプションを探していないのであれば、以下でも可能です:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help options.txt</div>
+&nbsp;&nbsp;&nbsp; 正規表現を使って記載された全てのオプションを検索し textwidth 等のヘルプの<br>
+&nbsp;&nbsp; ページを見つけ出します。<br>
+&nbsp;&nbsp; 特定のオプションには特有のネームスペースが付きます。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help cpo-&lt;letter&gt;</div>
+&nbsp;&nbsp;&nbsp; は設定&nbsp;<a class="Type" href="options.html#'cpoptions'">'cpoptions'</a>&nbsp;のフラグに対応します。<span class="Special">&lt;letter&gt;</span>&nbsp;は個別のフラグに置き換えて<br>
+&nbsp;&nbsp; 下さい。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help cpo-;</div>
+&nbsp;&nbsp;&nbsp; さらに&nbsp;<a class="Type" href="options.html#'guioptions'">'guioptions'</a>&nbsp;のフラグであれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help go-&lt;letter&gt;</div>
+<br>
+4) ノーマルモードのコマンドにはプリフィックスはありません。&quot;gt&quot; コマンドのヘル<br>
+&nbsp;&nbsp; プへ行くには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help gt</div>
+<br>
+5) 挿入モードのコマンドは i_ で始まります。単語の削除に関するヘルプであれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help i_CTRL-W</div>
+<br>
+6) ビジュアルモードのコマンドは v_ で始まります。ビジュアル領域のもう片方へジャ<br>
+&nbsp;&nbsp; ンプする方法のヘルプであれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help v_o</div>
+<br>
+7) コマンドラインの編集や引数は c_ で始まります。引数の % の使用方法のヘルプで<br>
+&nbsp;&nbsp; あれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help c_%</div>
+<br>
+8) Exコマンドは常に &quot;:&quot; で始まります。よって &quot;:s&quot; コマンドのヘルプに移動するに<br>
+&nbsp;&nbsp; は:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help :s</div>
+<br>
+9) デバッグに関するコマンドは &quot;&gt;&quot; で始まります。デバッグコマンドの &quot;cont&quot; のヘ<br>
+&nbsp;&nbsp; ルプに移動するには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help &gt;cont</div>
+<br>
+10) キーの組み合わせは通常、使用できるモードを表す 1 文字から始まります。例え<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help i_CTRL-X</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は挿入モードでそれぞれ異なるものを補完する&nbsp;<span class="Special">CTRL-X</span>&nbsp;系コマンドに移動します。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>&nbsp;いくつかのキーは常に同様に記載されています。例えばコントロールキーは<br>
+&nbsp;&nbsp;&nbsp;&nbsp;常に CTRL と記載されます。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ノーマルモードのコマンドはプリフィックスを持たず、項目は :h&nbsp;<span class="Special">CTRL-&lt;</span>Letter&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;により参照可能です。例えば<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help CTRL-W</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;に対して<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help c_CTRL-R</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;はコマンドラインに入ったときの&nbsp;<span class="Special">CTRL-R</span>&nbsp;が行うことを説明しています。また<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help v_CTRL-A</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;はビジュアルモードでの数値のインクリメントを説明し<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help g_CTRL-A</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は &quot;g<span class="Special">&lt;C-A&gt;</span>&quot; コマンドについて述べています (これには &quot;g&quot; を押して&nbsp;<span class="Special">&lt;CTRL-A&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;を押す必要があります)。ここで &quot;g&quot; はノーマルコマンドの &quot;g&quot; を意味し、何か<br>
+&nbsp;&nbsp;&nbsp;&nbsp;を実行する前に常に 2 番目のキーが必要です。&quot;z&quot; で始まるコマンドも同様です。<br>
+<br>
+11) 正規表現の項目は常に / で始まります。よって Vim の正規表現の &quot;\+&quot; 量指定子<br>
+&nbsp;&nbsp;&nbsp;&nbsp;のヘルプに移動するには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help /\+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;もし正規表現の全てに関して知りたいのなら、以下を参照してください:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help pattern.txt</div>
+<br>
+12) レジスタは常に &quot;quote&quot; で始まります。特殊なレジスタ &quot;:&quot; について調べるので<br>
+&nbsp;&nbsp;&nbsp;&nbsp;あれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help quote:</div>
+<br>
+13) Vim script は以下を参照。<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help eval.txt</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vim script のいくつかの側面については :h expr-X (&quot;X&quot; は1文字) に記載され<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ています。例えば<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help expr-!</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は Vim script の &quot;!&quot; (否定)演算子の説明の項目に移動します。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;さらに重要なのが<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help function-list</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;にはすべての関数の簡潔な説明が記載されています。ヘルプ項目の Vim script<br>
+&nbsp;&nbsp;&nbsp;&nbsp;の関数はすべて &quot;()&quot; を含みます。よって:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help append()</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は現在のバッファにテキストを追加 (append) する方法ではなく append 関数に<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ついての説明に移動します。<br>
+<br>
+14) マッピングについては :h&nbsp;<a class="Identifier" href="map.html">map.txt</a>&nbsp;で述べられています。<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help mapmode-i</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="map.html#:imap">:imap</a>&nbsp;コマンドについて調べるなら上記を使用してください。またマッピング<br>
+&nbsp;&nbsp;&nbsp;&nbsp;固有のある項目を調べるには :map-トピック も使用できます。例えば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help :map-local</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;はバッファローカルなマッピングに関する項目です。または<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help map-bar</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は '|' がどのようにマッピングで処理されるかに関する項目です。<br>
+<br>
+15) コマンド定義は :h command-トピック で記載されます。カスタムコマンドの '!'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;引数については<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help command-bang</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;で見つける事ができます。<br>
+<br>
+16) ウィンドウの制御コマンドは常に&nbsp;<span class="Special">CTRL-W</span>&nbsp;で始まります。:h&nbsp;<span class="Special">CTRL-W</span>_文字 で該当<br>
+&nbsp;&nbsp;&nbsp;&nbsp;のヘルプが見つかります。例えば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help CTRL-W_p</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;で一つ前のウィンドウへの移動のヘルプにアクセスできます。また自分のペースで<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ウィンドウ操作コマンド群を眺めたいならば<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help windows.txt</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;でアクセスできます。<br>
+<br>
+17) 全てのヘルプ (とインストールしたプラグイン) のページを検索するには<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="helphelp.html#:helpgrep">:helpgrep</a>&nbsp;を使用してください。使用法については&nbsp;<a class="Identifier" href="helphelp.html#:helpgrep">:helpgrep</a>&nbsp;を参照してく<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ださい。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;項目を検索するには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:helpgrep トピック</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;これにより最初にマッチした項目に移動します。次の項目に移動するには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cnext</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全てのマッチした項目は以下のコマンドで開くことできる quickfix ウィンドウで<br>
+&nbsp;&nbsp;&nbsp;&nbsp;参照可能です:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:copen</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;好きな項目に移動し、Enter を押すとそのヘルプにジャンプすることができます。<br>
+<br>
+18) ユーザーマニュアルは初心者にとってより親しみやすい項目について説明していま<br>
+&nbsp;&nbsp;&nbsp;&nbsp;す。(おそらくあなたの想像通り)&nbsp;<a class="Identifier" href="usr_toc.html">usr_toc.txt</a>&nbsp;でその目次を見つけることがで<br>
+&nbsp;&nbsp;&nbsp;&nbsp;きます:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help usr_toc.txt</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;興味を持った項目を探すようにざっと眺めてみてください。&quot;ダイグラフ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(Digraph)&quot; と &quot;特殊な文字を入力する&quot; の項目は 24 章です。そのページに移動<br>
+&nbsp;&nbsp;&nbsp;&nbsp;するには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help usr_24.txt</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;また特定の章に直接アクセスしたければ、このように章番号でもアクセス可能で<br>
+&nbsp;&nbsp;&nbsp;&nbsp;す:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help 10.1</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上記で&nbsp;<a class="Identifier" href="usr_10.html">usr_10.txt</a>&nbsp;の 10.1 章に移動し、マクロの記録の解説が見れます。<br>
+<br>
+19) ハイライトグループは常に hl- から始まります。例えば<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help hl-WarningMsg</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;には WarningMsg ハイライトグループについて書かれています。<br>
+<br>
+20) 構文ハイライトは :syn-トピック という形式になっています。例えば<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help :syn-conceal</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;には &quot;:syn&quot; コマンドの Conceal 引数について書かれています。<br>
+<br>
+21) quickfix コマンドは大体 :c から始まり、location リストコマンドは大体 :l か<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ら始まります。<br>
+<br>
+22) Autocommand イベントはそれらの名前で見つける事ができます:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help BufWinLeave</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全てのイベントを見るには:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help autocommand-events</div>
+<br>
+23) コマンドラインスイッチは常に &quot;-&quot; から始まります。Vim のコマンドスイッチ -f<br>
+&nbsp;&nbsp;&nbsp;&nbsp;に関するヘルプであれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help -f</div>
+<br>
+24) オプショナルな機能は常に &quot;+&quot; から始まります。conceal 機能の使い方について<br>
+&nbsp;&nbsp;&nbsp;&nbsp;調べるのであれば:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help +conceal</div>
+<br>
+25) ファイルタイプ特有の機能が含まれるドキュメントは通常<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ft-&lt;ファイルタイプ&gt;-&lt;機能&gt; に存在します。よって C のシンタックスファイルと<br>
+&nbsp;&nbsp;&nbsp;&nbsp;そこで提供されているオプションについては以下に記載されます。<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help ft-c-syntax</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;オムニ補完に関するセクションは<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help ft-php-omni</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;で、ファイルタイププラグインに関しては<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help ft-tex-plugin</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;で提供されている事があります。<br>
+<br>
+26) エラーと警告のコードは help で直接引くことができます。よって<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help E297</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;はスワップエラーメッセージの説明に移動し、また<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help W10</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は &quot;Changing a readonly file&quot; の警告について述べます。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;しかし時々エラーコードの説明が存在しない場合がありますが、どちらかといえば<br>
+&nbsp;&nbsp;&nbsp;&nbsp;大抵それを引き起こした Vim のコマンドの方に記載されているでしょう。よって:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help E128</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;は&nbsp;<a class="Identifier" href="userfunc.html#:function">:function</a>&nbsp;コマンドに飛びます。<br>
+<br>
+27) Vim とともに配布されるパッケージのドキュメントは、package-<span class="Special">&lt;name&gt;</span>&nbsp;という形<br>
+&nbsp;&nbsp;&nbsp;&nbsp;式です。よって<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:help package-comment</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;は付属のコメントプラグインとその有効化方法に関するヘルプセクションが表示さ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;れます。<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<br>
+次章:&nbsp;<a class="Identifier" href="usr_03.html">usr_03.txt</a>&nbsp;&nbsp;カーソルの移動<br>
+<br>
+Copyright: see&nbsp;<a class="Identifier" href="usr_01.html#manual-copyright">manual-copyright</a>&nbsp;&nbsp;vim:tw=78:ts=8:noet:ft=help:norl:<br>
+</div>

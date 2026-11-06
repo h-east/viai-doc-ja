@@ -1,0 +1,1663 @@
+---
+layout: viai-doc
+helpname: 'spell'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="spell.html" name="spell.txt">spell.txt</a>&nbsp;&nbsp;&nbsp;&nbsp; For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Jul 25<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIAI リファレンスマニュアル<br>
+<br>
+<br>
+スペルチェック&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell" name="spell">spell</a><br>
+<br>
+1. はじめに&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-quickstart">spell-quickstart</a><br>
+2. スペルチェックの注意点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-remarks">spell-remarks</a><br>
+3. スペルファイルの生成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-mkspell">spell-mkspell</a><br>
+4. スペルファイルの形式&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-file-format">spell-file-format</a><br>
+<br>
+<span class="Special">{</span><a class="Identifier" href="various.html#+syntax">+syntax</a><span class="Special">&nbsp;機能をコンパイル時に無効にした場合には利用することができない}</span><br>
+<br>
+<span class="Todo">Note</span>: 他にも vimspell プラグインがある。そのプラグインを入れていれば &quot;:help<br>
+vimspell&quot; を実行することでそれについて調べることができる。しかし、おそらくその<br>
+プラグインを削除し、代わりにオプション&nbsp;<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;を使いたいと思うだろう。そちら<br>
+のほうがうまくいく。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+1. はじめに&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-quickstart" name="spell-quickstart">spell-quickstart</a>&nbsp;<a class="Constant" href="spell.html#E756" name="E756">E756</a><br>
+<br>
+このコマンドで、スペルチェックがオンになる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:setlocal spell spelllang=en_us</div>
+<br>
+これはオプション&nbsp;<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;をオンにし、アメリカ英語のチェックを指定する。<br>
+<br>
+認識されない単語は以下のようにハイライトされる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SpellBad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;認識されない単語&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="syntax.html#hl-SpellBad">hl-SpellBad</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SpellCap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;頭文字が大文字になっていない単語&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="syntax.html#hl-SpellCap">hl-SpellCap</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SpellRare&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 稀な単語&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="syntax.html#hl-SpellRare">hl-SpellRare</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SpellLocal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;選択された地域では間違った綴り&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="syntax.html#hl-SpellLocal">hl-SpellLocal</a><br>
+<br>
+Vim は単語の綴りのみをチェックし、文法はチェックしない。<br>
+<br>
+もし、<a class="Type" href="options.html#'mousemodel'">'mousemodel'</a>&nbsp;オプションが &quot;popup&quot; に設定されてカーソルが間違った単語の上<br>
+にあるか、&quot;popup_setpos&quot; に設定されてマウスポインタが間違った単語の上にあるな<br>
+ら、ポップアップメニューは間違った単語を置き換えるサブメニューが含まれるように<br>
+なる。<span class="Todo">Note</span>: これはポップアップメニューの表示を遅くする。<span class="Todo">Note</span>: GTKについてはメ<br>
+ニューが現れるまでマウスの右ボタンを離してはいけない。そうしなければ機能しない。<br>
+<br>
+次の綴りの間違った単語を探すには:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#]s" name="]s">]s</a><br>
+]s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルの後の、次の綴りの間違った単語に移動する。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コマンドの前のカウントを使用して繰り返すことができる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'wrapscan'">'wrapscan'</a>&nbsp;が適用される。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#[s" name="[s">[s</a><br>
+[s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;]s&quot; と同様だが、後方検索でカーソルより前の綴りの間違っ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;た単語を探す。2 行に渡った単語は認識されないため、間違<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;いとしてハイライトされていない単語で停止する可能性があ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。行頭が大文字になっていない単語では停止しない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#]S" name="]S">]S</a><br>
+]S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;]s&quot; と同様だが、間違った単語のみで停止し、稀な単語や<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;他の地域の単語では停止しない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#[S" name="[S">[S</a><br>
+[S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;]S&quot; と同様だが、後方検索を行う。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#]r" name="]r">]r</a><br>
+]r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルの後の、次の &quot;稀な&quot; 単語に移動する。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コマンドの前のカウントを使用して繰り返すことができる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'wrapscan'">'wrapscan'</a>&nbsp;が適用される。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#[r" name="[r">[r</a><br>
+[r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;]r&quot; と同様だが、後方検索でカーソルより前の &quot;稀な&quot; 単<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;語を探す。2 行に渡った単語は認識されないため、稀として<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ハイライトされていない単語で停止する可能性がある。<br>
+<br>
+<br>
+単語をあなた自身の単語リストに追加するには:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zg" name="zg">zg</a><br>
+zg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルの下の単語を正しい (good) 単語として、<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;の最初のファイルに追加する。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コマンドの前に count を指定することで、<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;内<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;の項目を指定することができる。count として 2 を指定す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ると、2 番目の項目が使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ビジュアルモードで選択された文字は単語として追加される<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(スペースを含む!)。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルが間違った綴りとしてマークされた文章の上にある<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;時、そのマークされた文章が使われる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;そうでなければ、単語ではない文字で分けられたカーソルの<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下の単語が使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;もしその単語が明示的に別のスペルファイルで間違った単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;としてマークされているなら、その結果は予測できない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zG" name="zG">zG</a><br>
+zG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;zg&quot; と同様であるが、その単語を内部単語リスト<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#internal-wordlist">internal-wordlist</a>&nbsp;に加える。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zw" name="zw">zw</a><br>
+zw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;zg&quot; と同様であるが、間違った (wrong) 単語としてマーク<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;する。もしその単語がすでに&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;にある場合は、<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コメント行に変更される。それらを取り除くには<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spellfile-cleanup">spellfile-cleanup</a>&nbsp;を参照する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zW" name="zW">zW</a><br>
+zW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;zw&quot; と同様であるが、その単語を内部単語リスト<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#internal-wordlist">internal-wordlist</a>&nbsp;に加える。<br>
+<br>
+zuw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zug" name="zug">zug</a>&nbsp;<a class="Constant" href="spell.html#zuw" name="zuw">zuw</a><br>
+zug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zw">zw</a>&nbsp;や&nbsp;<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;をundoして、<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;の項目からその単<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;語を削除する。count は&nbsp;<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;と同様に使われる。<br>
+<br>
+zuW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#zuG" name="zuG">zuG</a>&nbsp;<a class="Constant" href="spell.html#zuW" name="zuW">zuW</a><br>
+zuG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zW">zW</a>&nbsp;や&nbsp;<a class="Identifier" href="spell.html#zG">zG</a>&nbsp;をundoして、内部単語リストからその単語を<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;削除する。count は&nbsp;<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;と同様に使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spe" name=":spe">:spe</a>&nbsp;<a class="Constant" href="spell.html#:spellgood" name=":spellgood">:spellgood</a>&nbsp;<a class="Constant" href="spell.html#E1280" name="E1280">E1280</a><br>
+:<span class="Special">[count]</span>spe[llgood]&nbsp;<span class="Special">{word}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を正しい単語として&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;に<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加える。count が無いときは最初の名前が使われ、count に<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 を指定したときは 2 番目の項目が使われる。以下同様。<br>
+<br>
+:spe[llgood]!&nbsp;<span class="Special">{word}</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zG">zG</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を正しい単語として内部単語リスト<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;に加える。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spellw" name=":spellw">:spellw</a>&nbsp;<a class="Constant" href="spell.html#:spellwrong" name=":spellwrong">:spellwrong</a><br>
+:<span class="Special">[count]</span>spellw[rong]&nbsp;<span class="Special">{word}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zw">zw</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を間違った (wrong) 単語として<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;に加える。count が無いときは最初の名前が使<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;われ、count に 2 を指定したときは 2 番目の項目が使われ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。以下同様。<br>
+<br>
+:spellw[rong]!&nbsp;<span class="Special">{word}</span>&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zW">zW</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を間違った (wrong) 単語として内<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部単語リストに追加する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spellra" name=":spellra">:spellra</a>&nbsp;<a class="Constant" href="spell.html#:spellrare" name=":spellrare">:spellrare</a><br>
+:<span class="Special">[count]</span>spellra[re]&nbsp;<span class="Special">{word}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zw">zw</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を稀な単語として&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;に加<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;える。countが無いときは最初の名前が使われ、count に 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;を指定したときは 2 番目の項目が使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;これらは非常に珍しいコマンドであり、このための直感的な<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コマンドは既に使われているため、単語を稀とマークする<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ノーマルモードのコマンドは無い。必要に応じて次のように<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッピングを追加できる 例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nnoremap z?&nbsp;&nbsp;:exe ':spellrare&nbsp;&nbsp;' .. expand('&lt;cWORD&gt;')&lt;CR&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nnoremap z/&nbsp;&nbsp;:exe ':spellrare! ' .. expand('&lt;cWORD&gt;')&lt;CR&gt;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="MissingTag">:spelllundo</span>、<a class="Identifier" href="spell.html#zuw">zuw</a>、または&nbsp;<a class="Identifier" href="spell.html#zuW">zuW</a>&nbsp;はこれをもとに戻す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ことができる。<br>
+<br>
+:spellra[re]!&nbsp;<span class="Special">{word}</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zW">zW</a>&nbsp;と同様に、<span class="Special">{word}</span>&nbsp;を稀な単語として内部単語リストに<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;追加する。<br>
+<br>
+:<span class="Special">[count]</span>spellu[ndo]&nbsp;<span class="Special">{word}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spellu" name=":spellu">:spellu</a>&nbsp;<a class="Constant" href="spell.html#:spellundo" name=":spellundo">:spellundo</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zuw">zuw</a>&nbsp;と同様である。<span class="Special">[count]</span>&nbsp;は&nbsp;<a class="Identifier" href="spell.html#:spellgood">:spellgood</a>&nbsp;と同様に使<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;われる。<br>
+<br>
+:spellu[ndo]!&nbsp;<span class="Special">{word}</span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#zuW">zuW</a>&nbsp;と同様である。<span class="Special">[count]</span>&nbsp;は&nbsp;<a class="Identifier" href="spell.html#:spellgood">:spellgood</a>&nbsp;と同様に使<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;われる。<br>
+<br>
+<br>
+上記のコマンドで&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;に単語を追加した後、その関連付けられた &quot;.spl&quot; ファ<br>
+イルは自動的に更新され再読み込みされる。もし手動で&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;を変更するなら<br>
+<a class="Identifier" href="spell.html#:mkspell">:mkspell</a>&nbsp;コマンドを用いる必要がある。このコマンドの順序でたいていうまくいく:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit &lt;'spellfile' にあるファイル&gt;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (スペルファイルに変更を加える)<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:mkspell! %</div>
+<br>
+<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;の形式に関する詳細は下記の&nbsp;<a class="Identifier" href="spell.html#spell-wordlist-format">spell-wordlist-format</a>&nbsp;を参照。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#internal-wordlist" name="internal-wordlist">internal-wordlist</a><br>
+内部単語リストは&nbsp;<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;が設定された全てのバッファで使われる。内部単語リスト<br>
+は蓄えられず、Vim が終了する時に失われる。また&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;が設定された時にクリ<br>
+アされる。<br>
+<br>
+<br>
+間違った単語に対しての提案を調べるには:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#z=" name="z=">z=</a><br>
+z=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルの下や後の単語に対して正しい綴りの単語を提案す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。これはまた間違った単語としてハイライトされていない<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語に対しての代わりを調べることもできる。例えば、その<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;後の単語が間違っている場合など。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ビジュアルモードでハイライトされたテキストは置換される<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語として見なされる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;結果は、置換されようとしている単語との類似度でソートさ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;れる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;これには長い時間が掛かることがある。うんざりした場合は<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">CTRL-C</span>&nbsp;を打つこと。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count なしでこのコマンドを使う場合、選択肢がリストアッ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プされ、選びたい選択肢の番号を入力することができる。置<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;き換えたくない場合は&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;を押す。また、マウスを使っ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;て選択肢をクリックすることもできる (マウスがノーマルモー<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ドで使われ、行の折り返しがない時のみ働く)。キャンセル<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;するには最初の行 (ヘッダー) をクリックする。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リストアップされた提案はふつうハイライトされた間違った<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語を置き換える。その提案は時々他のテキストを含むこと<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;があるが、その場合は置き換えられるテキストが &quot;&lt;&quot; の後<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;にリストアップされる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count を用いた場合、プロンプトは出ずにその提案が使われ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。例えば、&quot;1z=&quot; は常に最初の提案を利用する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'verbose'">'verbose'</a>&nbsp;が 0 以外の場合、間違った単語との類似度を示<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;すスコアが提案と共に表示される。（高いスコアは、違いが<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大きいことを示す。）<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語が置換された後は、リドゥコマンド &quot;.&quot; はその単語の<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;置換を繰り返す。これは、&quot;ciw&quot; の後に正しい単語を入力し<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">&lt;Esc&gt;</span>&nbsp;を入力したように動作する。これは、単語の間にス<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ペースを含まないタイ語やその他の言語に対しては動かな<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;い。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spellr" name=":spellr">:spellr</a>&nbsp;<a class="Constant" href="spell.html#:spellrepall" name=":spellrepall">:spellrepall</a>&nbsp;<a class="Constant" href="spell.html#E752" name="E752">E752</a>&nbsp;<a class="Constant" href="spell.html#E753" name="E753">E753</a><br>
+:spellr[epall]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#z=">z=</a>&nbsp;によって行われた置換を、現在のウィンドウの全ての<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッチする単語に対して繰り返す。<br>
+<br>
+挿入モードでは、カーソルが間違った綴りの単語の後にある場合、提案を見つけるため<br>
+に&nbsp;<span class="Special">CTRL-X</span>&nbsp;s を使うことができる。これは挿入モード補完のように動作する。次の提案<br>
+を使うには&nbsp;<span class="Special">CTRL-N</span>&nbsp;を、戻るには&nbsp;<span class="Special">CTRL-P</span>&nbsp;を使うこと。<a class="Identifier" href="insert.html#i_CTRL-X_s">i_CTRL-X_s</a><br>
+<br>
+オプション&nbsp;<a class="Type" href="options.html#'spellsuggest'">'spellsuggest'</a>&nbsp;は候補のリストがどのように生成、ソートされるかに影響<br>
+する。<a class="Type" href="options.html#'spellsuggest'">'spellsuggest'</a>&nbsp;を参照。<br>
+<br>
+<a class="Type" href="options.html#'spellcapcheck'">'spellcapcheck'</a>&nbsp;オプションは、文の最初の単語が大文字で始まっているかどうかを<br>
+チェックするために使用される。文の直後に改行がある場合、次の行のハイライトが遅<br>
+れることがある。必要に応じて&nbsp;<a class="Identifier" href="various.html#CTRL-L">CTRL-L</a>&nbsp;を使用すること。また、<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;が設定<br>
+された際にこのオプションを自動的に有効にする方法については、<a class="Identifier" href="spell.html#set-spc-auto">set-spc-auto</a>&nbsp;を<br>
+参照。<br>
+<br>
+<a class="Type" href="options.html#'spelloptions'">'spelloptions'</a>&nbsp;オプションには、スペルチェックの仕組みに影響のあるフラグがさら<br>
+にいくつかある。例えば、&quot;camel&quot; はキャメルケースの単語を分割して、単語の各部分<br>
+が個別にスペルチェックされるようにする。<br>
+<br>
+Vim は見つけた正しい単語の数を数える。これは提案候補をソートするのに使用される。<br>
+前に見つけた単語は小さな評価、よく見られる単語は大きな評価を得る。接辞ファイル<br>
+に共通する要素は共通の単語を定義するのに使用することができる。そのため、この機<br>
+構は新規もしくは小さいファイルでも機能する&nbsp;<a class="Identifier" href="spell.html#spell-COMMON">spell-COMMON</a>&nbsp;。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+2. スペルチェックの注意点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-remarks" name="spell-remarks">spell-remarks</a><br>
+<br>
+<span class="Statement">性能</span><br>
+<br>
+Vim はオンザフライのスペルチェックをする。スペルチェックを速くするために単語リ<br>
+ストはメモリにロードされる。だがこのために多くのメモリ (1 Mbyte以上) が使われ<br>
+る。さらに、単語リストがロードされている時に著しい遅延が生じるかもしれない。こ<br>
+れは<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;が既に設定されていたのに、<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;を設定する時や&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;を設<br>
+定する時に発生する。遅延を最小限にするには各単語リストが1回だけ読み込まれるよ<br>
+うにする。そうすれば、<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;が空になる時か&nbsp;<a class="Type" href="options.html#'spell'">'spell'</a>&nbsp;がリセットされる時に<br>
+単語リストは削除されない。<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;を設定して全ての単語リストが再読み込みさ<br>
+れる時に、上のようにまた遅延に気づくかもしれない。<br>
+<br>
+<br>
+<span class="Statement">地域</span><br>
+<br>
+単語はそれぞれの地域で綴りが異なるかもしれない。例えば、英語は少なくともこれ<br>
+らの差異がある。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全ての地域<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_au&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; オーストラリア<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_ca&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; カナダ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_gb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; イギリス<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_nz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ニュージーランド<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_us&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; アメリカ<br>
+<br>
+ある地域では使われないが別の地域では使われる単語は SpellLocal&nbsp;<a class="Identifier" href="syntax.html#hl-SpellLocal">hl-SpellLocal</a><br>
+でハイライトされる。<br>
+<br>
+常に言語名や地域名には小文字を使う。<br>
+<br>
+<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;や他のコマンドで単語が追加された時、その単語は常に全ての地域に追加される。<br>
+これは&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;を手動で編集することで変更できる。<a class="Identifier" href="spell.html#spell-wordlist-format">spell-wordlist-format</a><br>
+を参照。<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;にあるファイル内で指定される地域は&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;にあるすべ<br>
+てのエントリが同じ地域 (.spl の名前によって特定されるファイルは数えない) を指<br>
+定するときにのみ使用されることに注意すること。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-german" name="spell-german">spell-german</a><br>
+特有の例外: ドイツ語ではこれらの特別な地域が使われる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全てのドイツ語単語を許容する<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de_de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新旧正書法<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de_19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 旧正書法<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de_20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 新正書法<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de_at&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; オーストリア<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de_ch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; スイス<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-russian" name="spell-russian">spell-russian</a><br>
+特有の例外: ロシア語ではこれらの特別な地域が使われる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ru&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全てのロシア語単語を許容する<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ru_ru&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;IE&quot; letter spelling<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ru_yo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;YO&quot; letter spelling<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-yiddish" name="spell-yiddish">spell-yiddish</a><br>
+イディッシュ語は特有の文字を使用するため、&quot;utf-8&quot; エンコーディングを使用する必<br>
+要がある。もし latin1 を使っているのなら、Vim は代わりに字訳された (ローマ字化<br>
+された) イディッシュ語を使用するだろう。もしあなたが字訳されたイディッシュ語を<br>
+utf-8 で使用したいのなら、&quot;yi-tr&quot; を使用する。<br>
+一覧:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf-8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;イディッシュ語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latin1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ローマ字化されたイディッシュ語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utf-8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yi-tr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ローマ字化されたイディッシュ語<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-cjk" name="spell-cjk">spell-cjk</a><br>
+中国語、日本語、あるいはその他の東アジアの文字に対するスペルチェックはサポート<br>
+されていないため、これらの文字は通常、エラーとしてマークされる。<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;が<br>
+&quot;cjk&quot; を含んでいる場合、これらの文字はエラーとしてマークされなくなる。これは、<br>
+いくつかのアジアの単語が含まれるテキストを、スペルチェックを有効にして編集する<br>
+際に有用である。<br>
+<br>
+<br>
+<span class="Statement">スペルファイル</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-load" name="spell-load">spell-load</a><br>
+<br>
+Vim は&nbsp;<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;のディレクトリの中の &quot;spell&quot; という名前のサブディレクトリ<br>
+にあるスペルファイルを探す。ファイル名は LL.EEE.spl のようになる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言語名<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;の値<br>
+<br>
+&quot;LL&quot; の値は&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;の値が使われるが、地域名は除外される。<br>
+例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">'spelllang'&nbsp;&nbsp;&nbsp;&nbsp; LL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en_us&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; en<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;en-rare&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; en-rare<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;medical_ca&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;medical<br>
+<br>
+<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;の中の最初のファイルだけがロードされる。これが成功した場合、<br>
+LL.EEE.add.spl という名前のファイルが追加でロードされる。追加ファイルは、見つ<br>
+かったものが全てロードされる。<br>
+<br>
+スペルファイルが見つからなければ、自動コマンドイベント&nbsp;<a class="Identifier" href="autocmd.html#SpellFileMissing">SpellFileMissing</a>&nbsp;が発<br>
+生する。これによってスペルファイルをダウンロードする&nbsp;<a class="Identifier" href="spell.html#spellfile.vim">spellfile.vim</a>&nbsp;プラグイ<br>
+ンを呼び出せる。<br>
+<br>
+加えて、<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;の名前に関連したファイルは読み込まれる。これらは&nbsp;<a class="Identifier" href="spell.html#zg">zg</a>&nbsp;や<br>
+<a class="Identifier" href="spell.html#zw">zw</a>&nbsp;で正しい単語や間違った単語を追加するファイルである。<br>
+<br>
+例外:<br>
+- Vim は、<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;が &quot;iso-8859-15&quot; のとき &quot;latin1&quot; を使う。ユーロマークは<br>
+&nbsp;&nbsp;スペルチェックに影響しない。<br>
+-&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;用のスペルファイルが見つからないときは &quot;ascii&quot; が試される。これは<br>
+&nbsp;&nbsp;ほぼ全ての単語が ASCII である英語のような言語に対してのみうまく働く。<br>
+&nbsp;&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;が iso-8859-2 のように &quot;latin1&quot; でないときに英文を編集しているとき<br>
+&nbsp;&nbsp;に役に立つ。&quot;.add&quot; ファイルについては、見つかったメインのスペルファイルとし<br>
+&nbsp;&nbsp;て同じ名前のファイルが使用される。<br>
+<br>
+例えば、以下の値が設定されている場合:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;が &quot;~/.vim,/usr/share/vim82,~/.vim/after&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;&nbsp;&nbsp;&nbsp;が &quot;iso-8859-2&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;&nbsp; が &quot;pl&quot;<br>
+<br>
+Vim は以下を探す:<br>
+1. ~/.vim/spell/pl.iso-8859-2.spl<br>
+2. /usr/share/vim82/spell/pl.iso-8859-2.spl<br>
+3. ~/.vim/spell/pl.iso-8859-2.add.spl<br>
+4. /usr/share/vim82/spell/pl.iso-8859-2.add.spl<br>
+5. ~/.vim/after/spell/pl.iso-8859-2.add.spl<br>
+<br>
+ここでは、1. が見つからず、2. が見つかったと仮定している。<br>
+<br>
+もし&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;が &quot;latin1&quot; ならば Vim は以下を探す:<br>
+1. ~/.vim/spell/pl.latin1.spl<br>
+2. /usr/share/vim82/spell/pl.latin1.spl<br>
+3. ~/.vim/after/spell/pl.latin1.spl<br>
+4. ~/.vim/spell/pl.ascii.spl<br>
+5. /usr/share/vim82/spell/pl.ascii.spl<br>
+6. ~/.vim/after/spell/pl.ascii.spl<br>
+<br>
+これはこれらが見つからないことを想定する (ポーランド語は非 ASCII 文字を抜くと意<br>
+味をなさない)。<br>
+<br>
+EBCDIC 向けのスペルチェックは現在サポートされていない。<br>
+<br>
+現在の&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;でスペルファイルが利用できないかもしれない。スペルファイルの<br>
+作成の仕方については&nbsp;<a class="Identifier" href="spell.html#spell-mkspell">spell-mkspell</a>&nbsp;を参照。&quot;iconv&quot; でスペルファイルを変換す<br>
+るのは機能しないだろう!<br>
+<br>
+<span class="Todo">Note</span>: VMS ではファイル名によるトラブルを避けるため、&quot;.<span class="Special">{enc}</span>.spl&quot; は<br>
+&quot;_<span class="Special">{enc}</span>.spl&quot; に変更されている。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-sug-file" name="spell-sug-file">spell-sug-file</a>&nbsp;<a class="Constant" href="spell.html#E781" name="E781">E781</a><br>
+もし &quot;.spl&quot; ファイルと全く同じだが最後が &quot;.sug&quot; で終わるファイルがあるのであれ<br>
+ば、このファイルはよりよい提案を与えるのに使われる。メモリの使用率を減らすため、<br>
+提案が作られる前には読み込まれない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E758" name="E758">E758</a>&nbsp;<a class="Constant" href="spell.html#E759" name="E759">E759</a>&nbsp;<a class="Constant" href="spell.html#E778" name="E778">E778</a>&nbsp;<a class="Constant" href="spell.html#E779" name="E779">E779</a>&nbsp;<a class="Constant" href="spell.html#E780" name="E780">E780</a>&nbsp;<a class="Constant" href="spell.html#E782" name="E782">E782</a><br>
+スペルファイルを読み込む時、Vim はそれが正しくフォーマットされているかチェック<br>
+する。もしエラーが生じたなら、そのファイルが不完全であるか、変更されているか、<br>
+Vim の他のバージョン向けのものかもしれない。<br>
+<br>
+<br>
+<span class="Statement">スペルファイルのクリーンアップ</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spellfile-cleanup" name="spellfile-cleanup">spellfile-cleanup</a><br>
+<br>
+<a class="Identifier" href="spell.html#zw">zw</a>&nbsp;コマンドは&nbsp;<a class="Type" href="options.html#'spellfile'">'spellfile'</a>&nbsp;に存在するエントリをコメント行に変更する。これは毎<br>
+回新しいファイルに書き込まれることを避けるが、結果としてファイルは長くなるのみ<br>
+で短くなることはない。すべての &quot;.add&quot; スペルファイル内のコメント行をクリーンアッ<br>
+プするには次のようにする:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:runtime spell/cleanadd.vim</div>
+<br>
+これは行頭が &quot;##&quot; で始まるものを除いて、すべてのコメント行を削除する。保持して<br>
+おきたいコメントには &quot;##&quot; を使う。<br>
+<br>
+好きな頻度で、このスクリプトを呼び出すことができる。直近で変更されたファイルの<br>
+アップデートをスキップするための変数を提供している。そのファイルが最後に変更さ<br>
+れてからクリーンアップされるまでの秒数を設定する。例えば、この一時間で変更され<br>
+なかったファイルだけをクリーンアップするには次のようにする:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let g:spell_clean_limit = 60 * 60</div>
+デフォルトでは1秒。<br>
+<br>
+<br>
+<span class="Statement">単語</span><br>
+<br>
+Vim は単語を認識するのに定型的な方法を使う。これは&nbsp;<a class="Type" href="options.html#'iskeyword'">'iskeyword'</a>&nbsp;とは独立してい<br>
+るので、ヘルプファイル内や&nbsp;<a class="Type" href="options.html#'iskeyword'">'iskeyword'</a>&nbsp;内に '-' のような文字を含む言語に対して<br>
+も機能する。この単語の文字は&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;に依存する。<br>
+<br>
+単語の文字テーブルはメインの .spl ファイルに保存される。それゆえ .spl ファイル<br>
+を生成するときの現在のロケールがなんであるかが重要である! 一方 .add.spl ファイ<br>
+ルは単語テーブルを含まない。<br>
+<br>
+数字で始まる単語に関しては、全体で単語であると認識するまで先頭の数字は無視され<br>
+る。したがって、もし &quot;3D&quot; が一つの単語で &quot;D&quot; が単語でないのなら、&quot;3D&quot; は単語と<br>
+して認識される。しかし、もし &quot;3D&quot; が単語で無ければ &quot;D&quot; は不正としてマークされ<br>
+る。0x12ab や 0X12AB のような16進数は認識される。<br>
+<br>
+<br>
+<span class="Statement">単語の組み合わせ</span><br>
+<br>
+スペースを含む単語のスペルチェックが可能である。これは例えば、&quot;et al.&quot; のよう<br>
+に個別に使用した場合に無効となる単語を認識するために使われる。これは更に<br>
+&quot;the the&quot; を評価してハイライトするためにも使われる。<br>
+<br>
+スペースの個数は無関係だ。多くの場合、改行も現れるかもしれない。しかしながら、<br>
+これはスペルミスのチェックを開始する場所を見つけるのを困難にする。あなたが1行<br>
+の変更をし、その行だけが再描画されたのであれば、Vim は前の行を見ない。それゆえ、<br>
+前の行の最後が &quot;et&quot; であると &quot;al.&quot; はエラーとみなされる。また、&quot;the<span class="Special">&lt;CR&gt;</span>the&quot; と<br>
+タイプしたときは初めの行が再描画されるまでハイライトされない。すぐに再描画を行<br>
+うには&nbsp;<a class="Identifier" href="various.html#CTRL-L">CTRL-L</a>&nbsp;を使う。&quot;[s&quot; は改行を含む単語にも止まる。<br>
+<br>
+改行があると、Vim は '*' や '&gt;'、'&quot;' のような単語をスキップするので、C、シェル、<br>
+Vim コードでのコメントをスペルチェックすることができる。<br>
+<br>
+<br>
+<span class="Statement">構文ハイライト</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-syntax" name="spell-syntax">spell-syntax</a><br>
+<br>
+構文ハイライトを使用するファイルでは、どこでスペルチェックを行うべきか指定する<br>
+ことができる:<br>
+<br>
+1.&nbsp;&nbsp;どこでも&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 既定<br>
+2.&nbsp;&nbsp;指定の要素&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;contains=@Spell&quot; を使用する<br>
+3.&nbsp;&nbsp;指定の要素以外どこでも&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;contains=@NoSpell&quot; を使用する<br>
+<br>
+@NoSpell クラスタを追加する2番目の方法はスペルチェックを再度無効にすることだろ<br>
+う。これが使われれば、例えば @Spell をプログラムのコメントに加えて、チェックす<br>
+るべきでないアイテムを @NoSell に追加できる。シンタックスアイテムにないテキス<br>
+トについては、<a class="Identifier" href="syntax.html#:syn-spell">:syn-spell</a>&nbsp;を参照。<br>
+<br>
+<br>
+VIM SCRIPTS<br>
+<br>
+スペルに関する Vim script を書きたいと思うと、これらの関数が役に立つことが分<br>
+かるだろう:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;spellbadword()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソル下の間違ったつづりの単語を見つける<br>
+&nbsp;&nbsp;&nbsp;&nbsp;spellsuggest()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正しいつづりの候補を得る<br>
+&nbsp;&nbsp;&nbsp;&nbsp;soundfold()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同音 (sound-a-like) の単語を得る<br>
+<br>
+<br>
+<a class="Type" href="options.html#'spellcapcheck'">'spellcapcheck'</a>&nbsp;の自動設定&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#set-spc-auto" name="set-spc-auto">set-spc-auto</a><br>
+<br>
+<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;オプションがうまく設定された後は、Vim は&nbsp;<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;にある<br>
+&quot;spell/LANG.vim&quot; ファイルを読み込む。&quot;LANG&quot; は&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;の初めのコンマ、ドッ<br>
+ト、またはアンダースコアーまでの値である。これは言語のための特別なオプション、<br>
+とりわけ&nbsp;<a class="Type" href="options.html#'spellcapcheck'">'spellcapcheck'</a>&nbsp;を設定するのに使われる。<br>
+<br>
+ディストリビューションはこれらのファイルをいくつか含んでいる。これらが何をして<br>
+いるかを知るためには次のコマンドを使う<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:next $VIMRUNTIME/spell/*.vim</div>
+<br>
+<span class="Todo">Note</span>: デフォルトのスクリプトは初期値が変更されているなら&nbsp;<a class="Type" href="options.html#'spellcapcheck'">'spellcapcheck'</a>&nbsp;を設<br>
+定しない。これはユーザーが好む値を設定することを想定する。<br>
+<br>
+<br>
+<span class="Statement">二重スコア付け</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-double-scoring" name="spell-double-scoring">spell-double-scoring</a><br>
+<br>
+&quot;double&quot; 方式のスコア付けを選択するために&nbsp;<a class="Type" href="options.html#'spellsuggest'">'spellsuggest'</a>&nbsp;オプションを使用でき<br>
+る。この機構は、綴り間違いには2種類あるという原則に基づいている:<br>
+<br>
+1. 単語の綴りは知っているが、何らかのミスタイプをする場合。これは小さな編集距<br>
+&nbsp;&nbsp; 離 (文字の入れ替わり/文字抜け/文字の混入) の結果であり、単語が完全に間違っ<br>
+&nbsp;&nbsp; ているように聞こえるかもしれない。<br>
+<br>
+2. 単語の綴りを知らず、単語が正しく聞こえるようにタイプする場合。<br>
+&nbsp;&nbsp; 編集距離は大きくなり得るが、sound-folding した後の単語は似ている。<br>
+<br>
+これら2つの間違いのスコアは大きく異なるので、互いに1つのリストを使って、組み合<br>
+わせる。<br>
+<br>
+sound-folding は遅く、言語を知っている人は2番目の種類の間違いはしないだろう。<br>
+それゆえ、<a class="Type" href="options.html#'spellsuggest'">'spellsuggest'</a>&nbsp;に提案のスコアリングに用いる好きな方法を設定できる。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+3. スペルファイルの生成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-mkspell" name="spell-mkspell">spell-mkspell</a><br>
+<br>
+Vim はつづりのためのバイナリフォーマットを使用する。このことにより単語リストの<br>
+読み込みを大幅に速くし、単語リストを小さく保つ。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#.aff" name=".aff">.aff</a>&nbsp;<a class="Constant" href="spell.html#.dic" name=".dic">.dic</a>&nbsp;<a class="Constant" href="spell.html#Myspell" name="Myspell">Myspell</a><br>
+Myspell が使用する .aff と .dic ファイルから Vim が使用するスペルファイルを生<br>
+成することができる。Myspell は OpenOffice.org と Mozilla によって使用される。<br>
+OpenOffice の .oxt ファイルは .aff と .dic ファイルを含む zip ファイルである。<br>
+これらはここから探すことができる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Constant"><a href="https://extensions.openoffice.org/en/search@f[0]=field_project_application%253A1&amp;f[1]=field_project_tags%253A94.html">https://extensions.openoffice.org/en/search@f[0]=field_project_application%253A1&amp;f[1]=field_project_tags%253A94.html</a></span><br>
+これが機能しない場合、以前の OpenOffice 2 のファイルが使用されることがある。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Constant"><a href="http://wiki.services.openoffice.org/wiki/Dictionaries">http://wiki.services.openoffice.org/wiki/Dictionaries</a></span><br>
+加えて、プレーンテキストの単語リストも使用できる。選択肢はあなたが見つけた単語<br>
+のリストによって決まり、結果は同じになる。<br>
+<br>
+現在のロケールが適切に設定されているか確認すること。適切に設定がなされていない<br>
+場合、Vim は大文字と小文字の区別ができない。もしロケールが利用できない場合 (例<br>
+えば Unix 上で MS-Windows コードページを使用している場合) は .aff ファイルにテー<br>
+ブルを追加すること&nbsp;<a class="Identifier" href="spell.html#spell-affix-chars">spell-affix-chars</a>。.aff ファイルがテーブルを定義していな<br>
+いなら、現在有効なスペリングのテーブルが使われる。スペリングが有効でないなら<br>
+Vim は推測しようとする。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:mksp" name=":mksp">:mksp</a>&nbsp;<a class="Constant" href="spell.html#:mkspell" name=":mkspell">:mkspell</a><br>
+:mksp[ell][!]&nbsp;<span class="Special">[-ascii]</span>&nbsp;<span class="Special">{outname}</span>&nbsp;<span class="Special">{inname}</span>&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語リストから Vim スペルファイルを生成する。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:mkspell /tmp/nl nl_NL.words</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E751" name="E751">E751</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{outname}</span>&nbsp;が &quot;.spl&quot; で終わっている場合、出力ファイル名<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;として使われる。そうでなければ、地域名を除いた &quot;en&quot; の<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ような言語名が使われる。書き込まれたファイルは<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;<span class="Special">{outname}</span>.<span class="Special">{encoding}</span>.spl&quot; となり、<span class="Special">{encoding}</span>&nbsp;には<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;オプションの値が入る。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出力ファイルがすでに存在する場合は、上書きするために[!]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;を使用しなければならない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">[-ascii]</span>&nbsp;引数が存在している場合は、非 ascii 文字で構<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成された単語がスキップされる。結果のファイルは<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ascii.spl&quot; で終わる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入力は Myspell 形式の&nbsp;<span class="Special">{inname}</span>.aff と&nbsp;<span class="Special">{inname}</span>.dic ファ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;イルが使用できる。もし&nbsp;<span class="Special">{inname}</span>.aff が存在していなけれ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ば、<span class="Special">{inname}</span>&nbsp;はプレーン単語リストのファイル名として使<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;複数の&nbsp;<span class="Special">{inname}</span>&nbsp;引数を使うと、1 つの Vim スペルファイル<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;に複数の地域の組み合わせを与えることができる。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:mkspell ~/.vim/spell/en /tmp/en_US /tmp/en_CA /tmp/en_AU</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;これは US, CA そして AU の英単語リストの組み合わせを<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1つの en.spl.file にする。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8つの地域まで組み合わせることができる。&nbsp;<a class="Constant" href="spell.html#E754" name="E754">E754</a>&nbsp;<a class="Constant" href="spell.html#E755" name="E755">E755</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上記のコマンドで出現する .aff ファイルの初めにある REP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;と SAL 項目が使われる。<a class="Identifier" href="spell.html#spell-REP">spell-REP</a>&nbsp;<a class="Identifier" href="spell.html#spell-SAL">spell-SAL</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E845" name="E845">E845</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このコマンドは多くのメモリを使用し、最適な単語ツリーを<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;見つけることが求められる (ポーランド語、イタリア語、ハ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ンガリー語は数百メガバイトのメモリを要求する)。最終的<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;な結果は圧縮が使用されるので、非常に小さくなるだろう。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;メモリを使い果たさないようにするため、圧縮は適便行われ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。これは&nbsp;<a class="Type" href="options.html#'mkspellmem'">'mkspellmem'</a>&nbsp;オプションで調整できる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E1578" name="E1578">E1578</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 つの単語に対して保存できる、保留された接頭および複合<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;語フラグの数には上限がある。上限を超えている .dic ファ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;イル内の単語について、接辞 / 複合語フラグの数を減らす<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;こと。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;スペルファイルが書き込まれた後、バッファ内で使われ始め<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ると自動的に再読み込みされる。<br>
+<br>
+:mksp[ell]&nbsp;<span class="Special">[-ascii]</span>&nbsp;<span class="Special">{name}</span>.<span class="Special">{enc}</span>.add<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上記の &quot;:mkspell&quot; と似ている。入力ファイルとして<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{name}</span>.<span class="Special">{enc}</span>.add を使用すると、同じディレクトリに<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;.spl&quot; が付加された出力ファイルが生成される。<br>
+<br>
+:mksp[ell]&nbsp;<span class="Special">[-ascii]</span>&nbsp;<span class="Special">{name}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上記の &quot;:mkspell&quot; と似ている。入力ファイルとして&nbsp;<span class="Special">{name}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;を使用すると、同じディレクトリに &quot;.<span class="Special">{enc}</span>.spl&quot; が付加さ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;れた出力ファイルが生成される。<br>
+<br>
+Vim は重複した単語の出現回数を報告する。これは単語リスト中の誤りであるかもしれ<br>
+ない。しかし、時には同じ基本単語に対して、結合しないようにするために異なる接頭<br>
+辞と接尾辞が使用される (例えば、チェコ語はこれを使う)。もしすべての重複する単<br>
+語を Vim に報告させたい場合は、<a class="Type" href="options.html#'verbose'">'verbose'</a>&nbsp;オプションを設定する。<br>
+<br>
+Vim で使うために Myspell の単語リストを変更したいならば、次のような手順で行う<br>
+ことをお薦めする:<br>
+<br>
+1. Myspell から xx_YY.aff と xx_YY.dic ファイルを入手する。<br>
+2. これらのファイルを xx_YY.orig.aff と xx_YY.orig.dic のようにコピーする。<br>
+3. 良くない単語を取り除くために xx_YY.aff とxx_YY.dic ファイルを変更し、足りな<br>
+&nbsp;&nbsp; い単語を加え、FOL/LOW/UPP の単語の文字を定義したりする。配布されている<br>
+&nbsp;&nbsp; &quot;*.diff&quot; ファイルを使用できる。<br>
+4. Vim を正しいロケールで起動し、Vim スペルファイルを生成するために&nbsp;<a class="Identifier" href="spell.html#:mkspell">:mkspell</a><br>
+&nbsp;&nbsp; を使う。<br>
+5.&nbsp;<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;内のスペルファイルディレクトリに書き込んだなら、<br>
+&nbsp;&nbsp; &quot;set spelllang=xx&quot; でスペルファイルを試してみる。その他のディレクトリに書き<br>
+&nbsp;&nbsp; 込んだ場合は、&quot;:set spelllang=xx.enc.spl&quot; を試す。<br>
+<br>
+Myspell ファイルが更新されたとき、差異をマージすることができる:<br>
+1. 新しい Myspell ファイルを xx_YY.new.aff と xx_UU.new.dic として取得する。<br>
+2. 変更箇所を確認するために Vimdiff を使う:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vimdiff xx_YY.orig.dic xx_YY.new.dic</div>
+3. 必要な変更点を xx_YY.dic に引き継ぐ。<br>
+&nbsp;&nbsp; xx.YY.aff も変更する必要があるかもしれない。<br>
+4. xx_YY.new.dic を xx_YY.orig.dic へ、xx_YY.new.aff を xx_YY.orig.aff へリネー<br>
+&nbsp;&nbsp; ムする<br>
+<br>
+<br>
+<span class="Statement">スペルファイルのバージョン</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E770" name="E770">E770</a>&nbsp;<a class="Constant" href="spell.html#E771" name="E771">E771</a>&nbsp;<a class="Constant" href="spell.html#E772" name="E772">E772</a><br>
+<br>
+スペルチェックは Vim の比較的新しい機能なので、.spl ファイル形式はより多くの言<br>
+語をサポートするために変更されるかもしれない。Vim はスペルファイルの有効性を確<br>
+認し、間違いがあれば報告する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">E771: Old spell file, needs to be updated</span><br>
+スペルファイルが使用している Vim のバージョンよりも古いものなので、.spl ファイ<br>
+ルを更新する必要がある。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">E772: Spell file is for newer version of Vim</span><br>
+これはスペルファイルが使用している Vim よりも新しいバージョンに対応したものな<br>
+ので、Vim を更新する必要があることを意味する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">E770: Unsupported section in spell file</span><br>
+これはスペルファイルが使用している Vim よりも新しいバージョンに対応したもの<br>
+で、スペルファイルを動作させるために必要なセクションを含むことを意味する。この<br>
+場合は、Vim を更新することが良いアイデアとなるだろう。<br>
+<br>
+<br>
+<span class="Statement">スペルファイルのダンプ</span><br>
+<br>
+もし何らかの理由で、現在使っているスペルファイルでどんな単語がサポートされてい<br>
+るかをチェックしたい場合、以下のコマンドを使用できる:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spelldump" name=":spelldump">:spelldump</a>&nbsp;<a class="Constant" href="spell.html#:spelld" name=":spelld">:spelld</a><br>
+:spelld[ump]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新規ウィンドウを開き、すべての有効な単語で埋める。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;複合語は含まれない。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>: いくつかの言語では、結果が非常に大きくなり、Vim<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;がメモリ不足を引き起こすかもしれない。<br>
+<br>
+:spelld[ump]!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;:spelldump&quot; と同様に、単語数を含む。これは画面を更新<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;している間に発見した単語の個数である。COMMON アイテム<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;にある単語は10から数えられる。<br>
+<br>
+単語リストの形式は&nbsp;<a class="Identifier" href="spell.html#spell-wordlist-format">spell-wordlist-format</a>&nbsp;が使われる。全ての単語を含む1つの<br>
+.spl ファイルを生成するために、&quot;:mkspell&quot; で読み込むことができるようにすべきだ。<br>
+<br>
+すべての&nbsp;<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;に対するエントリが同じ地域を使用しているか、または全く地<br>
+域使用しない場合、地域情報がダンプワードに含まれる。そうでなければ、現在の地域<br>
+に関する単語のみが含まれ、&quot;/regions&quot; 行は生成されない。<br>
+<br>
+.spl ファイルの名前を持つコメント行は、.spl ファイルから生成された単語の上記の<br>
+ヘッダーとして使われる。<br>
+<br>
+<br>
+<span class="Statement">スペルファイルがないとき</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SpellFileMissing" name="spell-SpellFileMissing">spell-SpellFileMissing</a>&nbsp;<a class="Constant" href="spell.html#spellfile.vim" name="spellfile.vim">spellfile.vim</a><br>
+<br>
+使用している言語のスペルファイルが利用できないならば、エラーメッセージを受け取<br>
+るだろう。しかし、&quot;spellfile.vim&quot; プラグインがアクティブであるならば、スペルファ<br>
+イルをダウンロードするように薦められる。指示に従ったのならば、プラグインはダウ<br>
+ンロードしたスペルファイルを保存する場所を尋ねるだろう (このため、<br>
+<a class="Type" href="options.html#'runtimepath'">'runtimepath'</a>&nbsp;内に書き込み可能なディレクトリがなければならない)。<br>
+<br>
+プラグインは、Vim ftp サーバー上にスペルファイルを探すデフォルトの場所を持つ。<br>
+使用されるプロトコルはセキュリティのために SSL (<span class="helpCommand"><a href="https://">https://</a></span>) となる。他の場所や<br>
+他のプロトコルを使用したいならば、スペルファイルが存在するディレクトリに対し<br>
+て、g:spellfile_URL を設定する。<span class="helpCommand"><a href="http://">http://</a></span>&nbsp;か&nbsp;<span class="Comment">ftp://</span>&nbsp;を使えるが、その場合はセ<br>
+キュリティリスクを負うことになる。<a class="Identifier" href="pi_netrw.html#netrw">netrw</a>&nbsp;プラグインはファイルを取得するために<br>
+使われ、そこに URL の特定の構文があるかを調べる。例:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let g:spellfile_URL = '<a href="https://ftp.nluug.nl/vim/runtime/spell">https://ftp.nluug.nl/vim/runtime/spell</a>'</div>
+特殊文字をエスケープする必要があるかもしれない。<br>
+<br>
+このプラグインは一度、ある 1 つの言語をダウンロードすることについてのみ質問する<br>
+だろう。もし再度行おうとする場合は、Vim を再起動するか g:spellfile_URL を他の<br>
+値 (例えば、スペースを前置する) に設定する。<br>
+<br>
+&quot;spellfile.vim&quot; プラグインの使用を避けるためには、vimrc ファイル内で次のように<br>
+する:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let loaded_spellfile_plugin = 1</div>
+<br>
+プラグインを使用するかわりに 欠落したファイルを扱うために&nbsp;<a class="Identifier" href="autocmd.html#SpellFileMissing">SpellFileMissing</a><br>
+自動コマンドを定義することができる。次のように使う:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:au SpellFileMissing * call Download_spell_file(expand('&lt;amatch&gt;'))</div>
+<br>
+それゆえ&nbsp;<span class="Special">&lt;amatch&gt;</span>&nbsp;アイテムは言語の名前を含む。もう一つの重要な値はどのエンコー<br>
+ディングも自分自身のスペルファイルがあるので&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;である。2つの例外:<br>
+- ISO-8859-15 (latin9) の場合、&quot;latin1&quot; という名前が使用される (これらのエンコー<br>
+&nbsp;&nbsp;ディングは、辞書の単語で使用されていない文字のみが異なる。)。<br>
+- &quot;ascii&quot; という名前は単語の多くで ASCII 文字のみを使用するいくつかの言語につ<br>
+&nbsp;&nbsp;いて使われることがある。<br>
+<br>
+デフォルトの &quot;spellfile.vim&quot; プラグインはこの自動コマンドを使う。もし後で自分<br>
+の自動コマンドを定義するなら、これを無効にするために &quot;:au! SpellFileMissing&quot;<br>
+を使いたいかもしれない。プラグインが読み込まれる前に自分の自動コマンドを定義す<br>
+る場合は、これを警告し、また何もしないだろう。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E797" name="E797">E797</a><br>
+<span class="Todo">Note</span>&nbsp;SpellFileMissing 自動コマンドはユーザーが編集しているバッファを変更や削除<br>
+してはいけない。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+4. スペルファイルの形式&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-file-format" name="spell-file-format">spell-file-format</a><br>
+<br>
+これは単語リストを作成、管理する人が使うファイルのフォーマットである。<br>
+<br>
+<span class="Todo">Note</span>&nbsp;ここでは辞書 (&quot;dictionary&quot;) という単語の使用を避ける。スペルチェックの目<br>
+的は (本のような) 辞書を書くこととは違うからだ。スペリングのために、間違いのな<br>
+い単語のリストが必要となる。それゆえ、ハイライトされるべきではない。人と会社の<br>
+名前は辞書内に現れることはないが、単語リストには現れる。いくつかの古い単語はめっ<br>
+たに使われることはないが、よくあるミススペルである。これらは辞書には現れるが、<br>
+単語リストには現れない。<br>
+<br>
+2つのフォーマットがある: 単語の率直なリストと接辞圧縮を使ったリストである。接<br>
+辞圧縮を使ったファイルは Myspell (Mozilla と OpenOffice.org) によって使われる。<br>
+これは2つのファイルを必要とし、1つは .aff、もう1つは .dic の拡張子をもつファイ<br>
+ルだ。<br>
+<br>
+<br>
+<span class="Statement">率直な単語リストのフォーマット</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-wordlist-format" name="spell-wordlist-format">spell-wordlist-format</a><br>
+<br>
+単語は1行に1つずつ現れなければならない。これが必要とされることのすべてだ。<br>
+<br>
+加えて、次の項目が評価される:<br>
+<br>
+- 何もない、もしくは空行は無視される。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc"># comment</span><br>
+- # で始まる行は無視される (コメント行)。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">/encoding=utf-8</span><br>
+- どんな単語よりも前にある &quot;/encoding=&quot; で始まる行はファイルのエンコーディング<br>
+&nbsp;&nbsp;を指定する。'=' の後にはエンコーディング名がくる。これは Vim に指定されたエ<br>
+&nbsp;&nbsp;ンコーディングから&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;への変換のセットアップをするように伝える。それ<br>
+&nbsp;&nbsp;ゆえ1つの単語リストを複数のエンコーディング向けに使うことができる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">/regions=usca</span><br>
+- &quot;/regions=&quot; で始まる行はサポートする地域の名前を指定する。どの地域も2つの<br>
+&nbsp;&nbsp;ASCII 文字でなければならない。その1めは地域 1。それゆえ &quot;/regions=usca&quot; は地<br>
+&nbsp;&nbsp;域 1の &quot;us&quot; と地域 2の &quot;ca&quot; を持つ。加えて、単語リストの地域名は主となる単語<br>
+&nbsp;&nbsp;リストと同じでなければならない!<br>
+<br>
+- それ以外の '/' で始まる行は、今後使うために予約されている。評価されない行は<br>
+&nbsp;&nbsp;無視される。警告のメッセージを受け取るので、動作しないのが何かを知ることがで<br>
+&nbsp;&nbsp;きる。<br>
+<br>
+- 単語の後には &quot;/&quot; と下記の項目を伴うことができる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 大文字小文字は正確にマッチしなければならない。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 珍しい単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 悪い (誤った) 単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1 to 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語が有効である地域。地域が指定されていないならば、すべての地<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域で単語が有効である。<br>
+<br>
+例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 単語リストの例&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コメント<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/encoding=latin1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイルのエンコーディング<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/regions=uscagb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 地域 &quot;us&quot;, &quot;ca&quot;, &quot;gb&quot;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 全ての地域の単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blah/12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;us&quot;, &quot;ca&quot; 地域の単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim/!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 誤った単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Campbell/?3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 地域 3 &quot;gb&quot; での珍しい単語<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'s mornings/=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 大文字小文字を保持した単語<br>
+<br>
+<span class="Todo">Note</span>&nbsp;&quot;/=&quot; が使われたとき、同じ単語で全てが大文字のものは受理されないことに注意。<br>
+これは大文字小文字が混ざった単語が自動的に大文字小文字が保たれるのとは異なる。<br>
+これらの単語は全ての文字が大文字であってもよい。<br>
+<br>
+<br>
+<span class="Statement">.AFF と .DIC ファイルのフォーマット</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#aff-dic-format" name="aff-dic-format">aff-dic-format</a><br>
+<br>
+2つのファイルがある: 基本単語のリストと接辞ファイルだ。接辞ファイルは言語の<br>
+設定を指定し、接辞を含むことを可能にする。接辞は十分な単語リストを得るために、<br>
+基本単語を修正するのに使われる。このことは特にポーランド語のような言語において<br>
+著しく単語の数を減らす。これは接辞圧縮と呼ばれる。<br>
+<br>
+基本単語リストと接辞ファイルは &quot;:mkspell&quot; コマンドで結び付けられ、その成果は<br>
+バイナリのスペルファイルになる。すべての前処理が完了すると、ファイルの読み込み<br>
+は高速になる。バイナリのスペルファイルのフォーマットはソースコード<br>
+(src/spell.c) に書き込まれている。しかし、このことについて知る必要があるのは開<br>
+発者だけだ。<br>
+<br>
+前処理はまた 私達が Myspell 言語ファイルを取得し、Vim の単語リストが作られる前<br>
+に変更することを許す。これらのツールは &quot;src/spell&quot; ディレクトリで見つけること<br>
+ができる。<br>
+<br>
+接辞と単語リストファイルのフォーマットは Myspell が使用しているもの (Mozillaと<br>
+OpenOffice.org のスペルチェッカー) に基づく。説明書は次の場所で見つけることが<br>
+できる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Constant"><a href="http://lingucomponent.openoffice.org/affix.readme">http://lingucomponent.openoffice.org/affix.readme</a></span><br>
+<span class="Todo">Note</span>&nbsp;接辞は大文字小文字を区別することに注意。これは説明書からははっきりとわか<br>
+らない。<br>
+<br>
+Vim は多数の拡張をサポートしている。これらは以下の&nbsp;<a class="Identifier" href="spell.html#spell-affix-vim">spell-affix-vim</a>&nbsp;で説明さ<br>
+れている。他のスペルチェッカーと互換性を保つように作られているので、同じファイ<br>
+ルがしばしば使われる。Myspell を超えるもう一つのプロジェクトの1つに Hunspell<br>
+(&nbsp;<span class="Constant"><a href="http://hunspell.sf.net">http://hunspell.sf.net</a></span>&nbsp;) がある。<br>
+<br>
+<br>
+<span class="Statement">単語リストのフォーマット</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-dic-format" name="spell-dic-format">spell-dic-format</a><br>
+<br>
+行番号をつけた簡潔な例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1234</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aan</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Als</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Etten-Leur</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; et al.</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 's-Gravenhage</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 's-Gravenhaags</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # 地域間で異なる単語</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kado/1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cadeau/2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCP,IP</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ 接辞 S は 's' を加えるかもしれない</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bedel/S</span><br>
+<br>
+最初の行は単語の数が含まれている。Vim はこれを無視するが、ここにこれがない場合<br>
+はエラーメッセージを受け取る。&nbsp;<a class="Constant" href="spell.html#E760" name="E760">E760</a><br>
+<br>
+これに続くのは、1行につき1つの単語。行末の空白は無視され、その他の空白は問題と<br>
+なる。エンコーディングは接辞ファイル内で指定される&nbsp;<a class="Identifier" href="spell.html#spell-SET">spell-SET</a>。<br>
+<br>
+コメント行は '#' か '/' で始まる。例の8行目と12行目を参照。<span class="Todo">Note</span>&nbsp;単語の後ろにコ<br>
+メントを書くことは許可されていないことに注意:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">someword&nbsp;&nbsp; # comment that causes an error!</span><br>
+<br>
+単語の後にはオプションのスラッシュとフラグがある。フラグのほとんどは、その単語<br>
+で使用できる接辞を示す文字である。.aff ファイルの SFX や PFX 行で指定されてい<br>
+る。<a class="Identifier" href="spell.html#spell-SFX">spell-SFX</a>&nbsp;と&nbsp;<a class="Identifier" href="spell.html#spell-PFX">spell-PFX</a>&nbsp;を参照。Vim では接辞ファイルの FLAG 項目で、ほか<br>
+の形式のフラグを使ってもよい&nbsp;<a class="Identifier" href="spell.html#spell-FLAG">spell-FLAG</a>。<br>
+<br>
+単語が小文字のみである場合、大文字で始まる単語にもマッチするだろう。<br>
+<br>
+単語が大文字を含んでいる場合、その場所に大文字が必要とされていることを意味する。<br>
+その場所が小文字である同じ単語はマッチしないだろう。他の文字が大文字である場合<br>
+もマッチしない。<br>
+<br>
+すべてが大文字の単語はいつも OK になるだろう。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">単語リスト&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッチする&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッチしない</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;als&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; als Als ALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALs AlS aLs aLS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Als&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Als&nbsp;&nbsp;ALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;als ALs AlS aLs aLS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; als Als ALs AlS aLs aLS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AlS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AlS ALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; als Als ALs aLs aLS<br>
+<br>
+KEEPCASE の接辞 ID は、大文字小文字が同一の単語のみにマッチするために使うこと<br>
+ができる。下記の&nbsp;<a class="Identifier" href="spell.html#spell-KEEPCASE">spell-KEEPCASE</a>&nbsp;を参照。<br>
+<br>
+<span class="Todo">Note</span>: 5 から 7 行目は単語ではない文字が使われていることに注意。単語にはどのよ<br>
+うな文字でも含めることができる。テキストをチェックする際に、単語の前後に単語で<br>
+はない文字が現れたときにのみマッチする。Myspell は単語ではない文字で始まる単語<br>
+ではたぶん動作しないだろう。<br>
+<br>
+12 行目に &quot;TCP/IP&quot; が定義されている。スラッシュには特別な意味があるので、代わ<br>
+りにコンマが使われる。これは接辞ファイルの SLASH 要素に定義されている。<br>
+<a class="Identifier" href="spell.html#spell-SLASH">spell-SLASH</a>&nbsp;を参照。<span class="Todo">Note</span>&nbsp;SLASH 要素なしでは、単語は &quot;TCP,IP&quot; となるだろう。<br>
+<br>
+<br>
+<span class="Statement">接辞ファイルフォーマット</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-aff-format" name="spell-aff-format">spell-aff-format</a>&nbsp;<a class="Constant" href="spell.html#spell-affix-vim" name="spell-affix-vim">spell-affix-vim</a><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-affix-comment" name="spell-affix-comment">spell-affix-comment</a><br>
+.aff ファイルのコメント行は '#' で始まる:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc"># comment line</span><br>
+<br>
+引数の固定された要素はコメントによって続けることができる。しかし、引数がない場<br>
+合に限り空白を含むことができる。コメントは &quot;#&quot; 文字で始まらなければならない。<br>
+例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">KEEPCASE =&nbsp;&nbsp;# fix case for words with this flag</span><br>
+<br>
+<br>
+<span class="Statement">エンコーディング</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SET" name="spell-SET">spell-SET</a><br>
+<br>
+接辞ファイルは &quot;iconv&quot; によってサポートされているエンコーディングであれば、ど<br>
+のようなものでもよい。しかしながら、いくつかの場合で現在のロケールはまた、<br>
+<a class="Identifier" href="spell.html#:mkspell">:mkspell</a>&nbsp;が呼び出された時に正しく設定されるべきだ。FOL/LOW/UPP 行を追加する<br>
+ことはこの要求を取り除く&nbsp;<a class="Identifier" href="spell.html#spell-FOL">spell-FOL</a>。<br>
+<br>
+エンコーディングに関するものの何よりも前にエンコーディングは指定されるべきだ。<br>
+エンコーディングは接辞ファイルと辞書ファイルの両方に適用される。これは SET 行<br>
+において行われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SET utf-8</span><br>
+<br>
+エンコーディングは &quot;:mkspell&quot; が使われた時に&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;オプションに設定された<br>
+値とは異なっていてもよい。Vim はすべてを&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;に変換し、<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;に関<br>
+係するスペルファイルを生成するだろう。もしも&nbsp;<a class="Type" href="options.html#'encoding'">'encoding'</a>&nbsp;に適合していない文字が<br>
+使われているなら、エラーメッセージを受け取るだろう。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-affix-mbyte" name="spell-affix-mbyte">spell-affix-mbyte</a><br>
+マルチバイトのエンコーディングが使われている場合、より多くの異なった接辞フラグ<br>
+を使うことができる。しかし、Myspell はこれをサポートしない。それゆえ、いずれに<br>
+せよこれを使おうとは思わないかもしれない。互換性のためには 8-bit エンコーディン<br>
+グを使う。<br>
+<br>
+<br>
+<span class="Statement">情報</span><br>
+<br>
+接辞ファイルのエントリは、スペルファイルに情報を追加するのに使うことができる。<br>
+フォーマットに制限はないが、正しいエンコーディングであるべきだ。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NAME" name="spell-NAME">spell-NAME</a>&nbsp;<a class="Constant" href="spell.html#spell-VERSION" name="spell-VERSION">spell-VERSION</a>&nbsp;<a class="Constant" href="spell.html#spell-HOME" name="spell-HOME">spell-HOME</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-AUTHOR" name="spell-AUTHOR">spell-AUTHOR</a>&nbsp;<a class="Constant" href="spell.html#spell-EMAIL" name="spell-EMAIL">spell-EMAIL</a>&nbsp;<a class="Constant" href="spell.html#spell-COPYRIGHT" name="spell-COPYRIGHT">spell-COPYRIGHT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言語名<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VERSION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.0.1&nbsp;&nbsp;with fixes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HOME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">&lt;URL&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTHOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;John Doe<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EMAIL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; john AT Doe DOT net<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COPYRIGHT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LGPL<br>
+<br>
+これらのフィールドは .spl ファイルにそのままの状態で置かれる。<a class="Identifier" href="spell.html#:spellinfo">:spellinfo</a>&nbsp;コ<br>
+マンドは情報を閲覧するために使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#:spellinfo" name=":spellinfo">:spellinfo</a>&nbsp;<a class="Constant" href="spell.html#:spelli" name=":spelli">:spelli</a><br>
+:spelli[nfo]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;現在のバッファで使われているスペルファイルの情報を表示<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;する。<br>
+<br>
+<br>
+<span class="Statement">文字テーブル</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-affix-chars" name="spell-affix-chars">spell-affix-chars</a><br>
+8-bit エンコーディングを使う場合、接辞ファイルは、単語の文字が何であるかを定義<br>
+するべきだ。これはどうしてかというと、&quot;:mkspell&quot; が使われたシステムはこのエン<br>
+コーディングのロケールをサポートしていないかもしれないし、isalpha() が動作しな<br>
+いだろうからだ。例えば Unix 上で &quot;cp1250&quot; を使う場合である。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E761" name="E761">E761</a>&nbsp;<a class="Constant" href="spell.html#E762" name="E762">E762</a>&nbsp;<a class="Constant" href="spell.html#spell-FOL" name="spell-FOL">spell-FOL</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-LOW" name="spell-LOW">spell-LOW</a>&nbsp;<a class="Constant" href="spell.html#spell-UPP" name="spell-UPP">spell-UPP</a><br>
+接辞ファイルの3行は必要だ。簡単な例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">FOL&nbsp;&nbsp;áëñ</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">LOW&nbsp;&nbsp;áëñ</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">UPP&nbsp;&nbsp;ÁËÑ</span><br>
+<br>
+3 行すべては全く同じ文字数を持っていなければいけない。<br>
+<br>
+&quot;FOL&quot; 行はケースフォールドされた文字を指定する。これらは大文字小文字を区別しな<br>
+い単語の比較に使われる。ほとんどのエンコーディングでは、小文字の行と同じである。<br>
+<br>
+&quot;LOW&quot; 行は小文字を指定する。大部分は &quot;FOL&quot; 行に等しい。<br>
+<br>
+&quot;UPP&quot; 行は大文字を指定する。これは &quot;FOL&quot; の同じ場所にある文字とは大文字である<br>
+点だけが異なる。<br>
+<br>
+例外はドイツ語の ß に役立っている。大文字の形は &quot;SS&quot; だ。FOL/LOW/UPP 行の中に<br>
+含まれているべきであり、そのため、単語の文字として認識されるのだが、3 行すべて<br>
+で ß 文字を使う。<br>
+<br>
+ASCII 文字は省略されるべきだ。Vim は常に同じ方法でこれらを扱う。エンコーディン<br>
+グが UTF-8 である場合、単語文字の指定は必要ない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#E763" name="E763">E763</a><br>
+Vim は同じファイルでいくつかの言語のスペルチェックを使うことを許可する。<br>
+<a class="Type" href="options.html#'spelllang'">'spelllang'</a>&nbsp;オプションでこれらを列記できる。結果として、同じエンコーディングに<br>
+対するすべてのスペルファイルは同じ単語文字を使用しなければならない。そうでなけ<br>
+れば、これらをエラーなしに結合できない。<br>
+<br>
+もし単語テーブルが異なるという警告 E763 を受け取ったのなら、&quot;.spl&quot; スペルファ<br>
+イルをアップデートする必要がある。ファイルをダウンロードした場合、使用している<br>
+すべてのスペルファイルの最新版を取得しよう。もしも1つの言語だけを使っているな<br>
+らば、例えばドイツ語、さらに最新の英語スペルファイルをダウンロードしよう。そう<br>
+でなければ、再度&nbsp;<a class="Identifier" href="spell.html#:mkspell">:mkspell</a>&nbsp;で .spl ファイルを生成しよう。もしエラーを受け取っ<br>
+たのであれば、使用している .aff ファイルの FOL と LOW、UPP 行を確認しよう。<br>
+<br>
+&quot;-ascii&quot; 引数で生成される XX.ascii.spl スペルファイルは文字テーブルを含まない<br>
+だろう。そのため、どんなエンコーディングのスペルファイルとも結合することができ<br>
+る。加えて .add.spl ファイルはテーブルを含まない。<br>
+<br>
+<br>
+<span class="Statement">中間語の文字</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-midword" name="spell-midword">spell-midword</a><br>
+いくつかの文字は、2 つの普通の単語文字の間で使われているときのみ、単に単語文字<br>
+だとみなされる。一例はシングルクォートだ: テキストを引用するのにしばしば使われ<br>
+る。それゆえ、それは単語文字として認識されない。しかし、単語文字の間に現れた場<br>
+合、単語の一部にならなければならない。これは they'are のようなスペルミスを検出<br>
+するために必要だ。they're になるべきだが、&quot;they&quot; と &quot;are&quot; はそれ自身が単語であ<br>
+るので、気づかれなかったかもしれない。<br>
+<br>
+これらの文字は .aff ファイルの MIDWORD で定義される。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">MIDWORD '-</span><br>
+<br>
+<br>
+<span class="Statement">フラグタイプ</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-FLAG" name="spell-FLAG">spell-FLAG</a><br>
+<br>
+フラグは単語と共に使われる接辞や単語の他の特徴を指定するために使われる。通常は<br>
+シングルキャラクタのフラグが使われる。これは特に 8 ビットエンコーディングの場<br>
+合、使用可能なフラグの数を制限する。より多くの接辞が使われるのならば、フラグ項<br>
+目が使われることがある。取りうる値:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLAG long&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 文字フラグを使う<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLAG num&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 から 65000 までの数値を使う<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLAG caplong&nbsp;&nbsp;&nbsp;&nbsp;A-Z を除く 1 文字フラグと A-Z で始まる 2 文字フラグを<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使う<br>
+<br>
+接辞リストにおける &quot;FLAG num&quot; の値は、コンマで区切られている必要がある:<br>
+&quot;234,2143,1435&quot;。この方式は非効率的だが、ファイルをプログラムで生成する場合に<br>
+は便利である。<br>
+<br>
+&quot;caplong&quot; を使う場合、2 文字フラグは &quot;Aa&quot;, &quot;B1&quot;, &quot;BB&quot; などのようにすべて大文字<br>
+で始まる。これは多くの共通項目に関する 1 文字フラグと 非共通項目に関する 2 文<br>
+字フラグを使うのに便利である。<br>
+<br>
+<span class="Todo">Note</span>: UTF-8 を使用している場合、65000 までの文字だけがフラグとして使われるだろ<br>
+う。<br>
+<br>
+<span class="Todo">Note</span>: &quot;num&quot; や &quot;long&quot; を使用している時でさえ、フラグの数値を混ぜることができ、<br>
+接頭辞は約 250 に制限される。<br>
+<br>
+<br>
+<span class="Statement">接辞</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-PFX" name="spell-PFX">spell-PFX</a>&nbsp;<a class="Constant" href="spell.html#spell-SFX" name="spell-SFX">spell-SFX</a><br>
+<br>
+PFX (接頭辞) と SFX (接尾辞) 行がサポートされている (Myspell のドキュメント、<br>
+もしくは Aspell のマニュアルを参照:<br>
+<span class="Constant"><a href="http://aspell.net/man-html/Affix-Compression.html">http://aspell.net/man-html/Affix-Compression.html</a></span>).<br>
+<br>
+概要:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX L Y 2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX L 0 re [^x]</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX L 0 ro x</span><br>
+<br>
+最初の行はヘッダーで 4 つのフィールドを持つ:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SFX&nbsp;<span class="Special">{flag}</span>&nbsp;<span class="Special">{combine}</span>&nbsp;<span class="Special">{count}</span><br>
+<br>
+<span class="Special">{flag}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接尾辞に使われる名前。たいていは 1 文字だが、他の文字も使うこ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;とができる。<a class="Identifier" href="spell.html#spell-FLAG">spell-FLAG</a>&nbsp;を参照。<br>
+<br>
+<span class="Special">{combine}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'Y' か '<span class="Special">N</span>' である。'Y' の場合、単語 + 接尾辞はさらに接頭辞を持<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;つことができる。'<span class="Special">N</span>' の場合、接頭辞を持つことはできない。<br>
+<br>
+<span class="Special">{count}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 次に続いている行数。これが間違っている場合、エラーメッセージを<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;受け取るだろう。<br>
+<br>
+PFX のためのフィールドは全く同じである。<br>
+<br>
+次に続いている行の基本的なフォーマットは:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SFX&nbsp;<span class="Special">{flag}</span>&nbsp;<span class="Special">{strip}</span>&nbsp;<span class="Special">{add}</span>&nbsp;<span class="Special">{condition}</span>&nbsp;<span class="Special">{extra}</span><br>
+<br>
+<span class="Special">{flag}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最初の行で使われている&nbsp;<span class="Special">{flag}</span>&nbsp;と同じでなければならない。<br>
+<br>
+<span class="Special">{strip}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 基本単語から削除された文字。文字が実際にあるなら、チェックせず、<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(バイトの) 長さだけが使われる。これは&nbsp;<span class="Special">{condition}</span>&nbsp;とマッチする<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;のが良く、これ以外の方法ではおかしなことが起こる。<span class="Special">{strip}</span>&nbsp;の長<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;さが基本単語と等しいかそれ以上なら、接尾辞は使われないだろう。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{strip}</span>が 0 (zero) の場合は何も取り除かない。<br>
+<br>
+<span class="Special">{add}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{strip}</span>&nbsp;を取り除いた後の基本単語に加えられた文字。オプションと<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;して、フラグが続く '/' がある。フラグは単語に接辞を付け加える。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-affix-flags">spell-affix-flags</a>&nbsp;を参照。<br>
+<br>
+<span class="Special">{condition}</span>&nbsp;&nbsp;&nbsp;&nbsp; 単純なパターン。これが基本語とマッチした場合のみ、その単語に対<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;してのみ接尾辞が使われるだろう。通常、これは末尾が異なる単語に<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;対して、<span class="Special">{add}</span>&nbsp;と&nbsp;<span class="Special">{strip}</span>&nbsp;フィールドが異なる 1 つの接尾辞を使う。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">{condition}</span>&nbsp;が . (ドット) である場合は条件はない。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パターンは次のものを含む:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- リテラル文字。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- [] 内の文字セット。<span class="Special">[abc]</span>&nbsp;は a, b, c にマッチする。<span class="Special">[a-c]</span>&nbsp;の範<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;囲のためにダッシュが使えるが、これは Vim に特有のものである。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ^ で始まる文字セットは特定の文字を補完することを意味する。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Special">[^abc]</span>&nbsp;は a, b, c を除いた全ての文字にマッチする。<br>
+<br>
+<span class="Special">{extra}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; オプションの特別なテキスト<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; コメントは無視される<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hunspell はこれを使うが、無視される<br>
+<br>
+PFX 向けにはフィールドは同じであるが、<span class="Special">{strip}</span>、<span class="Special">{add}</span>、<span class="Special">{condition}</span>&nbsp;は単語のはじ<br>
+めに適用する。<br>
+<br>
+<span class="Todo">Note</span>: Myspell は関連情報の後にある特別なテキストはどんなものでも無視する。Vim<br>
+は &quot;#&quot; で始まるこの行を必要とする。そのため、間違いは気づかれずには済まない。<br>
+例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX F 0 in&nbsp;&nbsp; [^i]n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Spion &gt; Spionin&nbsp;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX F 0 nen&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Bauerin &gt; Bauerinnen</span><br>
+<br>
+しかしながら、Myspell のために書かれた接辞ファイルの多くのエラーを回避するため<br>
+に、IGNOREEXTRA フラグを加えることができる。<br>
+<br>
+明らかに Myspell は一度ならず何度も接辞名が現れることを許す。これは間違いかも<br>
+しれないので、Vim は特別な &quot;S&quot; をチェックする。この機能を使う Myspell のための<br>
+接辞ファイルは、明らかにこのフラグを持つ。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a Y 1 S</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a 0 an .</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a Y 2 S</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a 0 en .</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a 0 on .</span><br>
+<br>
+<br>
+<span class="Statement">接辞フラグ</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-affix-flags" name="spell-affix-flags">spell-affix-flags</a><br>
+<br>
+これは Hunspell 由来の機能: 接辞はフラグを明記するかもしれない。基本単語を明示<br>
+するフラグと同じように動作する。フラグは基本単語 + 接辞 (制限付きの) に適用す<br>
+る。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX S Y 1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX S 0 s .</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX A Y 1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX A 0 able/S .</span><br>
+<br>
+辞書ファイルが &quot;drink/AS&quot; を含む場合、これらの単語が適合する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drink<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drinks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S suffix を使う<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drinkable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A suffix を使う<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drinkables&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A suffix を使い、それから S suffix を使う<br>
+<br>
+一般に、接尾辞フラグは基本単語フラグに付加され、どちらのフラグも単語に接尾辞を<br>
+加えるために使われる。しかし、基本単語フラグが接辞のために使われるのは次を除い<br>
+て 1 度だけである。その例外とは、双方が結合をサポートしている時に、双方の 1つ<br>
+の接頭辞と 1 つの接尾辞が使われる場合である。<br>
+<br>
+特に、接辞フラグは次のために使うことができる:<br>
+- 上記の例と同じだが、接尾辞の接尾辞。これは一度だけ動作するので、1 つの単語は<br>
+&nbsp;&nbsp;2 つの接尾辞を持つことができる (それと 1 つの接頭辞)。<br>
+-&nbsp;<a class="Identifier" href="spell.html#spell-RARE">spell-RARE</a>&nbsp;フラグを使って、珍しい接辞を持つ単語を作る。<br>
+-&nbsp;<a class="Identifier" href="spell.html#spell-COMPOUNDFORBIDFLAG">spell-COMPOUNDFORBIDFLAG</a>&nbsp;フラグを使って、複合語から接辞を持つ単語を除外す<br>
+&nbsp;&nbsp;る。<br>
+- 接辞を持つ単語が、<a class="Identifier" href="spell.html#spell-COMPOUNDPERMITFLAG">spell-COMPOUNDPERMITFLAG</a>&nbsp;を持つ接辞側の複合語の一部とな<br>
+&nbsp;&nbsp;ることを許す。<br>
+- NEEDCOMPOUND フラグを使う: 接辞を加えた単語は複合語の一部としてのみ使われる。<br>
+&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-NEEDCOMPOUND">spell-NEEDCOMPOUND</a><br>
+- 複合語フラグ: 接辞を加えた単語は尾、中間、頭などで複合語の一部となることがで<br>
+&nbsp;&nbsp;きる。フラグは基本単語のフラグと組み合わされる。<a class="Identifier" href="spell.html#spell-compound">spell-compound</a><br>
+- NEEDAFFIX: その他の接辞が妥当な単語を作るのに必要とされる。<br>
+- CIRCUMFIX は下記で説明される。<br>
+<br>
+<br>
+<span class="Statement">IGNOREEXTRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a class="Constant" href="spell.html#spell-IGNOREEXTRA" name="spell-IGNOREEXTRA">spell-IGNOREEXTRA</a><br>
+<br>
+通常、Vim は '#' で始まらない特別フィールドにエラーを与える。これはエラーが見<br>
+過ごされるのを防ぐ。しかしながら、いくつかの Myspell か Hunspell のために作ら<br>
+れるファイルは特別なフィールドを持つエントリを多く含んでいるかも知れない。多く<br>
+のエラーを回避するために IGNOREEXTRA フラグを使用する。<br>
+<br>
+<br>
+<span class="Statement">CIRCUMFIX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a class="Constant" href="spell.html#spell-CIRCUMFIX" name="spell-CIRCUMFIX">spell-CIRCUMFIX</a><br>
+<br>
+CIRCUMFIX フラグは同時に付加されなければならない接頭辞と接尾辞を意味する。もし<br>
+も接頭辞が CIRCUMFIX フラグを持つのなら、CIRCUMFIX フラグを持つ接尾辞のみが追<br>
+加される。そして、その反対も。<br>
+代替としては接尾辞だけを指定し、その接尾辞に 2 つのフラグを与える。: それは必<br>
+要とされる接頭辞と NEEDAFFIX フラグである。<a class="Identifier" href="spell.html#spell-NEEDAFFIX">spell-NEEDAFFIX</a><br>
+<br>
+<br>
+<span class="Statement">PFXPOSTPONE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a class="Constant" href="spell.html#spell-PFXPOSTPONE" name="spell-PFXPOSTPONE">spell-PFXPOSTPONE</a><br>
+<br>
+接辞ファイルが多くの単語に適用可能なたくさんの接辞を含む場合、全ての単語リスト<br>
+をメモリ内でビルドすることはできない。これはヘブライ語 (全ての単語のリストはギ<br>
+ガバイトを超える) に適用する。この場合、適用されている接辞は後回しにされなけれ<br>
+ばならない。これはスペルチェックを遅くする。これは .aff ファイル内の次のキーワー<br>
+ドによって示される:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">PFXPOSTPONE</span><br>
+<br>
+途切れた文字列やフラグなしの接頭辞だけ延期されることができる。途切れた文字列や<br>
+フラグのある接頭辞は単語リストに含まれたままだろう。もしも途切れた文字列が 1<br>
+文字で、加えられた文字列の最後の文字と等しいのならば、小文字を除いて例外である。<br>
+それゆえ、途切れた文字列は大文字で始まる単語を続けることは認められている。<br>
+<br>
+<br>
+<span class="Statement">スラッシュ付きの単語</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SLASH" name="spell-SLASH">spell-SLASH</a><br>
+<br>
+スラッシュは .dic ファイルで基本単語を接辞文字や他のフラグと区別するために使わ<br>
+れる。不幸なことに、これは単語中でスラッシュを使えないことを意味している。それ<br>
+ゆえ、&quot;TCP/IP&quot; は単語ではなく、&quot;IP&quot; フラグをもつ &quot;TCP&quot; ということになる。単語<br>
+中にスラッシュを含むためには、その前にバックスラッシュを挿入する: &quot;TCP\/IP&quot;。<br>
+単語中にバックスラッシュを使いたいというような稀な場合があるならバックスラッシュ<br>
+を 2 つ続ける必要がある。<br>
+それ以外のバックスラッシュの使用は将来の拡張のために予約されている。<br>
+<br>
+<br>
+<span class="Statement">大文字小文字を保つ単語</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-KEEPCASE" name="spell-KEEPCASE">spell-KEEPCASE</a><br>
+<br>
+接辞ファイル内の KEEPCASE 行は大文字小文字を保つ単語のために使われる接辞ファイ<br>
+ルを定義するのに使われる。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">KEEPCASE =</span><br>
+<br>
+このフラグは Myspell によってサポートされない。大文字小文字が重要であることを<br>
+意味する。もしも文章のはじめの単語が大文字で始まっていないのであれば、これを使<br>
+うことができる。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">単語リスト&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッチする&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マッチしない</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;'s morgens/=&nbsp;&nbsp;&nbsp;&nbsp;'s morgens&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'S morgens 's Morgens 'S MORGENS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'s Morgens&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'s Morgens 'S MORGENS&nbsp;&nbsp; 'S morgens 's morgens<br>
+<br>
+フラグはまた、全てが大文字である場合に単語がマッチすることを回避するために使わ<br>
+れる。<br>
+<br>
+<br>
+<span class="Statement">稀な単語</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-RARE" name="spell-RARE">spell-RARE</a><br>
+<br>
+接辞ファイルで稀な単語のために使われる接辞名を定義するのに RARE 行は使われる。<br>
+例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">RARE ?</span><br>
+<br>
+稀な単語は誤りの単語とは異なるハイライトをされる。これはその言語向けの正しい単<br>
+語だがめったに使われず、入力ミスされやすい単語に使われる。同じ単語が正しい単語<br>
+として見つかると稀な単語としてハイライトされないだろう。<br>
+<br>
+このフラグはさらに接辞に使われる。そのため、接辞付きの基本単語が稀な場合を除き、<br>
+基本単語は稀な単語ではない&nbsp;<a class="Identifier" href="spell.html#spell-affix-flags">spell-affix-flags</a>。しかしながら、もしも単語が他の<br>
+使い方 (例: 他の地域) で正しい単語として現れたのなら、稀な単語としてマークされ<br>
+ない。<br>
+<br>
+<br>
+<span class="Statement">誤った単語</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-BAD" name="spell-BAD">spell-BAD</a><br>
+<br>
+接辞ファイル内の BAD 行は、誤った単語のために使われる接辞名を定義するのに使わ<br>
+れる。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">BAD !</span><br>
+<br>
+これは他では正しいであろう単語を除外するのに使われる。例えば、.dic ファイル内<br>
+の &quot;the the&quot; である。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">the the/!</span><br>
+<br>
+ひとたび誤った単語としてマークされると、同じ単語が正しいものであるとしてももと<br>
+に戻すことはできない。<br>
+<br>
+フラグは接辞付きの単語にも適用する。それゆえ、関連する単語群全体を誤ったものと<br>
+してマークするのに使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-FORBIDDENWORD" name="spell-FORBIDDENWORD">spell-FORBIDDENWORD</a><br>
+FORBIDDENWORD は BAD とほとんど同じように使うことができる。Hunspell と互換。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NEEDAFFIX" name="spell-NEEDAFFIX">spell-NEEDAFFIX</a><br>
+NEEDAFFIX フラグは単語が接辞と共に使われることを要求するために使われる。単語そ<br>
+れ自身は正しい単語ではない (接辞が空でない限り)。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NEEDAFFIX +</span><br>
+<br>
+<br>
+<span class="Statement">複合語</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-compound" name="spell-compound">spell-compound</a><br>
+<br>
+複合語は .dic ファイル内にある単語を連結することによって作られた長い単語である。<br>
+連結されているかもしれない単語を明示するために、文字が使われる。この文字は単語<br>
+の後の接辞リストに書かれる。この文字をここではフラグと呼ぼう。明らかに、これら<br>
+のフラグは接辞の ID で使われているどんなものとも異なっていなければならない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDFLAG" name="spell-COMPOUNDFLAG">spell-COMPOUNDFLAG</a><br>
+Myspell 互換の方法は COMPOUNDFLAG で指定された 1 つのフラグを使う。このフラグ<br>
+を持つ単語は全て任意の順番に結合する。これはどの単語が最初にくるのかを制御しな<br>
+いことを意味する。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDFLAG c</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDRULE" name="spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+複合語がどのように合成されるかを示すより進んだ方法は、複数のフラグを持った複数<br>
+の要素を使うことである。これは Myspell 3.0 と互換性を持たない。次の例から始めよ<br>
+う:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDRULE c+</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDRULE se</span><br>
+<br>
+最初の行は &quot;c&quot; フラグを持つ単語が任意の順番で繋がれることを定義する。2 行目は<br>
+&quot;s&quot; フラグを持つ単語 1 つと &quot;e&quot; フラグを持つ単語 1 つからなる複合語を定義して<br>
+いる。次の内容の辞書からは:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">bork/c</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">onion/s</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">soup/e</span><br>
+<br>
+これらの単語を作ることができる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bork<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borkbork<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borkborkbork<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(etc.)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onion<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;soup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onionsoup<br>
+<br>
+COMPOUNDRULE 要素は何度も目にするかもしれない。引数は 1 つもしくはそれ以上のグ<br>
+ループを作り上げる。それぞれのグループは次のようになる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;one flag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.g., c<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alternate flags inside []&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.g.,&nbsp;<span class="Special">[abc]</span><br>
+任意に次の記号を続けられる:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ゼロもしくはそれ以上現れる。例: sm*e<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 回もしくはそれ以上現れる。例: c+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ゼロもしくは 1 回のみ現れる。例: x?<br>
+<br>
+これは正規表現の文法に似ている (しかし、同じではない!)。いくつかの必要な単語フ<br>
+ラグの一連の例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE x+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x xx xxx etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE yz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yz<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE x+z&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xz xxz xxxz etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE yx+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yx yxx yxxx etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE xy?z&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xz xyz<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE&nbsp;<span class="Special">[abc]</span>z&nbsp;&nbsp;&nbsp;&nbsp;az bz cz<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE&nbsp;<span class="Special">[abc]</span>+z&nbsp;&nbsp; az aaz abaz bz baz bcbz cz caz cbaz etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE a[xyz]+&nbsp;&nbsp; ax axx axyz ay ayx ayzz az azy azxy etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE sm*e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; se sme smme smmme etc.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE s[xyz]*e&nbsp;&nbsp;se sxe sxye sxyxe sye syze sze szye szyxe&nbsp;&nbsp;etc.<br>
+<br>
+特別な例: 2 つの単語とダッシュから作られる合成を許す:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.aff ファイル内で:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDRULE sde</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NEEDAFFIX x</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDWORDMAX 3</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDMIN 1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.dic ファイル内で:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">start/s</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">end/e</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">-/xd</span><br>
+<br>
+これは単語 &quot;start-end&quot; を許すが、&quot;startend&quot; は許可しない。<br>
+<br>
+さらなる暗黙のルールには次のようなものがある。これ以上のフラグなしで、接頭辞を<br>
+持つ単語は他の単語の後ろに結合されない。接尾辞を持つ単語は単語の前に結合されな<br>
+い。それゆえ、接辞は複合語の内側には現れない。これは<br>
+<a class="Identifier" href="spell.html#spell-COMPOUNDPERMITFLAG">spell-COMPOUNDPERMITFLAG</a>&nbsp;で変更することができる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NEEDCOMPOUND" name="spell-NEEDCOMPOUND">spell-NEEDCOMPOUND</a><br>
+NEEDCOMPOUND フラグは単語が複合語の一部として使われることを要求するのに使われ<br>
+る。単語それ自身は正しい単語ではない。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NEEDCOMPOUND &amp;</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-ONLYINCOMPOUND" name="spell-ONLYINCOMPOUND">spell-ONLYINCOMPOUND</a><br>
+ONLYINCOMPOUND は NEEDCOMPOUND とまったく同じである。Hunspell との互換性のため<br>
+にサポートされている。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDMIN" name="spell-COMPOUNDMIN">spell-COMPOUNDMIN</a><br>
+合成するのに使われる単語の最小文字数は COMPOUNDMIN で指定される。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDMIN 5</span><br>
+<br>
+省略された時は最小値はない。それよりも、明らかに短い単語からの合成フラグを省く<br>
+だけでよい。この機能は Myspell との互換性のためにある。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDWORDMAX" name="spell-COMPOUNDWORDMAX">spell-COMPOUNDWORDMAX</a><br>
+複合語の中に結合されうる単語の最大値は COMPOUNDWORDMAX で指定される。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDWORDMAX 3</span><br>
+<br>
+省略されているときに最大値はない。すべての複合単語を適用する。<br>
+<br>
+特定のフラグをもつ単語の制限を設定するために、COMPOUNDRULE 内の項目を確認する。<br>
+ここでは多すぎる単語を許可しないようだ。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDSYLMAX" name="spell-COMPOUNDSYLMAX">spell-COMPOUNDSYLMAX</a><br>
+複合語が含まれているかもしれない音節の最大値は COMPOUNDSYLMAX で指定される。<br>
+例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDSYLMAX 6</span><br>
+<br>
+SYLLABLE 項目がなければ効果はない。COMPOUNDSYLMAX がないと、音節の数に制限はな<br>
+い。<br>
+<br>
+COMPOUNDWORDMAX と COMPOUNDSYLMAX の双方が定義されているなら、基準の 1 つに適<br>
+合している場合は複合語は認められる。それゆえ、COMPOUNDWORDMAX までの単語から作<br>
+成されるか、または COMPOUNDSYLMAX までの音節を含んでいるかのどちらかである。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDFORBIDFLAG" name="spell-COMPOUNDFORBIDFLAG">spell-COMPOUNDFORBIDFLAG</a><br>
+COMPOUNDFORBIDFLAG は 1 つの接辞で使われるフラグを指定する。接辞を加える単語は<br>
+複合語の中で使うことができないことを意味する。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接辞ファイル:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDFLAG c</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMPOUNDFORBIDFLAG x</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a Y 2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a 0 s&nbsp;&nbsp; .</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SFX a 0 ize/x .</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;辞書:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">word/c</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">util/ac</span><br>
+<br>
+これは &quot;wordutil&quot; と &quot;wordutils&quot; は認めるが、&quot;wordutilize&quot; は認めない。<br>
+<span class="Todo">Note</span>: これは後回しにされた接頭辞にはまだ作用しない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDPERMITFLAG" name="spell-COMPOUNDPERMITFLAG">spell-COMPOUNDPERMITFLAG</a><br>
+COMPOUNDPERMITFLAG は接辞に使われるフラグを明示する。接辞を加える単語はまた、<br>
+接辞が単語の途中で終わるような複合語の中で使うことができることを意味する。この<br>
+フラグなしでは、認められない。<br>
+<span class="Todo">Note</span>: これは後回しにされた接頭辞にはまだ作用しない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDROOT" name="spell-COMPOUNDROOT">spell-COMPOUNDROOT</a><br>
+COMPOUNDROOT フラグはすでに合成される辞書の単語のために使われる。これは結合の<br>
+ルールを確認したときに、2 つの単語を数えることを意味する。接辞を複合語として数<br>
+えるための接辞として使うこともできる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKCOMPOUNDPATTERN" name="spell-CHECKCOMPOUNDPATTERN">spell-CHECKCOMPOUNDPATTERN</a><br>
+CHECKCOMPOUNDPATTERN はパターンを定義するのに使われる。そのパターンというのは<br>
+2 つの単語がお互いに合成されている位置が一致しているときに結合を禁止するという<br>
+ものだ。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">CHECKCOMPOUNDPATTERN o e</span><br>
+<br>
+これは、最初の単語が &quot;o&quot; で終わり、2 つ目の単語が &quot;e&quot; で始まる場合に結合を禁止<br>
+するというものだ。<br>
+<br>
+引数がプレーンテキストでなければならず、項目名にもかかわらず、実際にサポートさ<br>
+れるパターンはない。大文字小文字は常に無視される。<br>
+<br>
+3 つの引数とフラグを使用する Hunspell 機能はサポートされない。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NOCOMPOUNDSUGS" name="spell-NOCOMPOUNDSUGS">spell-NOCOMPOUNDSUGS</a><br>
+この項目は、提案するために合成を使うことは良いアイデアではないことを示す。合成<br>
+がとても短い、もしくは 1 文字の単語で使われる場合、これを使用する。例えば、桁<br>
+外の数字を作るときである。このフラグがないと、提案を作るために奇妙な複合語のす<br>
+べてを試す膨大な時間を費やすことになるだろう。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NOCOMPOUNDSUGS</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SYLLABLE" name="spell-SYLLABLE">spell-SYLLABLE</a><br>
+SYLLABLE 項目は、単語の音節の数字を数えるために使われる文字もしくは文字の並び<br>
+を定義する。例:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SYLLABLE aáeéiíoóöõuúüûy/aa/au/ea/ee/ei/ie/oa/oe/oo/ou/uu/ui</span><br>
+<br>
+最初のスラッシュの前は 1 つの音節として数えられる文字セットで、繰り返しや混合<br>
+も含み、このセット内に無い次の文字までである。スラッシュの後には 1つの音節とし<br>
+て数えられる文字列が来る。これらは、セットから文字を使うよりも望ましい。例とし<br>
+て、&quot;ideeen&quot; は 3 つの音節を持っていて、&quot;i&quot; と &quot;ee&quot; そして、&quot;e&quot; のように数えら<br>
+れる。<br>
+<br>
+ケースフォールドされた文字だけが含まれる必要がある。<br>
+<br>
+合成を制限する他の方法は、上で述べられている:&nbsp;<a class="Identifier" href="spell.html#spell-COMPOUNDFORBIDFLAG">spell-COMPOUNDFORBIDFLAG</a>&nbsp;フラ<br>
+グを接辞に加えることは、その接辞から作られるすべての単語が合成のために使われな<br>
+いことの原因となる。<br>
+<br>
+<br>
+<span class="Statement">制限の無い合成</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NOBREAK" name="spell-NOBREAK">spell-NOBREAK</a><br>
+<br>
+タイ語のようないくつかの言語では、分かち書きをしない。これはすべての単語が結合<br>
+しているように見える。これを明示するために、接辞ファイルで NOBREAK 項目を引数<br>
+無しで使う:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NOBREAK</span><br>
+<br>
+Vim は単語の終わりと次の始まりがどこにあるかを見つけ出そうとする。スペルミスが<br>
+あった場合、この動作は完全には正しく行われないだろう。<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMMON" name="spell-COMMON">spell-COMMON</a><br>
+共通語は COMMON 項目で明示される。小さなファイルを編集している時ほど、より良い<br>
+提案をしてくれるだろう。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">COMMON&nbsp;&nbsp;the of to and a in is it you that he she was for on are</span><br>
+<br>
+単語は 1 行につき 25 個までで、かつ空白で区切られていなければならない。<br>
+&quot;:mkspell&quot; コマンドで複数の地域が指定されている場合、すべての地域の共通語は結<br>
+合され、すべての範囲で使われる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NOSPLITSUGS" name="spell-NOSPLITSUGS">spell-NOSPLITSUGS</a><br>
+この項目は、提案を作るための単語の分割は良いアイデアでは無いことを示す。分割語<br>
+の提案は、似たような単語がほとんどない場合のみ出現するだろう。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NOSPLITSUGS</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NOSUGGEST" name="spell-NOSUGGEST">spell-NOSUGGEST</a><br>
+NOSUGGEST と共に使われるフラグは、提案されることがないであろう単語のために使わ<br>
+れる。汚らしい単語のために使うことができる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NOSUGGEST %</span><br>
+<br>
+<br>
+<span class="Statement">置換</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-REP" name="spell-REP">spell-REP</a><br>
+<br>
+接辞ファイルの REP 項目は共通の誤りを定義するのに使われる。これはスペルの提案<br>
+を生成するのに使われる。次の項目は &quot;from&quot; のテキストと &quot;to&quot; の置換を定義する。<br>
+例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP 4</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP f ph</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP ph f</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP k ch</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP ch k</span><br>
+<br>
+最初の行は REP 行が続く数を明示する。Vim はこの数字を無視するが、この数字はそ<br>
+こになくてはならない (Myspell との互換性のため)。<br>
+<br>
+簡易な 1 文字の置換や交換を含んではならない。Vim はこれらをどうにかして実行し<br>
+ようとする。もしそうしたいのであれば、すべての単語を含めることができるが、代わ<br>
+りに&nbsp;<a class="Type" href="options.html#'spellsuggest'">'spellsuggest'</a>&nbsp;の &quot;file:&quot; 項目を使いたいと思うかもしれない。<br>
+<br>
+アンダースコアを使ってスペースを含めることができる。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">REP the_the the</span><br>
+<br>
+<br>
+<span class="Statement">類義文字</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-MAP" name="spell-MAP">spell-MAP</a>&nbsp;<a class="Constant" href="spell.html#E783" name="E783">E783</a><br>
+<br>
+接辞ファイルの MAP 項目は非常によく似た文字を定義するのに使うことができる。こ<br>
+れは異なったアクセントの文字のために使われることがほとんどである。これはむしろ<br>
+これらの文字を置換する提案に使われる。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">MAP 2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">MAP eéëêè</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">MAP uüùúû</span><br>
+<br>
+最初の行は MAP 行が続く数を明示する。Vim はこの数字を無視するが、この数字はそ<br>
+こになくてはならない。<br>
+<br>
+それぞれの文字は、MAP 項目中に 1 つのみでなければならない。最初の文字が ASCII<br>
+であるか少なくともアクセント文字でなければ、少しばかり効率が良い。<br>
+<br>
+<br>
+<span class="Statement">.SUG ファイル</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-NOSUGFILE" name="spell-NOSUGFILE">spell-NOSUGFILE</a><br>
+<br>
+soundfolding が接辞ファイルで明示されているとき、&quot;:mkspell&quot; は通常、.spl ファ<br>
+イルの隣に .sug ファイルを生成する。このファイルは sound-a-like 形式によって、<br>
+すばやく提案を見つけるために使われる。多くのメモリを犠牲にする (総量は単語の数<br>
+に依存し、<a class="Identifier" href="spell.html#:mkspell">:mkspell</a>&nbsp;は終了時に概算を表示するだろう)。<br>
+<br>
+.sug ファイルを生成しないようにするには affix ファイル中に次の項目を使う。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">NOSUGFILE</span><br>
+<br>
+使うことを望まないならば、ユーザーは .sug ファイルを簡単に取り除くことができる。<br>
+<br>
+<br>
+<span class="Statement">SOUND-A-LIKE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a class="Constant" href="spell.html#spell-SAL" name="spell-SAL">spell-SAL</a><br>
+<br>
+接辞ファイルの SAL 項目は sounds-a-like の仕組みを定義するのに使われる。主な項<br>
+目は &quot;from&quot; テキストと &quot;to&quot; 置換を定義する。簡単な例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL CIA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL CH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K</span><br>
+<br>
+ここには少しのルールがあるが、非常に複雑になる。どのように動作するのかの説明は<br>
+Aspell のマニュアルで見つけることができる:<br>
+<span class="Constant"><a href="http://aspell.net/man-html/Phonetic-Code.html">http://aspell.net/man-html/Phonetic-Code.html</a></span>.<br>
+<br>
+特別な項目がいくつかある:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL followup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL collapse_result&nbsp;&nbsp;&nbsp;&nbsp; true</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SAL remove_accents&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true</span><br>
+<br>
+&quot;1&quot; は &quot;true&quot; と同じ意味である。他の値は &quot;false&quot; を意味する。<br>
+<br>
+<br>
+<span class="Statement">SIMPLE SOUNDFOLDING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a class="Constant" href="spell.html#spell-SOFOFROM" name="spell-SOFOFROM">spell-SOFOFROM</a>&nbsp;<a class="Constant" href="spell.html#spell-SOFOTO" name="spell-SOFOTO">spell-SOFOTO</a><br>
+<br>
+SAL の仕組みは複雑で遅い。単純な仕組みはすべての文字を他の文字とマッピングし、<br>
+似たように聞こえる文字を同じ文字とマッピングする。同時に、ケースフォールディン<br>
+グをする。SAL 項目と単純な soundfolding の両方を持つことはできない。<br>
+<br>
+要求される 2 つの項目がある: 1 つはマップされた文字を明示し、もう 1 つはそれら<br>
+がマップされている文字を明示するためのものだ。これらは厳密に同じ文字数でなけれ<br>
+ばならない。例:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SOFOFROM abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">SOFOTO&nbsp;&nbsp; ebctefghejklnnepkrstevvkesebctefghejklnnepkrstevvkes</span><br>
+<br>
+例では、すべての母音は同じ文字 'e' にマップされている。もう 1 つのやり方ではす<br>
+べての母音を除去するものである。いくつかの同じように聞こえ、しばしば混合される<br>
+'m' や 'n' のような文字は、同じ文字にマップされている。やり過ぎないこと。すべ<br>
+ての単語は同じように見え始めるだろう。<br>
+<br>
+SOFOFROM で現れない文字は、すべての空白が 1 つの空白に置き換えられることを除き、<br>
+除去されるだろう。SOFOFROM の同じ文字の連続は 1 つに置き換えられる。<br>
+<br>
+結果を試すために&nbsp;<a class="Identifier" href="builtin.html#soundfold()">soundfold()</a>&nbsp;関数を使うことができる。もしくは、<a class="Identifier" href="spell.html#z=">z=</a>&nbsp;コマンド<br>
+の出力するスコアを見るために、<a class="Type" href="options.html#'verbose'">'verbose'</a>&nbsp;オプションを設定することができる。<br>
+<br>
+<br>
+<span class="Statement">サポートされていない項目</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-affix-not-supported" name="spell-affix-not-supported">spell-affix-not-supported</a><br>
+<br>
+これらの項目は他のスペルチェッカーの接辞ファイルの中に現れる。Vim ではこれらは<br>
+無視され、サポートされていない、もしくは他の方法で定義される。<br>
+<br>
+ACCENT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-ACCENT" name="spell-ACCENT">spell-ACCENT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに MAP を使う。<a class="Identifier" href="spell.html#spell-MAP">spell-MAP</a><br>
+<br>
+BREAK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-BREAK" name="spell-BREAK">spell-BREAK</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ブレークポイントを定義する。厳密にどのような動作をするのかははっ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;きりしない。サポートされていない。<br>
+<br>
+CHECKCOMPOUNDCASE&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKCOMPOUNDCASE" name="spell-CHECKCOMPOUNDCASE">spell-CHECKCOMPOUNDCASE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;複合語の境界の文字について大文字を許さない。サポートされていな<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;い。<br>
+<br>
+CHECKCOMPOUNDDUP&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKCOMPOUNDDUP" name="spell-CHECKCOMPOUNDDUP">spell-CHECKCOMPOUNDDUP</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;複合語中で同じ単語を 2 回使うことを許さない。サポートされてい<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ない。<br>
+<br>
+CHECKCOMPOUNDREP&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKCOMPOUNDREP" name="spell-CHECKCOMPOUNDREP">spell-CHECKCOMPOUNDREP</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REP 項目と複合語を使う何か。サポートされていない。<br>
+<br>
+CHECKCOMPOUNDTRIPLE&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKCOMPOUNDTRIPLE" name="spell-CHECKCOMPOUNDTRIPLE">spell-CHECKCOMPOUNDTRIPLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合成時に 3 つの同一の文字を禁止する。サポートされていない。<br>
+<br>
+CHECKSHARPS&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-CHECKSHARPS" name="spell-CHECKSHARPS">spell-CHECKSHARPS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大文字の(ドイツ語)単語のSS文字のペアは大文字のシャープ s (ß)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;かもしれない。サポートされていない。<br>
+<br>
+COMPLEXPREFIXES&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPLEXPREFIXES" name="spell-COMPLEXPREFIXES">spell-COMPLEXPREFIXES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 つの接頭辞の使用を可能にする。サポートされていない。<br>
+<br>
+COMPOUND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUND" name="spell-COMPOUND">spell-COMPOUND</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUND 項目の総数を持つ 1 行で、パターンを含む多くの<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUND 行が後ろに続く。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;総数を持つ最初の行は削除され、他の項目は COMPOUNDRULE にリネー<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ムされる。<a class="Identifier" href="spell.html#spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+<br>
+COMPOUNDFIRST&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDFIRST" name="spell-COMPOUNDFIRST">spell-COMPOUNDFIRST</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに COMPOUNDRULE を使う。<a class="Identifier" href="spell.html#spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+<br>
+COMPOUNDBEGIN&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDBEGIN" name="spell-COMPOUNDBEGIN">spell-COMPOUNDBEGIN</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDBEGIN の印が付けられた単語は、複合語の最初の要素にな<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;る。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに COMPOUNDRULE を使う。<a class="Identifier" href="spell.html#spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+<br>
+COMPOUNDLAST&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDLAST" name="spell-COMPOUNDLAST">spell-COMPOUNDLAST</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDLAST の印が付けられた単語は、複合語の最後の要素になる。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに COMPOUNDRULE を使う。<a class="Identifier" href="spell.html#spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+<br>
+COMPOUNDEND&nbsp;&nbsp;&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDEND" name="spell-COMPOUNDEND">spell-COMPOUNDEND</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;おそらく COMPOUNDLAST と同じ<br>
+<br>
+COMPOUNDMIDDLE&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDMIDDLE" name="spell-COMPOUNDMIDDLE">spell-COMPOUNDMIDDLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDMIDDLE の印が付けられた単語は、複合語の中間要素になる<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ことがある。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに COMPOUNDRULE を使う。<a class="Identifier" href="spell.html#spell-COMPOUNDRULE">spell-COMPOUNDRULE</a><br>
+<br>
+COMPOUNDRULES&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDRULES" name="spell-COMPOUNDRULES">spell-COMPOUNDRULES</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPOUNDRULE 行の続く数。無視されるが、引数は 1 つの数値でなけ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ればならない。<br>
+<br>
+COMPOUNDSYLLABLE&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-COMPOUNDSYLLABLE" name="spell-COMPOUNDSYLLABLE">spell-COMPOUNDSYLLABLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに SYLLABLE と COMPOUNDSYLMAX を使う。<a class="Identifier" href="spell.html#spell-SYLLABLE">spell-SYLLABLE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="spell.html#spell-COMPOUNDSYLMAX">spell-COMPOUNDSYLMAX</a><br>
+<br>
+KEY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-KEY" name="spell-KEY">spell-KEY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーボード上で互いに近接する文字を定義する。よりよい提案を与え<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;るのに使われる。サポートされていない。<br>
+<br>
+LANG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-LANG" name="spell-LANG">spell-LANG</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;language-specifies の挙動を明示する。これは実際に言語情報の一<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部をプログラム中に移動する。それゆえ、Vim はサポートしていない。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;それぞれの言語の特徴は個別に明示されていなければならない。<br>
+<br>
+LEMMA_PRESENT&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-LEMMA_PRESENT" name="spell-LEMMA_PRESENT">spell-LEMMA_PRESENT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;形態素解析のためだけに必要とされる。<br>
+<br>
+MAXNGRAMSUGS&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-MAXNGRAMSUGS" name="spell-MAXNGRAMSUGS">spell-MAXNGRAMSUGS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n-gram 提案の数を設定する。サポートされていない。<br>
+<br>
+PSEUDOROOT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-PSEUDOROOT" name="spell-PSEUDOROOT">spell-PSEUDOROOT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代わりに NEEDAFFIX を使う。<a class="Identifier" href="spell.html#spell-NEEDAFFIX">spell-NEEDAFFIX</a><br>
+<br>
+SUGSWITHDOTS&nbsp;&nbsp;&nbsp;&nbsp;(Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SUGSWITHDOTS" name="spell-SUGSWITHDOTS">spell-SUGSWITHDOTS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提案にドットを加える。Vim はこれを必要としない。<br>
+<br>
+SYLLABLENUM&nbsp;&nbsp;&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-SYLLABLENUM" name="spell-SYLLABLENUM">spell-SYLLABLENUM</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;サポートされていない。<br>
+<br>
+TRY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Myspell, Hunspell, others)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-TRY" name="spell-TRY">spell-TRY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vim は TRY 項目を使わず、無視する。提案を生成するために、実際<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;の単語の文字が使われる。これは非常に効率がよい。<br>
+<br>
+WORDCHARS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Hunspell)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="spell.html#spell-WORDCHARS" name="spell-WORDCHARS">spell-WORDCHARS</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;単語を評価するために使われる。Vim は必要としない。なぜなら、こ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;れらをチェックする前に単語を分ける必要がないからである (ハッシュ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テーブルの代わりにトライを使っている)。<br>
+<br>
+&nbsp;vim:tw=78:sw=4:ts=8:noet:ft=help:norl:<br>
+</div>

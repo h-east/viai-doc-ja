@@ -1,0 +1,405 @@
+---
+layout: viai-doc
+helpname: 'usr_22'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="usr_22.html" name="usr_22.txt">usr_22.txt</a>&nbsp;&nbsp;&nbsp;&nbsp;For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Feb 14<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VIAI ユーザーマニュアル<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイルを探す<br>
+<br>
+<br>
+ファイルはどこにでもありますが、どうやって目的のファイルを見つければいいので<br>
+しょうか。Vim ではさまざまな方法でディレクトリツリーをブラウズできます。ファイ<br>
+ルにジャンプするコマンドもあります。開いたことのあるファイルは後から参照できま<br>
+す。<br>
+<br>
+<a class="Identifier" href="usr_22.html#22.1">22.1</a>&nbsp;&nbsp;ファイルブラウザー<br>
+<a class="Identifier" href="usr_22.html#22.2">22.2</a>&nbsp;&nbsp;カレントディレクトリ<br>
+<a class="Identifier" href="usr_22.html#22.3">22.3</a>&nbsp;&nbsp;ファイルを探す<br>
+<a class="Identifier" href="usr_22.html#22.4">22.4</a>&nbsp;&nbsp;バッファリスト<br>
+<br>
+次章:&nbsp;<a class="Identifier" href="usr_23.html">usr_23.txt</a>&nbsp;&nbsp;特殊なファイルを編集する<br>
+前章:&nbsp;<a class="Identifier" href="usr_21.html">usr_21.txt</a>&nbsp;&nbsp;中断と再開<br>
+目次:&nbsp;<a class="Identifier" href="usr_toc.html">usr_toc.txt</a><br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_22.html#22.1" name="22.1">22.1</a>&nbsp;&nbsp;ファイルブラウザー<br>
+<br>
+ディレクトリを編集するためのプラグインがあります。試してみましょう:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit .</div>
+<br>
+自動コマンドと Vim script の魔法により、ディレクトリの内容がウィンドウに表示さ<br>
+れます。例えばこんな具合です (78 文字以内に収まるように少し整理されています):<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&quot; ==========================================================================<br>
+&nbsp;&nbsp;&quot; Netrw Directory Listing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (netrw v184)<br>
+&nbsp;&nbsp;&quot;&nbsp;&nbsp; /path/to/vim/runtime/doc<br>
+&nbsp;&nbsp;&quot;&nbsp;&nbsp; Sorted by&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name<br>
+&nbsp;&nbsp;&quot;&nbsp;&nbsp; Sort sequence: [\/]$,*,\(\.bak\|\~\|\.o\|\.h\|\.info\|\.swp\)[*@]\=$<br>
+&nbsp;&nbsp;&quot;&nbsp;&nbsp; Quick Help: &lt;F1&gt;:help -:go up dir D:delete R:rename s:sort-by x:special<br>
+&nbsp;&nbsp;&quot; ==========================================================================<br>
+&nbsp;&nbsp;../<br>
+&nbsp;&nbsp;./<br>
+&nbsp;&nbsp;check/<br>
+&nbsp;&nbsp;Makefile<br>
+&nbsp;&nbsp;autocmd.txt<br>
+&nbsp;&nbsp;change.txt<br>
+&nbsp;&nbsp;eval.txt<br>
+&nbsp;&nbsp;filetype.txt<br>
+&nbsp;&nbsp;help.txt.info</div>
+<br>
+次の項目が表示されます:<br>
+<br>
+1. ブラウジングツールの名前とバージョン番号<br>
+2. 表示しているディレクトリ<br>
+3. ソート方法 (name、time、sizeなど)<br>
+4. 名前のソート方法 (最初はディレクトリで、続いて拡張子など)<br>
+5. ヘルプの表示方法 (<span class="Special">&lt;F1&gt;</span>&nbsp;キー)。使用可能なコマンドの要約<br>
+6. ファイル一覧。&quot;../&quot; を含む (親ディレクトリがリストされる)<br>
+<br>
+構文強調表示が有効な場合は各項目が別々の色で表示され、視認性が上がります。<br>
+<br>
+一覧の中はノーマルモードコマンドで移動できます。ファイル名の上にカーソルを動か<br>
+して&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;を押すとファイルが開きます。もう一度 &quot;:edit .&quot; と入力すればエクス<br>
+プローラーに戻れます。<span class="Special">CTRL-O</span>&nbsp;で戻ることもできます。<br>
+<br>
+ディレクトリ名の上にカーソルを動かして&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;を押すと、ファイルブラウザーが<br>
+そのディレクトリに移動し、新たなファイル一覧が表示されます。&quot;../&quot; ディレクトリ<br>
+の上で&nbsp;<span class="Special">&lt;Enter&gt;</span>&nbsp;を押すと上の階層に移動できます。あるいは、&quot;../&quot; までカーソルを<br>
+移動しなくても、&quot;-&quot; を押すだけで上の階層に移動できます。<br>
+<br>
+<span class="Special">&lt;F1&gt;</span>&nbsp;を押すと netrw ファイルブラウザーのヘルプが表示される。表示は次のようなも<br>
+のである:<br>
+<br>
+<div class="helpExample">&nbsp;QUICK HELP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-quickhelp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Use ctrl-] to select a topic)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intro to Browsing...............................netrw-intro-browse<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quick Reference: Maps.........................netrw-quickmap<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quick Reference: Commands.....................netrw-browse-cmds</div>
+<br>
+<span class="Special">&lt;F1&gt;</span>&nbsp;キーを押すと netrw プラグインのヘルプに飛ぶ。これは通常のヘルプページであ<br>
+る。<a class="Identifier" href="tagsrch.html#CTRL-]">CTRL-]</a>&nbsp;でタグジャンプして&nbsp;<a class="Identifier" href="motion.html#CTRL-O">CTRL-O</a>&nbsp;で戻ることができる。したがって、<br>
+<a class="Identifier" href="pi_netrw.html#netrw-quickmap">netrw-quickmap</a>&nbsp;で&nbsp;<span class="Special">CTRL-]</span>&nbsp;を押すと、次の場所にジャンプする:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-quickmap&nbsp;&nbsp;netrw-quickmaps<br>
+&nbsp;QUICK REFERENCE: MAPS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-browse-maps</div>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -----------------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quick Explanation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Link<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -----------------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;F1&gt;&nbsp;&nbsp; Causes Netrw to issue help<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;cr&gt;&nbsp;&nbsp; Netrw will enter the directory or read the file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-cr<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;del&gt;&nbsp;&nbsp;Netrw will attempt to remove the file/directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-del</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(etc.)<br>
+<br>
+表示および編集するファイルを選択するには (カーソルをファイル名の上に置く):<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o&nbsp;&nbsp;&nbsp;&nbsp;Enter the file/directory under the cursor in a new&nbsp;&nbsp; netrw-o<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;browser window.&nbsp;&nbsp;A horizontal split is used.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; O&nbsp;&nbsp;&nbsp;&nbsp;Obtain a file specified by cursor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-O<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p&nbsp;&nbsp;&nbsp;&nbsp;Preview the file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-p<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; P&nbsp;&nbsp;&nbsp;&nbsp;Browse in the previously used window&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-P<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v&nbsp;&nbsp;&nbsp;&nbsp;Enter the file/directory under the cursor in a new&nbsp;&nbsp; netrw-v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;browser window.&nbsp;&nbsp;A vertical split is used.</div>
+<br>
+ブラウザーの表示を制御するには、以下のノーマルモードコマンドを使用できる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i&nbsp;&nbsp;&nbsp;&nbsp;Cycle between thin, long, wide, and tree listings&nbsp;&nbsp;&nbsp;&nbsp;netrw-i<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r&nbsp;&nbsp;&nbsp;&nbsp;Reverse sorting order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-r<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s&nbsp;&nbsp;&nbsp;&nbsp;Select sorting style: by name, time, or file size&nbsp;&nbsp;&nbsp;&nbsp;netrw-s</div>
+<br>
+追加のノーマルモードのコマンドの例として:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cd&nbsp;&nbsp; Make browsing directory the current directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-cd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D&nbsp;&nbsp;&nbsp;&nbsp;Attempt to remove the file(s)/directory(ies)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gb&nbsp;&nbsp; Go to previous bookmarked directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netrw-gb<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mb&nbsp;&nbsp; Bookmark current directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-mb<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; R&nbsp;&nbsp;&nbsp;&nbsp;Rename the designated file(s)/directory(ies)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw-R</div>
+<br>
+コマンドモードを使用することもできる。これも、単なる例である:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp; :Explore[!]&nbsp;&nbsp;[dir] Explore directory of current file......netrw-explore<br>
+&nbsp;&nbsp;&nbsp;&nbsp; :Hexplore[!] [dir] Horizontal Split &amp; Explore.............netrw-explore</div>
+<br>
+netrw ブラウザーはローカルマシンだけに限定されない。以下のような URL も使用で<br>
+きる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:Explore ftp://somehost/path/to/dir/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:e scp://somehost/path/to/dir/</div>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>: 末尾の &quot;/&quot; は重要。<br>
+<br>
+詳細は&nbsp;<a class="Identifier" href="pi_netrw.html#netrw-browse">netrw-browse</a>&nbsp;を参照。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_22.html#22.2" name="22.2">22.2</a>&nbsp;&nbsp;カレントディレクトリ<br>
+<br>
+シェルと同じように Vim にもカレントディレクトリという概念があります。例えば、<br>
+ホームディレクトリにいるときに &quot;VeryLongFileName&quot; ディレクトリにあるファイルを<br>
+開きたい場合、そのまま実行することもできますが:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit VeryLongFileName/file1.txt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit VeryLongFileName/file2.txt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit VeryLongFileName/file3.txt</div>
+<br>
+次のようにすれば、入力が簡単です:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cd VeryLongFileName<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit file1.txt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit file2.txt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:edit file3.txt</div>
+<br>
+&quot;:cd&quot; コマンドでカレントディレクトリを変更できます。現在のカレントディレクトリ<br>
+を確認するには &quot;:pwd&quot; コマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home/Bram/VeryLongFileName</div>
+<br>
+直前のカレントディレクトリは記録されているので &quot;:cd -&quot; で元の場所に戻れます。<br>
+例:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home/Bram/VeryLongFileName<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cd /etc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/etc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cd -<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home/Bram/VeryLongFileName<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cd -<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/etc</div>
+<br>
+<br>
+<span class="Statement">ウィンドウローカルディレクトリ</span><br>
+<br>
+ウィンドウを分割した直後、二つのウィンドウは同じカレントディレクトリを使ってい<br>
+ます。カレントディレクトリはウィンドウ毎に設定できるので、新しいウィンドウだけ<br>
+カレントディレクトリを変更して別の場所で作業できます。これを、ローカルディレク<br>
+トリといいます。<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home/Bram/VeryLongFileName<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:split<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:lcd /etc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/etc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CTRL-W w<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:pwd<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home/Bram/VeryLongFileName</div>
+<br>
+<a class="Comment" href="editing.html#:lcd">:lcd</a>&nbsp;コマンドを使うまでは、すべてのウィンドウが共通のカレントディレクトリを<br>
+使っています。一つのウィンドウで&nbsp;<a class="Comment" href="editing.html#:cd">:cd</a>&nbsp;コマンドを実行すると、他のウィンドウの<br>
+カレントディレクトリも変更されます。<br>
+<a class="Comment" href="editing.html#:lcd">:lcd</a>&nbsp;を使ってカレントディレクトリを変更したウィンドウは、固有のカレントディ<br>
+レクトリを持ちます。固有のカレントディレクトリは、他のウィンドウで&nbsp;<a class="Comment" href="editing.html#:cd">:cd</a>&nbsp;また<br>
+は&nbsp;<a class="Comment" href="editing.html#:lcd">:lcd</a>&nbsp;を使っても変更されません。<br>
+固有のカレントディレクトリを持っているウィンドウで&nbsp;<a class="Comment" href="editing.html#:cd">:cd</a>&nbsp;コマンドを使うと、再<br>
+び共通のカレントディレクトリを使うようになります。<br>
+<br>
+<br>
+<span class="Statement">タブローカルディレクトリ</span><br>
+<br>
+新しいタブページを開くと、新しいタブページが開かれた以前のタブページのウィンド<br>
+ウのディレクトリが使用されます。カレントタブページのディレクトリは&nbsp;<a class="Comment" href="editing.html#:tcd">:tcd</a>&nbsp;コマ<br>
+ンドで変更できます。タブページ内のすべてのウィンドウは、ウィンドウローカルディ<br>
+レクトリを持つウィンドウを除いて、このディレクトリを共有します。このタブページ<br>
+で新しいウィンドウを開くと、このディレクトリが現在の作業ディレクトリとして使用<br>
+されます。タブページで&nbsp;<a class="Comment" href="editing.html#:cd">:cd</a>&nbsp;コマンドを使ってもタブローカルディレクトリを持つ<br>
+タブページの作業ディレクトリは変わりません。タブページで&nbsp;<a class="Comment" href="editing.html#:cd">:cd</a>&nbsp;コマンドを使用<br>
+してグローバル作業ディレクトリを変更すると、カレントタブページ作業ディレクトリ<br>
+も変更されます。<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_22.html#22.3" name="22.3">22.3</a>&nbsp;&nbsp;ファイルを探す<br>
+<br>
+C 言語のファイルを編集していて、次のような行があったとします:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="PreProc">#include &quot;inits.h&quot;</span><br>
+<br>
+&quot;inits.h&quot; を開いて内容を確認したい場合は、カーソルをファイル名の上に動かして、<br>
+次のように入力します:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gf</div>
+<br>
+ファイルが検索され、開かれます。<br>
+ファイルがカレントディレクトリにない場合は&nbsp;<a class="Type" href="options.html#'path'">'path'</a>&nbsp;オプションが使われます。この<br>
+オプションはディレクトリ名のリストです。指定されたディレクトリからファイルが検<br>
+索されます。<br>
+例えば、&quot;c:/prog/include&quot; にインクルードファイルがある場合は次のコマンドでディ<br>
+レクトリを追加できます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set path+=c:/prog/include</div>
+<br>
+ディレクトリを絶対パスで指定した場合は、どこで作業していても同じディレクトリが<br>
+参照されます。開いているファイル以下のサブディレクトリにインクルードファイルが<br>
+ある場合は相対パスを指定してください。相対パスの先頭はドットです:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:set path+=./proto</div>
+<br>
+この場合、ファイルが保存されているディレクトリの &quot;proto&quot; ディレクトリからファ<br>
+イルが検索されます。つまり、&quot;inits.h&quot; の上で &quot;gf&quot; を使うと、同じディレクトリの<br>
+&quot;inits.h&quot; が検索された後に、&quot;proto/inits.h&quot; が検索されます。<br>
+&quot;./&quot; を付けなかった場合、つまり &quot;proto&quot; と指定した場合は、カレントディレクトリ<br>
+の &quot;proto&quot; ディレクトリが検索されます。ファイルのディレクトリとカレントディレ<br>
+クトリは意味が異なるので注意してください。<br>
+<br>
+ディレクトリの指定方法は他にもあります。<a class="Type" href="options.html#'path'">'path'</a>&nbsp;オプションのヘルプを参照してく<br>
+ださい。<br>
+<a class="Type" href="options.html#'isfname'">'isfname'</a>&nbsp;オプションには、ファイル名として使える文字、あるいは使えない文字を設<br>
+定できます (例えば上の例では &quot; 文字がファイル名に含まれてませんね)。<br>
+<br>
+ファイルの名前がわかっている場合は、その名前がファイル内で使われていなくても、<br>
+検索することができます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:find inits.h</div>
+<br>
+<a class="Type" href="options.html#'path'">'path'</a>&nbsp;オプションを使ってファイルが検索されます。<a class="Type" href="options.html#'path'">'path'</a>&nbsp;が使われる以外は<br>
+&quot;:edit&quot; コマンドと同じです。<br>
+<br>
+検索したファイルを新しいウィンドウで開くには、&quot;gf&quot; &quot;:find&quot; ではなく &quot;<span class="Special">CTRL-W</span>&nbsp;f&quot;<br>
+&quot;:sfind&quot; を使います。<br>
+<br>
+<br>
+Vim を起動して&nbsp;<a class="Type" href="options.html#'path'">'path'</a>&nbsp;の中からファイルを開くには、次の方法が便利です:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vim &quot;+find stdio.h&quot;</div>
+<br>
+<a class="Type" href="options.html#'path'">'path'</a>&nbsp;内の &quot;stdio.h&quot; が検索されます。引数はクォート (&quot;) で囲む必要があります<br>
+<a class="Identifier" href="starting.html#-+c">-+c</a>。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<a class="Constant" href="usr_22.html#22.4" name="22.4">22.4</a>&nbsp;&nbsp;バッファリスト<br>
+<br>
+Vim では編集中のファイルのことをバッファといいます。バッファはファイルのコピー<br>
+です。編集を終えて保存したときに、バッファの内容がファイルに書き込まれます。<br>
+バッファにはファイルのテキストの他に、マークやオプション設定などのファイルに関<br>
+連した情報も記録されます。<br>
+<br>
+<br>
+<span class="Statement">隠れバッファ</span><br>
+<br>
+例えば、one.txt を編集しているときに two.txt を編集したくなったとします。<br>
+one.txt は変更されているので &quot;:edit two.txt&quot; は使えません。しかも、あなたはま<br>
+だ one.txt を保存したくはありません。次のコマンドで解決できます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:hide edit two.txt</div>
+<br>
+&quot;one.txt&quot; というバッファは画面から消えます。しかしバッファの内容が失われるわけ<br>
+ではありません。未保存のテキストはまだ残っています。このようなバッファを隠れ<br>
+バッファといいます。<br>
+&quot;:hide&quot; コマンドの引数はコマンドです。指定されたコマンドは、<a class="Type" href="options.html#'hidden'">'hidden'</a>&nbsp;オプショ<br>
+ンがオンに設定されているかのように動作します。もちろん、自分で&nbsp;<a class="Type" href="options.html#'hidden'">'hidden'</a>&nbsp;オプ<br>
+ションを設定しても構いません。バッファが破棄されたとき、<a class="Type" href="options.html#'hidden'">'hidden'</a>&nbsp;がオンなら、<br>
+そのバッファは隠れバッファになります。<br>
+隠れバッファを使ったときは、すべてのバッファが保存されたのを確認してから Vim<br>
+を終了してください。<br>
+<br>
+<br>
+<span class="Statement">非アクティブバッファ</span><br>
+<br>
+バッファを閉じてもいくつかの情報は失われずに残ります。バッファリストに入ってい<br>
+るバッファの内、画面に表示されず、隠れバッファでもないバッファのことを休眠バッ<br>
+ファといいます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;アクティブバッファ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ウィンドウに表示されている。テキストはメモリの<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;隠れバッファ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示されていない。テキストはメモリの中。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;休眠バッファ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表示されていない。テキストは保持されていない。<br>
+<br>
+休眠バッファにはファイル名やマークなどの情報が保存されています。ファイル名が保<br>
+存されているので、編集したことのあるファイルを確認し、それを再び開くことができ<br>
+ます。<br>
+<br>
+<br>
+<span class="Statement">バッファリストの表示</span><br>
+<br>
+次のコマンドでバッファリストを表示できます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:buffers</div>
+<br>
+次のコマンドも同じです。コマンドの名前と機能が連想しづらいかもしれませんが、入<br>
+力は簡単です:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:ls</div>
+<br>
+コマンドの出力例:<br>
+<br>
+&nbsp;&nbsp;<span class="PreProc">1 #h&nbsp;&nbsp; &quot;help.txt&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; line 62</span><br>
+&nbsp;&nbsp;<span class="PreProc">2 %a + &quot;usr_21.txt&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; line 1</span><br>
+&nbsp;&nbsp;<span class="PreProc">3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;usr_toc.txt&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line 1</span><br>
+<br>
+行頭の数字はバッファ番号です。バッファを開くときに名前の代わりにバッファ番号を<br>
+指定することもできます。下記参照。<br>
+バッファ番号に続いてフラグ、ファイル名、最後にカーソルが位置していた行番号、が<br>
+表示されます。<br>
+フラグ部分には以下の文字が (左から右へ) 表示されます。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 非列挙バッファ (<a class="Identifier" href="windows.html#unlisted-buffer">unlisted-buffer</a>)。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カレントバッファ。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;オルタネートバッファ。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&nbsp;&nbsp;&nbsp; テキストを持っている。表示されている。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h&nbsp;&nbsp;&nbsp;&nbsp; テキストを持っている。隠れバッファ。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;&nbsp;読み込み専用。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp;&nbsp;変更不可 (<a class="Type" href="options.html#'modifiable'">'modifiable'</a>&nbsp;オプションがオフ)。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp; 変更あり。<br>
+<br>
+<br>
+<span class="Statement">バッファを開く</span><br>
+<br>
+バッファ番号を指定してバッファを開くことができます。ファイル名を入力する必要は<br>
+ありません:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:buffer 2</div>
+<br>
+しかし、バッファ番号を知るためにはバッファリストを表示しなければなりません。名<br>
+前の一部分だけを指定して開くこともできます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:buffer help</div>
+<br>
+指定された名前に近いバッファが検索され、名前が一致したバッファが一つだけなら、<br>
+そのバッファが使われます。この例なら &quot;help.txt&quot; など。<br>
+バッファを新しいウィンドウで開くには、次のコマンドを使います:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:sbuffer 3</div>
+<br>
+もちろん名前も指定できます。<br>
+<br>
+<br>
+<span class="Statement">バッファリストを使う</span><br>
+<br>
+次のコマンドでバッファリストの中を移動できます:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:bnext&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次のバッファを開く<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:bprevious&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前のバッファを開く<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:bfirst&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 最初のバッファを開く<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:blast&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最後のバッファを開く<br>
+<br>
+次のコマンドでバッファリストからバッファを削除できます:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:bdelete 3</div>
+<br>
+もちろん名前も指定できます。<br>
+アクティブバッファ (ウィンドウに表示されているバッファ) を削除すると、表示して<br>
+いたウィンドウも閉じます。カレントバッファを削除すると、カレントウィンドウも閉<br>
+じられます。もしそれが最後のウィンドウだった場合、Vim は編集対象となる別のバッ<br>
+ファを探します。何も編集していない状態にはできないからです!<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Todo">Note</span>: &quot;:bdelete&quot; でバッファを削除してもバッファの情報は失われません。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファが &quot;unlisted&quot; 状態になり、&quot;:buffers&quot; コマンドで表示されなくな<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;るだけです。&quot;:buffers!&quot; コマンドを使えば unlisted バッファも表示されま<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;す(そう、Vim は不可能を可能にするのです)。バッファの情報を完全に消去す<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;るには &quot;:bwipe&quot; を使ってください。<a class="Type" href="options.html#'buflisted'">'buflisted'</a>&nbsp;オプション参照。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+<br>
+次章:&nbsp;<a class="Identifier" href="usr_23.html">usr_23.txt</a>&nbsp;&nbsp;特殊なファイルを編集する<br>
+<br>
+Copyright: see&nbsp;<a class="Identifier" href="usr_01.html#manual-copyright">manual-copyright</a>&nbsp;&nbsp;vim:tw=78:ts=8:noet:ft=help:norl:<br>
+</div>

@@ -1,0 +1,76 @@
+---
+layout: viai-doc
+helpname: 'pi_paren'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="pi_paren.html" name="pi_paren.txt">pi_paren.txt</a>&nbsp;&nbsp;For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Feb 14<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIAI リファレンスマニュアル<br>
+<br>
+<br>
+対応するカッコの強調表示&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_paren.html#matchparen" name="matchparen">matchparen</a><br>
+<br>
+このプラグインは標準プラグイン&nbsp;<a class="Identifier" href="usr_05.html#standard-plugin">standard-plugin</a>&nbsp;である。<br>
+<a class="Type" href="options.html#'compatible'">'compatible'</a>&nbsp;がオフのときだけ使用できる。<br>
+<br>
+&quot;loaded_matchparen&quot; 変数を設定することで、このプラグインの読み込みを回避でき<br>
+る:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:let loaded_matchparen = 1</div>
+<br>
+このプラグインは自動コマンドイベントの CursorMoved、CursorMovedI、WinEnter を<br>
+使って強調表示を再設定する。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_paren.html#:NoMatchParen" name=":NoMatchParen">:NoMatchParen</a>&nbsp;<a class="Constant" href="pi_paren.html#:DoMatchParen" name=":DoMatchParen">:DoMatchParen</a><br>
+このプラグインの機能を無効にするには次のコマンドを使う:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:NoMatchParen</div>
+<br>
+機能を有効に戻すには次のコマンドを使う:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:DoMatchParen</div>
+<br>
+強調表示には MatchParen が使われる。&quot;:highlight&quot; コマンドを使って好きな色を設<br>
+定できる。例:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:hi MatchParen ctermbg=blue guibg=lightblue</div>
+<br>
+デフォルトでは、プラグインはカーソルの下の括弧とマッチする括弧の両方を、<br>
+<a class="Identifier" href="syntax.html#hl-MatchParen">hl-MatchParen</a>&nbsp;ハイライトグループを使用してハイライトする。これにより、カーソ<br>
+ルのハイライトが MatchParen の色に置き換えられるため、カーソルが一時的に画面か<br>
+ら消える場合がある。これを防ぎ、プラグインがマッチする括弧のみをハイライトし、<br>
+(実質的にカーソルのスタイルを変更せずに) カーソルの下の括弧をハイライトしない<br>
+ようにするには、&quot;matchparen_disable_cursor_hl&quot; 変数を設定する:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:let matchparen_disable_cursor_hl = 1</div>
+<br>
+オプション&nbsp;<a class="Type" href="options.html#'matchpairs'">'matchpairs'</a>&nbsp;に設定されている文字が強調表示される。このオプションを<br>
+設定することで好きな文字を強調表示できる。<span class="Todo">Note</span>&nbsp;設定しても機能しない文字もある。<br>
+例えば、シングルクォートやダブルクォートのペアなどは、始点と終点が同じなので強<br>
+調表示できない。<br>
+<br>
+対応するカッコを探すときには構文強調の属性が使われる。カーソル位置の文字が、文<br>
+字列やコメント以外のときは、文字列やコメントの中は無視される。名前に &quot;string&quot;<br>
+や &quot;comment&quot; が含まれている構文強調アイテムはすべて、文字列やコメントとして扱<br>
+われる。<br>
+<br>
+カーソルの移動が遅くならないように、対応するカッコの検索には次の制限がある:<br>
+- ウィンドウに表示されている範囲だけ検索する。<br>
+- 閉じた折り畳みがあると処理に時間がかかるので、カーソル位置から 100 行以内の<br>
+&nbsp;&nbsp;範囲だけ検索する。<br>
+- 長い行が構文強調表示されていると処理に時間がかかるので、カーソル位置から<br>
+&nbsp;&nbsp;<a class="Type" href="options.html#'synmaxcol'">'synmaxcol'</a>&nbsp;の二倍の範囲の文字だけ検索する。<br>
+- 300 ミリ秒でタイムアウト (挿入モードでは 60 ミリ秒)。これは変数の<br>
+&nbsp;&nbsp;&quot;g:matchparen_timeout&quot; と &quot;g:matchparen_insert_timeout&quot; を設定することで変更<br>
+&nbsp;&nbsp;できる。バッファ毎に設定する場合は &quot;b:matchparen_timeout&quot; と<br>
+&nbsp;&nbsp;&quot;b:matchparen_insert_timeout&quot; を設定する。<br>
+<br>
+<a class="Identifier" href="motion.html#%">%</a>&nbsp;コマンドの動作を改善したい場合は matchit プラグインが使用できる。<br>
+<a class="Identifier" href="usr_05.html#matchit-install">matchit-install</a>&nbsp;参照。このプラグインを使うとコメント内のカッコをスキップする<br>
+こともできる。これは matchparen プラグインとの関連性はない。matchit プラグイン<br>
+は matchparen とは別のメカニズムを使っている。<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+&nbsp;vim:tw=78:ts=8:noet:ft=help:norl:<br>
+</div>

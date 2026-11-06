@@ -1,0 +1,115 @@
+---
+layout: viai-doc
+helpname: 'pi_spec'
+---
+<div id='vimCodeElement'>
+<a class="Constant" href="pi_spec.html" name="pi_spec.txt">pi_spec.txt</a>&nbsp;&nbsp; For ViAI バージョン 1.0.&nbsp;&nbsp;Last change: 2026 Feb 14<br>
+<br>
+<span class="PreProc">by Gustavo Niemeyer</span><br>
+<br>
+ここではRPMのspecファイル用のプラグインについて解説する。<br>
+<br>
+このプラグインを使用することでRPMのspecファイルの%changelogセクションを簡単に<br>
+更新することができる。まだセクションが存在していないならば、プラグインが作成し<br>
+てくれる。既に本日分のエントリがあるのならば、プラグインは本日のエントリに新し<br>
+い項目を追加する機会を与えてくれる。書式設定文字列(<a class="Identifier" href="pi_spec.html#spec_chglog_format">spec_chglog_format</a>)を準備<br>
+していないならば、プラグインはemailアドレスをユーザーに問い合わせ、そこから書<br>
+式文字列を構築する。<br>
+<br>
+1. 使い方&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="pi_spec.html#spec-how-to-use-it">spec-how-to-use-it</a><br>
+2. カスタマイズ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Identifier" href="pi_spec.html#spec-customizing">spec-customizing</a><br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+1. 使い方&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec-how-to-use-it" name="spec-how-to-use-it">spec-how-to-use-it</a><br>
+<br>
+spec_chglogプラグインは以下のようなキーマップを提供する:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:map &lt;buffer&gt; &lt;LocalLeader&gt;c &lt;Plug&gt;SpecChangelog</div>
+<br>
+これはspecファイルではマップローカルリーダー(デフォルトは'\')に続いて'c'を押す<br>
+ことでプラグインが起動することを意味している。<a class="Identifier" href="pi_spec.html#spec_chglog_format">spec_chglog_format</a>を設定してい<br>
+ない場合には、プラグインはユーザーにemailアドレスを問い合わせこの編集セッション<br>
+で使用する。<br>
+<br>
+プラグインを起動するたびに、changelogに本日分の項目が既に書かれているかを<br>
+チェックする。そのようなエントリが存在すれば、新しいchangelog項目が追加され、<br>
+存在しない場合には新しいchangelogエントリが作成される。<br>
+<a class="Identifier" href="pi_spec.html#spec_chglog_release_info">spec_chglog_release_info</a>を有効化して実行した場合には、名前とバージョンとリ<br>
+リースも一致するかが確認される。プラグインは充分に賢いので、パッケージリリース<br>
+がアップデートされるべき時にはその旨を訊ねてくるから、ユーザーはわざわざそれを<br>
+する必要はない。<br>
+<br>
+キーマップ定義&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec-setting-a-map" name="spec-setting-a-map">spec-setting-a-map</a><br>
+<span class="PreProc">--------------</span><br>
+<br>
+既に知っているように、あらゆるVimコマンド(その意味ではあらゆる事が可能)を実行<br>
+するためのキーマップは簡単に定義できる。デフォルトのキーマップ<span class="Special">&lt;LocalLeader&gt;</span>cが<br>
+気に入らないならば、独自のキーを設定するのも良いだろう。次はそれをファイル<br>
+.vimrcで行う例で、プラグインを<span class="Special">&lt;F5&gt;</span>キーに割り当てている:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;au FileType spec map &lt;buffer&gt; &lt;F5&gt; &lt;Plug&gt;SpecChangelog</div>
+<br>
+<span class="Todo">NOTE</span>: プラグインはユーザーのマッピング変更の要望を尊重するので、再設定は行わな<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;い。<br>
+<br>
+このコマンドはspecファイルのバッファにのみ適用される。<br>
+<br>
+<br>
+<span class="PreProc">==============================================================================</span><br>
+2. カスタマイズ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec-customizing" name="spec-customizing">spec-customizing</a><br>
+<br>
+書式設定文字列&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec_chglog_format" name="spec_chglog_format">spec_chglog_format</a><br>
+<span class="PreProc">--------------</span><br>
+<br>
+specファイルがどのように表示されるかは簡単にカスタマイズできる。これを行うには<br>
+ファイル.vimrcで次のように変数 &quot;spec_chglog_format&quot; を設定する:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let spec_chglog_format = &quot;%a %b %d %Y My Name &lt;my@email.com&gt;&quot;</div>
+<br>
+&quot;%a %b %d %Y&quot;はもっとも頻繁に使用される時刻の書式であることに注意。書式文字列<br>
+を準備していなければ、SpecChangelogコマンドを最初に実行した時に、ユーザーに<br>
+emailアドレスを問い合わせアドレスから自動的に<a class="Identifier" href="pi_spec.html#spec_chglog_format">spec_chglog_format</a>を構築する。<br>
+この方法でユーザーは一度emailアドレスを設定するだけで済む。<br>
+<br>
+どのような書式を使うことができるのかを知るには、strftime()関数のマニュアルペー<br>
+ジを参照する。<br>
+<span class="Special">{訳注:&nbsp;</span><a class="Identifier" href="builtin.html#strftime()">strftime()</a><span class="Special">も参照}</span><br>
+<br>
+新規項目の挿入箇所&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec_chglog_prepend" name="spec_chglog_prepend">spec_chglog_prepend</a><br>
+<span class="PreProc">------------------</span><br>
+<br>
+プラグインは通常新しい%changelogエントリの項目(エントリそのものではないこと<br>
+に注意)を、既に存在するものの後に挿入しようとする。変数spec_chglog_prependを設<br>
+定すれば:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let spec_chglog_prepend = 1</div>
+<br>
+既に存在するものの前に新規項目を挿入するようになる。<br>
+<br>
+リリース情報の挿入&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="pi_spec.html#spec_chglog_release_info" name="spec_chglog_release_info">spec_chglog_release_info</a><br>
+<span class="PreProc">------------------</span><br>
+<br>
+望むのならば、プラグインはchangelogエントリごとのリリース情報を自動的に挿入す<br>
+ることができる。この機能を利用することの利点の1つは、最後の変更の後にリリース<br>
+を更新すべきかそうでないかをコントロールできることである。パッケージのバージョ<br>
+ンかリリースを更新していない時には、パッケージリリースを更新すべきならばその旨<br>
+をユーザーに問い合わせてくれる。この機能を利用するには、.vimrcに次のコードを書<br>
+き加える:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let spec_chglog_release_info = 1</div>
+<br>
+こうすれば、changelogエントリの最初の項目が次のようなものの場合に問い合わせが<br>
+発生する:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ name-1.0-1cl</div>
+<br>
+リリース更新機能が気に入らず、古いリリースを検出するたびに毎回&quot;No&quot;と答えるのに<br>
+嫌気が差したならば、次のようにして無効化できる:<br>
+<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let spec_chglog_never_increase_release = 1</div>
+<br>
+<br>
+幸運を!!<br>
+<br>
+vim&#0058;tw=78:ts=8:noet:ft=help:norl:<br>
+</div>
