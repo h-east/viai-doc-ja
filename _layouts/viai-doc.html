@@ -24,11 +24,13 @@
   <a name="top"></a><h1>{{ page.helpname }} - ViAI日本語ドキュメント</h1>
   <a href="index.html">メインヘルプファイルに戻る</a>
 
-  {% if page.helpname != 'tags' %}
   <span class="EnglishJapaneseLink">
-    <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+    <a href="https://viai-editor.github.io/viai-doc-en{{ page.url }}">English</a>
+    | <span class="CurrentLanguage">日本語</span>
+    {% if page.helpname != 'tags' %}
+    | <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+    {% endif %}
   </span>
-  {% endif %}
 </div>
 </header>
 
@@ -270,11 +272,6 @@
 <li><a href="pi_zip.html">pi_zip</a></li>
 </ul></dd>
 
-<dt>その他</dt>
-<dd><ul>
-<li><a href="vim_faq.html">vim_faq</a></li>
-</ul></dd>
-
 </dl>
 </nav>
 
@@ -284,11 +281,13 @@
 
 <footer>
 <a href="#top">トップに戻る</a> - <a href="index.html">メインヘルプファイルに戻る</a>
-{% if page.helpname != 'tags' %}
 <span class="EnglishJapaneseLink">
-  <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+  <a href="https://viai-editor.github.io/viai-doc-en{{ page.url }}">English</a>
+  | <span class="CurrentLanguage">日本語</span>
+  {% if page.helpname != 'tags' %}
+  | <a href="https://github.com/viai-editor/viai-doc-ja-working/blob/master/doc/{{ page.helpname | replace:'vimindex','index' }}.jax">{% octicon pencil %} 編集</a>
+  {% endif %}
 </span>
-{% endif %}
 <br />
 <div style="text-align:right;">
 Translated by <a href="https://github.com/viai-editor/viai-doc-ja">viai-doc-ja プロジェクト</a> (<a href="https://github.com/vim-jp/vimdoc-ja">vimdoc-ja</a> の翻訳を元にしています)<br />
