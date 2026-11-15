@@ -3,7 +3,7 @@ layout: viai-doc
 helpname: 'vim9'
 ---
 <div id='vimCodeElement'>
-<a class="Constant" href="vim9.html" name="vim9.txt">vim9.txt</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;<span class="Identifier">ViAI バージョン 1.0.</span>&nbsp;&nbsp;Last change: 2026 Nov 09<br>
+<a class="Constant" href="vim9.html" name="vim9.txt">vim9.txt</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;<span class="Identifier">ViAI バージョン 1.0.</span>&nbsp;&nbsp;Last change: 2026 Nov 14<br>
 <br>
 <br>
 <span class="Identifier">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VIAI リファレンスマニュアル</span><br>
@@ -899,6 +899,9 @@ Vim9 script を 2 回目以降に読み込むとき、デフォルトでは、�
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Statement">vim9script</span>&nbsp;<span class="Special">noclear</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Statement">var</span>&nbsp;<span class="Normal">MyList</span>:&nbsp;<span class="Type">list&lt;number&gt;</span>&nbsp;<span class="Statement">=</span>&nbsp;<span class="Statement">!</span><span class="Identifier">exists</span><span class="Special">(</span><span class="Constant">'MyList'</span><span class="Special">)</span>&nbsp;<span class="Statement">?</span>&nbsp;<span class="Special">[</span><span class="Constant">9</span><span class="Special">]</span>&nbsp;<span class="Statement">:</span>&nbsp;<span class="Normal">MyList</span><span class="Statement">-&gt;</span><span class="Identifier">add</span><span class="Special">(</span><span class="Constant">9</span><span class="Special">)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="Statement">echo</span>&nbsp;<span class="Normal">MyList</span><br>
+<br>
+そのようなスクリプト内の&nbsp;<a class="Comment" href="vim9class.html#:type">:type</a>&nbsp;は、変数の宣言と同様に、型エイリアスを再度定<br>
+義する。<br>
 <br>
 これは、再度読み込まれたときに、ある時点で&nbsp;<a class="Comment" href="repeat.html#:finish">finish</a>&nbsp;コマンドを使用して抜け出す<br>
 スクリプトで使用したいものである。例えば、バッファローカルなオプションが関数に<br>
