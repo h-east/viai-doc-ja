@@ -574,6 +574,27 @@ ViAI のチェックにより、Vim でのエラーを回避します。ViAI が
 <div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:h lsp.txt<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:h vim9ls.txt</div>
 <br>
+<span class="PreProc">------------------------------------------------------------------------------</span><br>
+viai.mcp パッケージの追加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="Constant" href="usr_05.html#viaimcp-install" name="viaimcp-install">viaimcp-install</a>&nbsp;<a class="Constant" href="usr_05.html#package-viai.mcp" name="package-viai.mcp">package-viai.mcp</a><br>
+<span class="PreProc">------------------------------------------------------------------------------</span><br>
+<br>
+viai.mcp は Model Context Protocol (MCP) のサーバーで、AI ツールに ViAI のヘル<br>
+プと Vim script のチェックを提供します。AI ツールはパッケージ内のコマンドでサー<br>
+バーを起動するので、そのためにパッケージを読み込む必要はありません。Claude<br>
+Code の場合:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;claude mcp add viaimcp -- {runtime}/pack/dist/opt/viai.mcp/bin/viaimcp</div>
+<span class="Special">{runtime}</span>&nbsp;は ViAI での&nbsp;<a class="Identifier" href="starting.html#$VIMRUNTIME">$VIMRUNTIME</a>&nbsp;の値です。MS-Windows ではコマンドは<br>
+bin\viaimcp.cmd です。サーバーは $PATH から &quot;viai&quot; を実行します。別の ViAI を<br>
+実行するには、$VIAIMCP_VIM にその名前を設定してください。<br>
+<br>
+そのヘルプを読むには、vimrc ファイルに以下の行を追加してください:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if has('viai')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;packadd! viai.mcp<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endif</div>
+<br>
+パッケージの読み込みが完了したら、こちらで詳細をご覧ください:<br>
+<div class="helpExample">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:h viaimcp.txt</div>
+<br>
 パッケージについてのより詳しい情報は次の項目を参照してください:&nbsp;<a class="Identifier" href="repeat.html#packages">packages</a><br>
 <br>
 <span class="PreProc">==============================================================================</span><br>
