@@ -267,6 +267,10 @@ a.EnglishPage:hover {
     border-left-color: #8080c0;
     color: #8080c0;
 }
+:where(:root[data-theme="dark"]) nav li a:link,
+:where(:root[data-theme="dark"]) nav li a:visited {
+    color: #8080cc;
+}
 :where(:root[data-theme="dark"]) nav li a:active,
 :where(:root[data-theme="dark"]) nav li a:hover {
     background-color: #005f5f;
@@ -291,6 +295,11 @@ a.EnglishPage:hover {
 :where(:root[data-theme="dark"]) .ExternalTaglink {
     background-color: #4e4e4e;
     color: #c6c6c6;
+}
+:where(:root[data-theme="dark"]) a.EnglishPage:link,
+:where(:root[data-theme="dark"]) a.EnglishPage:visited,
+:where(:root[data-theme="dark"]) a.EnglishPage:active {
+    color: #8a8a8a;
 }
 :where(:root[data-theme="dark"]) a.EnglishPage:hover {
     background-color: #005f5f;
